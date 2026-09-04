@@ -1,0 +1,43 @@
+/* GitVerse Stack Layout Component */
+
+.gv-stack {
+  display: flex;
+  box-sizing: border-box;
+}
+
+.gv-stack--column {
+  flex-direction: column;
+}
+
+.gv-stack--row {
+  flex-direction: row;
+}
+
+.gv-stack--wrap {
+  flex-wrap: wrap;
+}
+
+/* Gap scale mapped to tokens */
+.gv-stack--gap-1 { gap: var(--space-1); }
+.gv-stack--gap-2 { gap: var(--space-2); }
+.gv-stack--gap-3 { gap: var(--space-3); }
+.gv-stack--gap-4 { gap: var(--space-4); }
+.gv-stack--gap-5 { gap: var(--space-5); }
+.gv-stack--gap-6 { gap: var(--space-6); }
+.gv-stack--gap-8 { gap: var(--space-8); }
+.gv-stack--gap-10 { gap: var(--space-10); }
+.gv-stack--gap-12 { gap: var(--space-12); }
+
+/* Align items */
+.gv-stack--align-start { align-items: flex-start; }
+.gv-stack--align-center { align-items: center; }
+.gv-stack--align-end { align-items: flex-end; }
+.gv-stack--align-stretch { align-items: stretch; }
+.gv-stack--align-baseline { align-items: baseline; }
+
+/* Justify content */
+.gv-stack--justify-start { justify-content: flex-start; }
+.gv-stack--justify-center { justify-content: center; }
+.gv-stack--justify-end { justify-content: flex-end; }
+.gv-stack--justify-between { justify-content: space-between; }
+.gv-stack--justify-around { justify-content: space-around; }

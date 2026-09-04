@@ -1,0 +1,347 @@
+import { CurriculumLesson } from '@/types/content';
+
+/**
+ * Module 6 — Team Workflows (subject: github)
+ * Feature-branch, PR, and GitHub Flow workflows plus syncing,
+ * review handling, and collaboration conflict resolution.
+ */
+export const GITHUB_TEAM_WORKFLOWS_LESSONS: CurriculumLesson[] = [
+  {
+    id: 'github.team.feature-branch-workflow',
+    moduleId: 'github-team-workflows',
+    slug: 'feature-branch-workflow',
+    order: 1,
+    durationMinutes: 9,
+    difficulty: 'beginner',
+    title: 'Feature Branch Workflow',
+    titleBn: 'ফিচার ব্রাঞ্চ ওয়ার্কফ্লো',
+    summary: 'The industry default: every change gets an isolated branch, a pull request, a review, and a merge. Slow enough to be safe, fast enough to ship.',
+    summaryBn: 'শিল্প মান: প্রতিটি পরিবর্তনে আলাদা ব্রাঞ্চ, পুল রিকোয়েস্ট, রিভিউ ও মার্জ। নিরাপদ হতে যথেষ্ট ধীর, শিপ করতে যথেষ্ট দ্রুত।',
+    learningObjectives: [
+      'Walk the full feature-branch lifecycle',
+      'Explain what each stage protects against',
+      'Know when this workflow fits a team',
+    ],
+    learningObjectivesBn: [
+      'সম্পূর্ণ ফিচার-ব্রাঞ্চ জীবনচক্র হাঁটা',
+      'ব্যাখ্যা করা প্রতিটি ধাপ কী থেকে রক্ষা করে',
+      'জানা এই ওয়ার্কফ্লো কোন টিমে মানায়',
+    ],
+    keyTakeaways: [
+      'Branch → commit → push → PR → review → merge → delete: the complete loop.',
+      'main stays releasable because unfinished work never touches it directly.',
+      'Suits most teams; pure trunk-based flow suits only very high-velocity ones.',
+    ],
+    sections: [
+      {
+        id: 'sec-lifecycle',
+        title: 'The Complete Loop',
+        titleBn: 'সম্পূর্ণ চক্র',
+        blocks: [
+          {
+            type: 'list',
+            ordered: true,
+            items: [
+              'Sync main: git switch main && git pull.',
+              'Branch: git switch -c feature/<name>.',
+              'Work in small commits; push the branch early with -u.',
+              'Open a pull request with a real description.',
+              'Address review; push fixes (the PR updates itself).',
+              'Merge after approval and green checks; delete the branch.',
+            ],
+            itemsBn: [
+              'main সিঙ্ক: git switch main && git pull।',
+              'ব্রাঞ্চ: git switch -c feature/<name>।',
+              'ছোট কমিটে কাজ; -u দিয়ে তাড়াতাড়ি ব্রাঞ্চ পুশ।',
+              'বাস্তব বর্ণনাসহ পুল রিকোয়েস্ট খুলুন।',
+              'রিভিউ সামলান; ফিক্স পুশ করুন (PR নিজে আপডেট হয়)।',
+              'অনুমোদন ও সবুজ চেকের পর মার্জ; ব্রাঞ্চ মুছুন।',
+            ],
+          },
+        ],
+      },
+    ],
+    relatedCommands: ['git.switch', 'git.push', 'git.pull', 'git.merge'],
+    relatedLessons: ['github.branching.feature-branches', 'github.pr.what-is-a-pull-request'],
+  },
+  {
+    id: 'github.team.pull-request-workflow',
+    moduleId: 'github-team-workflows',
+    slug: 'pull-request-workflow',
+    order: 2,
+    durationMinutes: 8,
+    difficulty: 'beginner',
+    title: 'Pull Request Workflow',
+    titleBn: 'পুল রিকোয়েস্ট ওয়ার্কফ্লো',
+    summary: 'Make the pull request itself the unit of collaboration: small PRs, fast reviews, green checks, and merges that tell a story.',
+    summaryBn: 'পুল রিকোয়েস্টকেই সহযোগিতার একক বানান: ছোট PR, দ্রুত রিভিউ, সবুজ চেক ও গল্প বলা মার্জ।',
+    learningObjectives: [
+      'Keep pull requests small and reviewable',
+      'Describe the review-merge cycle time goal',
+      'Explain why checks gate the merge',
+    ],
+    learningObjectivesBn: [
+      'পুল রিকোয়েস্ট ছোট ও রিভিউযোগ্য রাখা',
+      'রিভিউ-মার্জ চক্র সময় লক্ষ্য বর্ণনা করা',
+      'চেক কেন মার্জ আটকায় তা ব্যাখ্যা করা',
+    ],
+    keyTakeaways: [
+      'Small PRs (under ~400 changed lines) get reviewed fast and well.',
+      'A PR should live hours to a couple of days — never weeks.',
+      'Green checks are the team’s shared definition of "safe to merge".',
+    ],
+    sections: [
+      {
+        id: 'sec-rhythm',
+        title: 'Rhythm of Review',
+        titleBn: 'রিভিউয়ের ছন্দ',
+        blocks: [
+          {
+            type: 'paragraph',
+            text: 'Healthy teams treat pull requests like perishable goods: the longer one sits, the more it rots — main moves on, conflicts grow, context evaporates. Small branches, prompt reviews, and required checks keep the conveyor belt moving without lowering the bar.',
+            textBn: 'সুস্থ টিম পুল রিকোয়েস্টকে পচনশীল পণ্য ধরে: যত বসে থাকে তত পচে — main এগোয়, কনফ্লিক্ট বাড়ে, প্রেক্ষাপট উবে যায়। ছোট ব্রাঞ্চ, দ্রুত রিভিউ ও বাধ্যতামূলক চেক মান না নামিয়ে বেল্ট চালু রাখে।',
+          },
+        ],
+      },
+    ],
+    relatedLessons: ['github.pr.create-pull-request', 'github.pr.reviewing-changes'],
+  },
+  {
+    id: 'github.team.github-flow',
+    moduleId: 'github-team-workflows',
+    slug: 'github-flow',
+    order: 3,
+    durationMinutes: 9,
+    difficulty: 'intermediate',
+    title: 'GitHub Flow',
+    titleBn: 'গিটহাব ফ্লো',
+    summary: 'GitHub’s own lightweight workflow: main is always deployable, all work happens on short branches deployed and merged through pull requests.',
+    summaryBn: 'গিটহাবের নিজস্ব হালকা ওয়ার্কফ্লো: main সবসময় ডেপ্লয়যোগ্য, সব কাজ ছোট ব্রাঞ্চে পুল রিকোয়েস্টে ডেপ্লয় ও মার্জ হয়।',
+    learningObjectives: [
+      'Recite the six steps of GitHub Flow',
+      'Explain "deploy before merge" branches',
+      'Contrast GitHub Flow with heavier release flows',
+    ],
+    learningObjectivesBn: [
+      'গিটহাব ফ্লোর ছয় ধাপ আবৃত্তি করা',
+      '"মার্জের আগে ডেপ্লয়" ব্রাঞ্চ ব্যাখ্যা করা',
+      'ভারী রিলিজ ফ্লোর সাথে গিটহাব ফ্লোর তুলনা করা',
+    ],
+    keyTakeaways: [
+      'Anything in main is deployable — that invariant enables everything else.',
+      'Branches deploy to staging for real-world verification before merging.',
+      'Merge immediately after review; the branch lifetime is measured in hours.',
+    ],
+    sections: [
+      {
+        id: 'sec-flow',
+        title: 'Six Steps, Always Deployable',
+        titleBn: 'ছয় ধাপ, সবসময় ডেপ্লয়যোগ্য',
+        blocks: [
+          {
+            type: 'list',
+            ordered: true,
+            items: [
+              'Anything in the main branch is deployable.',
+              'Create descriptively named branches off main for new work.',
+              'Commit locally and push the branch regularly.',
+              'Open a pull request for feedback and review.',
+              'Deploy the branch to verify in production-like conditions.',
+              'Merge into main immediately after review, then deploy main.',
+            ],
+            itemsBn: [
+              'main ব্রাঞ্চের সবকিছু ডেপ্লয়যোগ্য।',
+              'নতুন কাজে main থেকে বর্ণনামূলক নামে ব্রাঞ্চ তৈরি করুন।',
+              'লোকালি কমিট করে নিয়মিত ব্রাঞ্চ পুশ করুন।',
+              'মতামত ও রিভিউয়ে পুল রিকোয়েস্ট খুলুন।',
+              'প্রোডাকশন-সদৃশ অবস্থায় যাচাইয়ে ব্রাঞ্চ ডেপ্লয় করুন।',
+              'রিভিউয়ের সাথে সাথে main-এ মার্জ করে main ডেপ্লয় করুন।',
+            ],
+          },
+        ],
+      },
+    ],
+    quiz: {
+      id: 'quiz-github-flow',
+      subjectId: 'github',
+      difficulty: 'intermediate',
+      question: 'What is the core invariant of GitHub Flow?',
+      questionBn: 'গিটহাব ফ্লোর মূল অপরিবর্তনীয় নিয়ম কী?',
+      options: [
+        { id: 'opt-a', text: 'All work happens directly on main', textBn: 'সব কাজ সরাসরি main-এ হয়', isCorrect: false },
+        { id: 'opt-b', text: 'Anything in main is deployable', textBn: 'main-এর সবকিছু ডেপ্লয়যোগ্য', isCorrect: true },
+        { id: 'opt-c', text: 'Releases happen on a fixed monthly schedule', textBn: 'নির্দিষ্ট মাসিক সূচিতে রিলিজ হয়', isCorrect: false },
+        { id: 'opt-d', text: 'Pull requests are optional for small fixes', textBn: 'ছোট ফিক্সে পুল রিকোয়েস্ট ঐচ্ছিক', isCorrect: false },
+      ],
+      explanation: 'The deployable-main invariant is what makes short branches, review, and immediate merges safe.',
+      explanationBn: 'ডেপ্লয়যোগ্য-main নিয়মই ছোট ব্রাঞ্চ, রিভিউ ও তাৎক্ষণিক মার্জ নিরাপদ করে।',
+    },
+    relatedLessons: ['github.team.feature-branch-workflow'],
+  },
+  {
+    id: 'github.team.sync-before-work',
+    moduleId: 'github-team-workflows',
+    slug: 'sync-before-work',
+    order: 4,
+    durationMinutes: 7,
+    difficulty: 'beginner',
+    title: 'Syncing Before Starting Work',
+    titleBn: 'কাজ শুরুর আগে সিঙ্ক করা',
+    summary: 'Every session starts the same way: fetch, read what changed, update your branch. Five minutes of sync prevents five hours of conflicts.',
+    summaryBn: 'প্রতিটি সেশন একভাবে শুরু: fetch, কী বদলেছে পড়ুন, ব্রাঞ্চ আপডেট করুন। পাঁচ মিনিট সিঙ্ক পাঁচ ঘণ্টা কনফ্লিক্ট বাঁচায়।',
+    learningObjectives: [
+      'Perform the fetch-read-update opening ritual',
+      'Explain why starting stale multiplies conflict cost',
+      'Verify sync state with status and log',
+    ],
+    learningObjectivesBn: [
+      'fetch-পড়ুন-আপডেট উদ্বোধনী আচার পালন করা',
+      'ব্যাখ্যা করা পুরনো শুরু কেন কনফ্লিক্ট খরচ বাড়ায়',
+      'status ও log দিয়ে সিঙ্ক অবস্থা যাচাই করা',
+    ],
+    keyTakeaways: [
+      'git fetch, then read origin/main before touching code.',
+      'Update your branch (merge or rebase) while the gap is still small.',
+      'git status should read "up to date" before new work begins.',
+    ],
+    sections: [
+      {
+        id: 'sec-ritual',
+        title: 'The Opening Ritual',
+        titleBn: 'উদ্বোধনী আচার',
+        blocks: [
+          {
+            type: 'command',
+            command: 'git fetch origin',
+            description: 'Refresh your picture of the team’s work.',
+            descriptionBn: 'টিমের কাজের ছবি রিফ্রেশ করুন।',
+          },
+          {
+            type: 'command',
+            command: 'git log HEAD..origin/main --oneline',
+            description: 'Read what landed since you last looked.',
+            descriptionBn: 'শেষ দেখার পর কী এসেছে পড়ুন।',
+          },
+          {
+            type: 'command',
+            command: 'git pull --rebase',
+            description: 'Replay your work onto the fresh base (or merge, per convention).',
+            descriptionBn: 'নতুন বেসে কাজ রিপ্লে করুন (বা প্রচলনে মার্জ)।',
+          },
+        ],
+      },
+    ],
+    relatedCommands: ['git.fetch', 'git.pull', 'git.status'],
+    relatedLessons: ['git.fundamentals.remote-repository', 'github.repositories.fetch-from-github'],
+  },
+  {
+    id: 'github.team.handling-review-changes',
+    moduleId: 'github-team-workflows',
+    slug: 'handling-review-changes',
+    order: 5,
+    durationMinutes: 8,
+    difficulty: 'intermediate',
+    title: 'Handling Review Changes',
+    titleBn: 'রিভিউ পরিবর্তন সামলানো',
+    summary: 'Review feedback is a gift with a deadline. Address every thread, push fix commits, reply where useful, and request re-review.',
+    summaryBn: 'রিভিউ মতামত সময়সীমাসহ উপহার। প্রতিটি থ্রেড সামলান, ফিক্স কমিট পুশ করুন, দরকারে জবাব দিন, পুনরায় রিভিউ চান।',
+    learningObjectives: [
+      'Triage review threads into fix, discuss, and defer',
+      'Push fix commits that keep the PR reviewable',
+      'Request re-review at the right moment',
+    ],
+    learningObjectivesBn: [
+      'রিভিউ থ্রেড ফিক্স, আলোচনা ও স্থগিতে ভাগ করা',
+      'PR রিভিউযোগ্য রাখা ফিক্স কমিট পুশ করা',
+      'সঠিক মুহূর্তে পুনরায় রিভিউ চাওয়া',
+    ],
+    keyTakeaways: [
+      'Never silently ignore a thread — fix it, reply to it, or explain why not.',
+      'Push fixes as new commits so reviewers see exactly what changed.',
+      'Re-request review only when every thread is resolved and checks pass.',
+    ],
+    sections: [
+      {
+        id: 'sec-feedback',
+        title: 'From Feedback to Approval',
+        titleBn: 'মতামত থেকে অনুমোদন',
+        blocks: [
+          {
+            type: 'list',
+            ordered: true,
+            items: [
+              'Read every thread; sort into fix now, discuss, or defer with reason.',
+              'Push fix commits to the same branch — the PR updates automatically.',
+              'Reply on threads you resolved so reviewers can verify quickly.',
+              'Run checks, confirm green, then request re-review.',
+            ],
+            itemsBn: [
+              'প্রতিটি থ্রেড পড়ুন; এখনই ফিক্স, আলোচনা বা কারণসহ স্থগিতে ভাগ করুন।',
+              'একই ব্রাঞ্চে ফিক্স কমিট পুশ করুন — PR স্বয়ংক্রিয় আপডেট হয়।',
+              'সমাধান থ্রেডে জবাব দিন যাতে রিভিউয়ার দ্রুত যাচাই করতে পারেন।',
+              'চেক চালান, সবুজ নিশ্চিত করে পুনরায় রিভিউ চান।',
+            ],
+          },
+        ],
+      },
+    ],
+    relatedLessons: ['github.pr.requesting-changes', 'github.pr.reviewing-changes'],
+  },
+  {
+    id: 'github.team.resolve-collaboration-conflicts',
+    moduleId: 'github-team-workflows',
+    slug: 'resolve-collaboration-conflicts',
+    order: 6,
+    durationMinutes: 10,
+    difficulty: 'intermediate',
+    title: 'Resolving Collaboration Conflicts',
+    titleBn: 'সহযোগিতা কনফ্লিক্ট সমাধান',
+    summary: 'When GitHub says "this branch has conflicts", resolve locally with the standard technique, push the resolution, and watch checks re-run.',
+    summaryBn: 'গিটহাব "this branch has conflicts" বললে মানক কৌশলে লোকালি সমাধান করুন, রেজোলিউশন পুশ করুন, চেক পুনরায় চলতে দেখুন।',
+    learningObjectives: [
+      'Update a conflicted PR branch against its base',
+      'Resolve markers and complete the merge locally',
+      'Push the resolution and verify checks',
+    ],
+    learningObjectivesBn: [
+      'কনফ্লিক্টেড PR ব্রাঞ্চ বেসের বিপরীতে আপডেট করা',
+      'মার্কার সমাধান করে লোকালি মার্জ সম্পন্ন করা',
+      'রেজোলিউশন পুশ করে চেক যাচাই করা',
+    ],
+    keyTakeaways: [
+      'PR conflicts resolve locally — GitHub shows them, your machine fixes them.',
+      'Update the branch, resolve markers, finish the merge, push.',
+      'Pushing the resolution re-runs checks automatically.',
+    ],
+    sections: [
+      {
+        id: 'sec-pr-conflict',
+        title: 'Conflicts Wear a PR Face',
+        titleBn: 'PR মুখোশে কনফ্লিক্ট',
+        blocks: [
+          {
+            type: 'paragraph',
+            text: 'A conflicted pull request is an ordinary merge conflict wearing team clothes: the base moved while your branch sat still. Resolve it with the exact technique from merge conflicts — update your branch against base, fix markers, complete the merge, push — and the PR refreshes itself, checks included.',
+            textBn: 'কনফ্লিক্টেড পুল রিকোয়েস্ট টিম পোশাকে সাধারণ মার্জ কনফ্লিক্ট: ব্রাঞ্চ স্থির থাকতে বেস এগিয়েছে। মার্জ কনফ্লিক্টের হুবহু কৌশলে সমাধান করুন — বেসের বিপরীতে ব্রাঞ্চ আপডেট, মার্কার ঠিক, মার্জ সম্পন্ন, পুশ — PR নিজে রিফ্রেশ হয়, চেকসহ।',
+          },
+          {
+            type: 'command',
+            command: 'git fetch origin && git merge origin/main',
+            description: 'Bring the moved base into your branch to surface conflicts.',
+            descriptionBn: 'সরা বেস ব্রাঞ্চে এনে কনফ্লিক্ট সামনে আনুন।',
+          },
+          {
+            type: 'callout',
+            variant: 'tip',
+            title: 'Full technique lives in Troubleshooting',
+            titleBn: 'পূর্ণ কৌশল ট্রাবলশুটিংয়ে',
+            text: 'Marker anatomy, abort escapes, and the resolve-add-commit rhythm are covered step by step in the merge conflict recovery guide — open it alongside this lesson.',
+            textBn: 'মার্কার গঠন, abort পলায়ন ও resolve-add-commit ছন্দ মার্জ কনফ্লিক্ট রিকভারি গাইডে ধাপে ধাপে আছে — এই পাঠের পাশে খুলুন।',
+          },
+        ],
+      },
+    ],
+    relatedCommands: ['git.fetch', 'git.merge', 'git.push', 'git.status'],
+    relatedLessons: ['github.branching.keep-branches-updated'],
+  },
+];

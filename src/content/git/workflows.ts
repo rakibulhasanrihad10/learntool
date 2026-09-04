@@ -1,0 +1,86 @@
+import { Workflow } from '@/types/content';
+
+/**
+ * Everyday Git Workflow & Practical Real-World Scenarios
+ */
+export const GIT_WORKFLOWS: Workflow[] = [
+  {
+    id: 'git.workflow.everyday',
+    subjectId: 'git',
+    category: 'Daily Development',
+    difficulty: 'beginner',
+    title: 'The Everyday Git Workflow',
+    titleBn: 'দৈনন্দিন গিট কাজের ধারাবাহিক ধাপ (Everyday Workflow)',
+    scenario: 'You are working on an active software engineering team. You just started a new task, made code modifications in your editor, and need to safely verify, stage, commit, and publish your work.',
+    scenarioBn: 'আপনি সফটওয়্যার টিমে কাজ করছেন। নতুন একটি ফিচার বা ফিক্স সম্পন্ন করার পর কোড নিখুঁতভাবে যাচাই, স্টেজ, কমিট এবং রিমোটে পুশ করার বাস্তবসম্মত ধাপসমূহ।',
+    tags: ['daily', 'workflow', 'beginner', 'best-practices'],
+    steps: [
+      {
+        stepNumber: 1,
+        title: 'Inspect Current Repository State',
+        titleBn: '১. বর্তমান রিপোজিটরির অবস্থা যাচাই করুন',
+        command: 'git status',
+        description: 'Before writing or saving code, always check which branch you are on and verify that your working tree is in a predictable state.',
+        descriptionBn: 'কাজ শুরু বা সেভ করার আগে সর্বদা দেখে নিন আপনি সঠিক ব্রাঞ্চে আছেন কিনা এবং কোনো অপ্রত্যাশিত পরিবর্তন আছে কিনা।',
+        proTip: 'Never start coding on a dirty or detached branch without checking your status first.',
+        proTipBn: 'ব্রাঞ্চ ও স্ট্যাটাস যাচাই না করে কখনোই এলোমেলোভাবে কোড লেখা শুরু করবেন না।',
+      },
+      {
+        stepNumber: 2,
+        title: 'Review Line-by-Line Changes',
+        titleBn: '২. কোডের পরিবর্তনের লাইনগুলো নিখুঁতভাবে পর্যালোচনা করুন',
+        command: 'git diff',
+        description: 'Examine all modifications in your working tree before staging. Catch accidental `console.log` statements, debugging tokens, or commented-out code.',
+        descriptionBn: 'ফাইল স্টেজ করার আগে নিশ্চিত হোন যে কোনো অপ্রয়োজনীয় ডিবাগিং কোড বা টেস্ট টোকেন রয়ে যায়নি।',
+        proTip: 'Use `git diff <filename>` to inspect one specific file when multiple files are modified.',
+        proTipBn: 'নির্দিষ্ট কোনো ফাইলের পরিবর্তন দেখতে `git diff <filename>` ব্যবহার করুন।',
+      },
+      {
+        stepNumber: 3,
+        title: 'Stage Related Changes',
+        titleBn: '৩. সংশ্লিষ্ট পরিবর্তনগুলো স্টেজিং এরিয়াতে যুক্ত করুন',
+        command: 'git add .',
+        description: 'Stage the reviewed files into Git\'s staging index. If you only want to commit specific files, specify their paths directly instead of adding everything.',
+        descriptionBn: 'রিভিউ করা ফাইলগুলোকে স্টেজিং ইনডেক্সে যুক্ত করুন। সব ফাইল এক কমিটে না নিতে চাইলে নির্দিষ্ট ফাইলের নাম দিন।',
+        proTip: 'Use `git add -p` if you made multiple unrelated edits in the same file and want to commit them separately.',
+        proTipBn: 'একই ফাইলে একাধিক ভিন্ন ভিন্ন কাজ থাকলে `git add -p` দিয়ে আলাদা করে স্টেজ করুন।',
+      },
+      {
+        stepNumber: 4,
+        title: 'Verify the Staging Index',
+        titleBn: '৪. স্টেজিং ইনডেক্স পুনরায় নিশ্চিত করুন',
+        command: 'git status',
+        description: 'Run status again to verify that only the expected files are green (staged) and untracked artifacts (like `.env`) are not accidentally staged.',
+        descriptionBn: 'আবারও স্ট্যাটাস চেক করুন যাতে নিশ্চিত হওয়া যায় শুধুমাত্র কাঙ্ক্ষিত ফাইলগুলোই সবুজ (staged) হয়েছে।',
+      },
+      {
+        stepNumber: 5,
+        title: 'Record an Atomic Commit',
+        titleBn: '৫. অর্থপূর্ণ পারমাণবিক (Atomic) কমিট সংরক্ষণ করুন',
+        command: 'git commit -m "feat: implement responsive user navigation"',
+        description: 'Create a permanent snapshot with a concise, imperative commit message explaining WHAT and WHY.',
+        descriptionBn: 'একটি পরিষ্কার ও সংক্ষিপ্ত ইম্পারেটিভ মেসেজ দিয়ে পরিবর্তনটি স্থায়ী স্ন্যাপশট হিসেবে সেভ করুন।',
+        proTip: 'Follow Conventional Commits: `feat:`, `fix:`, `refactor:`, `docs:`, `test:`.',
+        proTipBn: 'কমিট মেসেজে `feat:`, `fix:`, `refactor:`, `docs:` ইত্যাদি কনভেনশন মেনে চলুন।',
+      },
+      {
+        stepNumber: 6,
+        title: 'Verify Local Commit History',
+        titleBn: '৬. লোকাল কমিট হিস্ট্রি ও লগ পরীক্ষা করুন',
+        command: 'git log --oneline -n 3',
+        description: 'Inspect the last few commits to verify that your new commit sits cleanly at the top of the branch history.',
+        descriptionBn: 'সর্বশেষ কয়েকটি কমিট এক লাইনে দেখে নিশ্চিত হোন যে আপনার নতুন কমিটটি ব্রাঞ্চের শীর্ষে যুক্ত হয়েছে।',
+      },
+      {
+        stepNumber: 7,
+        title: 'Publish Commits to Remote Repository',
+        titleBn: '৭. রিমোট রিপোজিটরিতে কোড পুশ করুন',
+        command: 'git push origin main',
+        description: 'Upload your new local commit snapshot to the shared remote repository so your teammates and CI/CD pipelines can access it.',
+        descriptionBn: 'আপনার নতুন লোকাল কমিট রিমোট সার্ভারে আপলোড করুন যাতে সহকর্মীরা ও সিআই/সিডি বিল্ড তা গ্রহণ করতে পারে।',
+        proTip: 'If pushing a newly created branch for the first time, use `git push -u origin <branch-name>`.',
+        proTipBn: 'নতুন ব্রাঞ্চ প্রথমবার পুশ করার সময় `-u` ফ্ল্যাগ দিয়ে আপস্ট্রিম সেট করে নিন।',
+      },
+    ],
+  },
+];

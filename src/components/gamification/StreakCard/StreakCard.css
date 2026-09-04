@@ -1,0 +1,97 @@
+/* StreakCard Styles */
+
+.m3-streak-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  background: linear-gradient(135deg, var(--md-sys-color-surface-container-low), var(--md-sys-color-surface-container));
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.m3-streak-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.m3-streak-card__main {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.m3-streak-card__icon-wrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background-color: var(--md-sys-color-warning-container);
+  color: var(--md-sys-color-on-warning-container);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.m3-streak-card__flame {
+  color: #f59e0b;
+}
+
+.m3-streak-card__count {
+  color: var(--md-sys-color-on-surface);
+  line-height: 1.2;
+}
+
+.m3-streak-card__subtitle {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.m3-streak-card__longest {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--md-sys-color-on-surface-variant);
+  background-color: var(--md-sys-color-surface-container-high);
+  padding: 4px 8px;
+  border-radius: var(--radius-full);
+}
+
+.m3-streak-card__week-track {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--md-sys-color-surface-container-lowest);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.m3-streak-card__day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.m3-streak-card__day-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--md-sys-color-surface-container-high);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  transition: all var(--motion-duration-short) ease;
+}
+
+.m3-streak-card__day-dot--active {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+}
+
+.m3-streak-card__day-label {
+  font-size: 0.6875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 500;
+}

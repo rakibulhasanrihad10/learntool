@@ -1,0 +1,71 @@
+/* GitVerse Heading Typography Component */
+
+.gv-heading {
+  margin: 0;
+  font-family: inherit;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.gv-heading--level-1 {
+  font-size: 2rem;
+  line-height: 2.5rem;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 768px) {
+  .gv-heading--level-1 {
+    font-size: 2.25rem;
+    line-height: 2.75rem;
+  }
+}
+
+.gv-heading--level-2 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  letter-spacing: -0.015em;
+}
+
+@media (min-width: 768px) {
+  .gv-heading--level-2 {
+    font-size: 1.75rem;
+    line-height: 2.25rem;
+  }
+}
+
+.gv-heading--level-3 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.gv-heading--level-4 {
+  font-size: 1.0625rem;
+  line-height: 1.5rem;
+}
+
+/* Colors */
+.gv-heading--color-default {
+  color: var(--color-text-primary);
+}
+
+.gv-heading--color-primary {
+  color: var(--color-primary);
+}
+
+.gv-heading--color-secondary {
+  color: var(--color-secondary);
+}
+
+.gv-heading--color-dimmed {
+  color: var(--color-text-secondary);
+}
+
+.gv-heading--color-inherit {
+  color: inherit;
+}
+
+/* Align */
+.gv-heading--align-left { text-align: left; }
+.gv-heading--align-center { text-align: center; }
+.gv-heading--align-right { text-align: right; }

@@ -1,0 +1,91 @@
+/* AchievementCard Styles */
+
+.m3-achievement-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  background-color: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  transition: all var(--motion-duration-short) ease;
+}
+
+.m3-achievement-card--unlocked {
+  background: linear-gradient(135deg, var(--md-sys-color-surface-container-low), var(--md-sys-color-surface-container));
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.m3-achievement-card__icon-wrapper {
+  flex-shrink: 0;
+}
+
+.m3-achievement-card__icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.m3-achievement-card__icon--unlocked {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+}
+
+.m3-achievement-card__icon--locked {
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.m3-achievement-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.m3-achievement-card__title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.m3-achievement-card__title {
+  color: var(--md-sys-color-on-surface);
+  line-height: 1.2;
+}
+
+.m3-achievement-card__reward {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--md-sys-color-primary);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.m3-achievement-card__sparkle {
+  color: #f59e0b;
+}
+
+.m3-achievement-card__desc {
+  color: var(--md-sys-color-on-surface-variant);
+  line-height: 1.4;
+}
+
+.m3-achievement-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-2);
+}
+
+.m3-achievement-card__category {
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.6875rem;
+}

@@ -1,0 +1,45 @@
+/* Tooltip Styles */
+
+.m3-tooltip-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.m3-tooltip {
+  position: absolute;
+  z-index: var(--z-tooltip);
+  padding: 4px 8px;
+  background-color: var(--md-sys-color-on-surface);
+  color: var(--md-sys-color-surface);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: var(--radius-xs);
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: var(--elevation-2);
+  animation: fadeIn var(--motion-duration-short) ease;
+}
+
+.m3-tooltip--top {
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.m3-tooltip--bottom {
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.m3-tooltip--left {
+  right: calc(100% + 6px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.m3-tooltip--right {
+  left: calc(100% + 6px);
+  top: 50%;
+  transform: translateY(-50%);
+}

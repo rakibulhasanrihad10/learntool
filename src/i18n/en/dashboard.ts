@@ -1,0 +1,48 @@
+export const enDashboard = {
+  welcomeTitle: 'Learn Git deeply. Reference quickly. Practice confidently.',
+  welcomeSubtitle: 'The modern interactive developer handbook for mastering version control and Git workflows.',
+  heroCtaPrimary: 'Start Learning Path',
+  heroCtaSecondary: 'Explore Command Index',
+  stats: {
+    modulesCompleted: 'Modules Ready',
+    commandsMastered: 'Core Commands',
+    troubleshootSolved: 'Emergency Fixes',
+    dailyStreak: 'Daily Practice',
+  },
+  continueLearning: {
+    title: 'Featured Learning Path',
+    subtitle: 'Pick up right where you left off or start fresh',
+    currentModule: 'Git Fundamentals & Branching Architecture',
+    progress: '45% Completed',
+    resumeButton: 'Continue Lesson',
+  },
+  quickAccess: {
+    title: 'Quick Access Hub',
+    subtitle: 'Fast-track to everyday Git scenarios and essential commands',
+    gitInitTitle: 'Initialize Repository',
+    gitInitDesc: 'Set up a clean new Git repository with best practices',
+    branchingTitle: 'Branching Strategy',
+    branchingDesc: 'Create, isolate, switch, and merge features smoothly',
+    undoMistakesTitle: 'Undo & Fix Mistakes',
+    undoMistakesDesc: 'Recover from wrong commits, staging errors, and detached heads',
+    remoteSyncTitle: 'Remote Collaboration',
+    remoteSyncDesc: 'Push, pull, fetch, rebase, and resolve remote conflicts cleanly',
+  },
+  dailyChallenge: {
+    title: 'Daily Git Challenge',
+    badge: 'Today’s Scenario',
+    challengeTitle: 'Stage only specific hunks of a modified file',
+    challengeDesc: 'How do you selectively review and stage parts of a file without adding all changes at once?',
+    commandLabel: 'Solution Command:',
+    solveButton: 'Try Interactive Lab',
+  },
+  recentItems: {
+    title: 'Recently Explored',
+    subtitle: 'Your recently visited commands, scenarios, and lessons',
+    emptyState: 'No recent activity recorded yet. Start exploring commands to build your history!',
+  },
+  achievementsPreview: {
+    title: 'Earned Badges & Milestones',
+    subtitle: 'Track your skill progression and unlocked developer milestones',
+  },
+};

@@ -1,0 +1,51 @@
+/* GitVerse Divider Component */
+
+.gv-divider {
+  display: flex;
+  align-items: center;
+  border: 0;
+  box-sizing: border-box;
+}
+
+.gv-divider--horizontal {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-outline-variant);
+}
+
+.gv-divider--horizontal.gv-divider--spacing-none { margin: 0; }
+.gv-divider--horizontal.gv-divider--spacing-sm { margin: var(--space-2) 0; }
+.gv-divider--horizontal.gv-divider--spacing-md { margin: var(--space-4) 0; }
+.gv-divider--horizontal.gv-divider--spacing-lg { margin: var(--space-8) 0; }
+
+.gv-divider--vertical {
+  width: 1px;
+  height: 100%;
+  min-height: 1.25rem;
+  background-color: var(--color-outline-variant);
+  align-self: stretch;
+}
+
+.gv-divider--vertical.gv-divider--spacing-none { margin: 0; }
+.gv-divider--vertical.gv-divider--spacing-sm { margin: 0 var(--space-2); }
+.gv-divider--vertical.gv-divider--spacing-md { margin: 0 var(--space-4); }
+.gv-divider--vertical.gv-divider--spacing-lg { margin: 0 var(--space-8); }
+
+.gv-divider--with-label {
+  background-color: transparent;
+  text-align: center;
+}
+
+.gv-divider--with-label::before,
+.gv-divider--with-label::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--color-outline-variant);
+}
+
+.gv-divider__label {
+  padding: 0 var(--space-3);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

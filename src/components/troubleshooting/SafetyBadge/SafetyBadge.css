@@ -1,0 +1,45 @@
+.safety-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background-color: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface-variant);
+  max-width: 100%;
+}
+
+.safety-badge__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.safety-badge__label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.safety-badge--safe {
+  border-color: var(--md-sys-color-success);
+  color: var(--md-sys-color-success);
+}
+
+.safety-badge--usually-safe {
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-primary);
+}
+
+.safety-badge--destructive {
+  border-color: var(--md-sys-color-warning);
+  color: var(--md-sys-color-warning);
+}
+
+.safety-badge--high-risk {
+  border-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-error);
+  border-width: 2px;
+}

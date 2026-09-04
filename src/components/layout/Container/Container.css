@@ -1,0 +1,46 @@
+/* GitVerse Container Layout Component */
+
+.gv-container {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.gv-container--center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.gv-container--gutters {
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .gv-container--gutters {
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .gv-container--gutters {
+    padding-left: var(--space-8);
+    padding-right: var(--space-8);
+  }
+}
+
+.gv-container--reading {
+  max-width: var(--layout-reading-width);
+}
+
+.gv-container--doc {
+  max-width: var(--layout-doc-width);
+}
+
+.gv-container--wide {
+  max-width: var(--layout-wide-width);
+}
+
+.gv-container--full {
+  max-width: var(--layout-max-width);
+}

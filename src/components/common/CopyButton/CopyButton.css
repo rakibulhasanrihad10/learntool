@@ -1,0 +1,86 @@
+/* GitVerse CopyButton Component */
+
+.gv-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  transition: all var(--motion-duration-short) ease;
+}
+
+.gv-copy-btn:hover {
+  color: var(--color-text-primary);
+  background-color: var(--color-surface-container-high);
+}
+
+.gv-copy-btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.gv-copy-btn:active {
+  transform: scale(0.96);
+}
+
+/* Sizes */
+.gv-copy-btn--sm {
+  height: 28px;
+  padding: 0 var(--space-2);
+  font-size: 0.75rem;
+}
+
+.gv-copy-btn--sm.gv-copy-btn--icon {
+  width: 28px;
+  padding: 0;
+}
+
+.gv-copy-btn--md {
+  height: 36px;
+  padding: 0 var(--space-3);
+  font-size: 0.8125rem;
+}
+
+.gv-copy-btn--md.gv-copy-btn--icon {
+  width: 36px;
+  padding: 0;
+}
+
+/* Variants */
+.gv-copy-btn--tonal {
+  background-color: var(--color-surface-container-high);
+  color: var(--color-text-primary);
+}
+
+.gv-copy-btn--tonal:hover {
+  background-color: var(--color-surface-container-highest);
+}
+
+.gv-copy-btn--outlined {
+  border-color: var(--color-outline-variant);
+}
+
+.gv-copy-btn--outlined:hover {
+  border-color: var(--color-outline);
+  background-color: var(--color-surface-container-low);
+}
+
+/* Copied feedback state */
+.gv-copy-btn--copied {
+  color: var(--color-success) !important;
+  border-color: var(--color-success-container) !important;
+  background-color: var(--color-success-container) !important;
+}
+
+.gv-copy-btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

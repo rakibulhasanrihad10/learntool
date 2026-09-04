@@ -1,0 +1,62 @@
+/* XPProgress Styles */
+
+.m3-xp-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: linear-gradient(135deg, var(--md-sys-color-surface-container-low), var(--md-sys-color-surface-container));
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.m3-xp-progress__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.m3-xp-progress__level-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.m3-xp-progress__level-title {
+  color: var(--md-sys-color-on-surface);
+  line-height: 1.2;
+}
+
+.m3-xp-progress__level-subtitle {
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.m3-xp-progress__total-xp {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--md-sys-color-surface-container-high);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  color: var(--md-sys-color-primary);
+  font-weight: 700;
+}
+
+.m3-xp-progress__sparkle {
+  color: #f59e0b;
+}
+
+.m3-xp-progress__bar-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.m3-xp-progress__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}

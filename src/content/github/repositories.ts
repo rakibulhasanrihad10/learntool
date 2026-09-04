@@ -1,0 +1,365 @@
+import { CurriculumLesson } from '@/types/content';
+
+/**
+ * Module 2 — Working with GitHub Repositories (subject: github)
+ * Create, connect, clone, push, fetch, pull.
+ */
+export const GITHUB_REPOSITORIES_LESSONS: CurriculumLesson[] = [
+  {
+    id: 'github.repositories.create-repository',
+    moduleId: 'github-repositories',
+    slug: 'create-repository',
+    order: 1,
+    durationMinutes: 6,
+    difficulty: 'beginner',
+    title: 'Creating a Repository',
+    titleBn: 'রিপোজিটরি তৈরি করা',
+    summary: 'Create a GitHub repository with intention: good names, README, .gitignore, license, and the right visibility from the start.',
+    summaryBn: 'উদ্দেশ্য নিয়ে গিটহাব রিপোজিটরি তৈরি করুন: ভালো নাম, README, .gitignore, লাইসেন্স ও শুরু থেকে সঠিক দৃশ্যমানতা।',
+    learningObjectives: [
+      'Create a repository with README, .gitignore, and license',
+      'Explain what each initialization option does',
+      'Choose visibility deliberately',
+    ],
+    learningObjectivesBn: [
+      'README, .gitignore ও লাইসেন্সসহ রিপোজিটরি তৈরি করা',
+      'প্রতিটি ইনিশিয়ালাইজেশন অপশনের কাজ ব্যাখ্যা করা',
+      'সচেতনভাবে দৃশ্যমানতা বেছে নেওয়া',
+    ],
+    keyTakeaways: [
+      'A README makes the repository understandable on arrival.',
+      'A .gitignore from day one prevents secret and artifact leaks.',
+      'A license tells others what they may legally do with your code.',
+    ],
+    sections: [
+      {
+        id: 'sec-create',
+        title: 'Create With Intention',
+        titleBn: 'উদ্দেশ্য নিয়ে তৈরি করুন',
+        blocks: [
+          {
+            type: 'list',
+            ordered: true,
+            items: [
+              'Pick a short, lowercase, hyphenated name (e.g. task-tracker).',
+              'Write one honest sentence of description.',
+              'Add a README so the page is never empty.',
+              'Add a .gitignore matching your stack (Node, Python, etc.).',
+              'Choose a license (MIT for permissive open source) and visibility.',
+            ],
+            itemsBn: [
+              'সংক্ষিপ্ত, ছোট হাতের, হাইফেনযুক্ত নাম বেছে নিন (যেমন task-tracker)।',
+              'একটি সৎ বাক্যের বর্ণনা লিখুন।',
+              'README যোগ করুন যাতে পেজ কখনো খালি না থাকে।',
+              'স্ট্যাক অনুযায়ী .gitignore যোগ করুন (Node, Python ইত্যাদি)।',
+              'লাইসেন্স (উদার ওপেন সোর্সে MIT) ও দৃশ্যমানতা বেছে নিন।',
+          ],
+          },
+          {
+            type: 'paragraph',
+            text: 'Initializing with a README means your first clone arrives with something to read — and gives future pull requests a base commit to build on.',
+            textBn: 'README দিয়ে শুরু করলে প্রথম ক্লোনেই পড়ার মতো কিছু আসে — এবং ভবিষ্যৎ পুল রিকোয়েস্টের ভিত্তি কমিট তৈরি হয়।',
+          },
+        ],
+      },
+    ],
+    relatedLessons: ['github.basics.repository-structure', 'github.basics.public-vs-private'],
+  },
+  {
+    id: 'github.repositories.connect-local-repository',
+    moduleId: 'github-repositories',
+    slug: 'connect-local-repository',
+    order: 2,
+    durationMinutes: 9,
+    difficulty: 'beginner',
+    title: 'Connecting a Local Repository',
+    titleBn: 'লোকাল রিপোজিটরি সংযুক্ত করা',
+    summary: 'Link an existing local project to GitHub with git remote add origin, then establish tracking with git push -u origin main.',
+    summaryBn: 'বিদ্যমান লোকাল প্রজেক্ট git remote add origin দিয়ে গিটহাবে যুক্ত করুন, তারপর git push -u origin main দিয়ে ট্র্যাকিং প্রতিষ্ঠা করুন।',
+    learningObjectives: [
+      'Register GitHub as a remote named origin',
+      'Explain what -u (upstream tracking) establishes',
+      'Describe why later push/pull commands get shorter',
+    ],
+    learningObjectivesBn: [
+      'origin নামে গিটহাব রিমোট হিসেবে নিবন্ধন করা',
+      '-u (আপস্ট্রিম ট্র্যাকিং) কী প্রতিষ্ঠা করে তা ব্যাখ্যা করা',
+      'পরের push/pull কমান্ড কেন ছোট হয় তা বর্ণনা করা',
+    ],
+    keyTakeaways: [
+      'git remote add origin <url> registers the GitHub copy under a nickname.',
+      '-u records which remote branch your local branch follows.',
+      'After -u, plain git push and git pull know where to go.',
+    ],
+    sections: [
+      {
+        id: 'sec-connect',
+        title: 'Local Git Repository → GitHub Repository',
+        titleBn: 'লোকাল গিট রিপোজিটরি → গিটহাব রিপোজিটরি',
+        blocks: [
+          {
+            type: 'paragraph',
+            text: 'A local project becomes a GitHub project in two moves: tell Git where GitHub lives (remote add), then push your branches there while recording the tracking relationship (-u).',
+            textBn: 'লোকাল প্রজেক্ট দুই ধাপে গিটহাব প্রজেক্ট হয়: গিটকে বলুন গিটহাব কোথায় (remote add), তারপর ট্র্যাকিং সম্পর্ক রেকর্ড করে ব্রাঞ্চ পুশ করুন (-u)।',
+          },
+          {
+            type: 'command',
+            command: 'git remote add origin https://github.com/you/task-tracker.git',
+            description: 'Register the empty GitHub repository under the nickname origin.',
+            descriptionBn: 'খালি গিটহাব রিপোজিটরি origin ডাকনামে নিবন্ধন করুন।',
+          },
+          {
+            type: 'command',
+            command: 'git push -u origin main',
+            description: 'Upload main and record that it tracks origin/main from now on.',
+            descriptionBn: 'main আপলোড করুন এবং রেকর্ড করুন যে এখন থেকে এটি origin/main ট্র্যাক করে।',
+          },
+          {
+            type: 'keyConcept',
+            title: 'What -u establishes',
+            titleBn: '-u কী প্রতিষ্ঠা করে',
+            conceptKey: 'UPSTREAM_TRACKING',
+            text: 'The -u flag writes the tracking link into your config: local main follows origin/main. Future git pull knows what to merge, git push knows where to send, and git status can report ahead/behind.',
+            textBn: '-u ফ্ল্যাগ কনফিগে ট্র্যাকিং লিঙ্ক লেখে: লোকাল main origin/main অনুসরণ করে। ভবিষ্যৎ git pull জানে কী মার্জ করবে, git push জানে কোথায় পাঠাবে, git status ahead/behind জানাতে পারে।',
+          },
+        ],
+      },
+    ],
+    relatedCommands: ['git.remote', 'git.push'],
+    relatedLessons: ['git.fundamentals.remote-repository', 'github.basics.remote-repositories'],
+  },
+  {
+    id: 'github.repositories.clone-repository',
+    moduleId: 'github-repositories',
+    slug: 'clone-repository',
+    order: 3,
+    durationMinutes: 7,
+    difficulty: 'beginner',
+    title: 'Cloning a Repository',
+    titleBn: 'রিপোজিটরি ক্লোন করা',
+    summary: 'Clone copies the full history plus a pre-configured origin remote — the fastest correct way to join an existing project.',
+    summaryBn: 'ক্লোন সম্পূর্ণ হিস্ট্রি ও প্রি-কনফিগারড origin রিমোট কপি করে — বিদ্যমান প্রজেক্টে যোগ দেওয়ার দ্রুততম সঠিক উপায়।',
+    learningObjectives: [
+      'Clone with HTTPS or SSH and explain the difference',
+      'Describe what clone configures automatically',
+      'Verify a fresh clone before starting work',
+    ],
+    learningObjectivesBn: [
+      'HTTPS বা SSH দিয়ে ক্লোন করা ও পার্থক্য ব্যাখ্যা করা',
+      'ক্লোন স্বয়ংক্রিয়ভাবে কী কনফিগার করে তা বর্ণনা করা',
+      'কাজ শুরুর আগে নতুন ক্লোন যাচাই করা',
+    ],
+    keyTakeaways: [
+      'Clone downloads every commit and checks out the default branch.',
+      'origin is pre-configured, and main already tracks origin/main.',
+      'HTTPS asks for credentials; SSH uses keys after one-time setup.',
+    ],
+    sections: [
+      {
+        id: 'sec-clone',
+        title: 'Join With One Command',
+        titleBn: 'এক কমান্ডে যোগ দিন',
+        blocks: [
+          {
+            type: 'command',
+            command: 'git clone https://github.com/team/task-tracker.git',
+            description: 'Copy the full project and enter its directory.',
+            descriptionBn: 'পুরো প্রজেক্ট কপি করে ডিরেক্টরিতে ঢুকুন।',
+          },
+          {
+            type: 'list',
+            items: [
+              'Full commit history arrives — you can log, diff, and branch offline immediately.',
+              'origin points back at the GitHub copy with no setup step.',
+              'The default branch is checked out and already tracking its remote twin.',
+            ],
+            itemsBn: [
+              'সম্পূর্ণ কমিট হিস্ট্রি আসে — সাথে সাথে অফলাইনে log, diff ও ব্রাঞ্চ করা যায়।',
+              'origin কোনো সেটআপ ছাড়াই গিটহাব কপিকে নির্দেশ করে।',
+              'ডিফল্ট ব্রাঞ্চ চেকআউট থাকে ও রিমোট জমজকে ট্র্যাক করে।',
+            ],
+          },
+        ],
+      },
+    ],
+    quiz: {
+      id: 'quiz-github-clone',
+      subjectId: 'github',
+      difficulty: 'beginner',
+      question: 'What does git clone set up automatically?',
+      questionBn: 'git clone স্বয়ংক্রিয়ভাবে কী সেটআপ করে?',
+      options: [
+        { id: 'opt-a', text: 'Only the working files, without history', textBn: 'শুধু ওয়ার্কিং ফাইল, হিস্ট্রি ছাড়া', isCorrect: false },
+        { id: 'opt-b', text: 'Full history plus an origin remote with tracking configured', textBn: 'সম্পূর্ণ হিস্ট্রি ও ট্র্যাকিংসহ origin রিমোট', isCorrect: true },
+        { id: 'opt-c', text: 'A pull request for your first change', textBn: 'প্রথম পরিবর্তনের পুল রিকোয়েস্ট', isCorrect: false },
+        { id: 'opt-d', text: 'A fork under your GitHub account', textBn: 'অ্যাকাউন্টে একটি ফোর্ক', isCorrect: false },
+      ],
+      explanation: 'Clone copies all history, registers origin, checks out the default branch, and wires up tracking.',
+      explanationBn: 'ক্লোন সব হিস্ট্রি কপি করে, origin নিবন্ধন করে, ডিফল্ট ব্রাঞ্চ চেকআউট করে ও ট্র্যাকিং জুড়ে দেয়।',
+    },
+    relatedCommands: ['git.clone', 'git.remote'],
+    relatedLessons: ['github.repositories.connect-local-repository'],
+  },
+  {
+    id: 'github.repositories.push-to-github',
+    moduleId: 'github-repositories',
+    slug: 'push-to-github',
+    order: 4,
+    durationMinutes: 7,
+    difficulty: 'beginner',
+    title: 'Pushing to GitHub',
+    titleBn: 'গিটহাবে পুশ করা',
+    summary: 'Push publishes your commits to the shared remote. Understand fast-forwards, rejection as protection, and pushing new branches.',
+    summaryBn: 'পুশ কমিট শেয়ার্ড রিমোটে প্রকাশ করে। ফাস্ট-ফরোয়ার্ড, সুরক্ষা হিসেবে প্রত্যাখ্যান ও নতুন ব্রাঞ্চ পুশ বুঝুন।',
+    learningObjectives: [
+      'Push tracked branches with short commands',
+      'Publish a new branch with -u',
+      'Interpret a rejected push as protection, not failure',
+    ],
+    learningObjectivesBn: [
+      'সংক্ষিপ্ত কমান্ডে ট্র্যাকড ব্রাঞ্চ পুশ করা',
+      '-u দিয়ে নতুন ব্রাঞ্চ প্রকাশ করা',
+      'প্রত্যাখ্যাত পুশকে ব্যর্থতা নয়, সুরক্ষা হিসেবে পড়া',
+    ],
+    keyTakeaways: [
+      'Push uploads commits your remote lacks and fast-forwards its branch.',
+      'A rejection means the remote moved first — fetch and integrate instead of forcing.',
+      'Pushing a new branch with -u wires up tracking in one step.',
+    ],
+    sections: [
+      {
+        id: 'sec-push',
+        title: 'Publishing Work',
+        titleBn: 'কাজ প্রকাশ করা',
+        blocks: [
+          {
+            type: 'command',
+            command: 'git push',
+            description: 'Send tracked-branch commits to the remote twin.',
+            descriptionBn: 'ট্র্যাকড ব্রাঞ্চের কমিট রিমোট জমজে পাঠান।',
+          },
+          {
+            type: 'command',
+            command: 'git push -u origin feature/login',
+            description: 'Publish a new branch and record its tracking link.',
+            descriptionBn: 'নতুন ব্রাঞ্চ প্রকাশ করে ট্র্যাকিং লিঙ্ক রেকর্ড করুন।',
+          },
+          {
+            type: 'callout',
+            variant: 'warning',
+            title: 'Rejection protects the team',
+            titleBn: 'প্রত্যাখ্যান টিমকে রক্ষা করে',
+            text: 'If push is rejected, someone else’s commits arrived first. Fetch, review, and integrate — force-pushing over teammates erases their work from the shared history.',
+            textBn: 'পুশ প্রত্যাখ্যাত হলে অন্য কারো কমিট আগে পৌঁছেছে। fetch করে পর্যালোচনা ও একীভূত করুন — সহকর্মীদের ওপর ফোর্স-পুশ শেয়ার্ড হিস্ট্রি থেকে তাদের কাজ মুছে দেয়।',
+          },
+        ],
+      },
+    ],
+    relatedCommands: ['git.push', 'git.fetch'],
+    relatedLessons: ['git.fundamentals.remote-repository', 'github.repositories.connect-local-repository'],
+  },
+  {
+    id: 'github.repositories.fetch-from-github',
+    moduleId: 'github-repositories',
+    slug: 'fetch-from-github',
+    order: 5,
+    durationMinutes: 7,
+    difficulty: 'beginner',
+    title: 'Fetching from GitHub',
+    titleBn: 'গিটহাব থেকে Fetch করা',
+    summary: 'Fetch safely downloads teammates’ work and refreshes your picture of the remote — without touching your branches or files.',
+    summaryBn: 'Fetch নিরাপদে সহকর্মীদের কাজ ডাউনলোড করে ও রিমোটের ছবি রিফ্রেশ করে — ব্রাঞ্চ বা ফাইলে হাত না দিয়ে।',
+    learningObjectives: [
+      'Explain what fetch updates and what it never touches',
+      'Read origin/* refs after fetching',
+      'Decide when to fetch instead of pulling',
+    ],
+    learningObjectivesBn: [
+      'ব্যাখ্যা করা fetch কী আপডেট করে ও কী কখনো ছোঁয় না',
+      'fetch-এর পর origin/* রেফ পড়া',
+      'পুলের বদলে কখন fetch করবেন তা ঠিক করা',
+    ],
+    keyTakeaways: [
+      'Fetch updates remote-tracking branches and downloads objects only.',
+      'Your branches, staging area, and files never move during a fetch.',
+      'Fetch first whenever you want to look before integrating.',
+    ],
+    sections: [
+      {
+        id: 'sec-fetch',
+        title: 'Look Before You Leap',
+        titleBn: 'লাফের আগে দেখুন',
+        blocks: [
+          {
+            type: 'command',
+            command: 'git fetch origin',
+            description: 'Refresh every origin/* ref without changing any local work.',
+            descriptionBn: 'লোকাল কাজ না বদলে প্রতিটি origin/* রেফ রিফ্রেশ করুন।',
+          },
+          {
+            type: 'command',
+            command: 'git log HEAD..origin/main --oneline',
+            description: 'Read exactly what the remote has that you lack.',
+            descriptionBn: 'রিমোটে যা আছে আপনার নেই ঠিক তা পড়ুন।',
+          },
+          {
+            type: 'paragraph',
+            text: 'Fetching is the polite way to stay current: it gathers information and changes nothing. Make it a habit before reviews, merges, and pull requests.',
+            textBn: 'Fetch হালনাগাদ থাকার ভদ্র উপায়: তথ্য সংগ্রহ করে, কিছু বদলায় না। রিভিউ, মার্জ ও পুল রিকোয়েস্টের আগে অভ্যাস করুন।',
+          },
+        ],
+      },
+    ],
+    relatedCommands: ['git.fetch', 'git.log'],
+    relatedLessons: ['git.fundamentals.remote-repository'],
+  },
+  {
+    id: 'github.repositories.pull-changes',
+    moduleId: 'github-repositories',
+    slug: 'pull-changes',
+    order: 6,
+    durationMinutes: 8,
+    difficulty: 'beginner',
+    title: 'Pulling Changes',
+    titleBn: 'পরিবর্তন Pull করা',
+    summary: 'Pull is fetch plus integrate: it downloads and then merges (or rebases) the result into your branch. Know which half does what.',
+    summaryBn: 'Pull হলো fetch যোগ integrate: ডাউনলোড করে ফল ব্রাঞ্চে মার্জ (বা রিবেস) করে। কোন অর্ধেক কী করে জানুন।',
+    learningObjectives: [
+      'Decompose pull into fetch + integrate',
+      'Distinguish default merge pulls from --rebase pulls',
+      'Pull safely on a clean tree',
+    ],
+    learningObjectivesBn: [
+      'Pull-কে fetch + integrate-এ ভাগ করা',
+      'ডিফল্ট মার্জ পুল ও --rebase পুলের পার্থক্য করা',
+      'পরিষ্কার ট্রিতে নিরাপদে পুল করা',
+    ],
+    keyTakeaways: [
+      'pull = fetch, then merge (default) or rebase (--rebase) into your branch.',
+      'A clean tree before pulling keeps conflicts understandable.',
+      'If pull reports conflicts, you finish the integration it started.',
+    ],
+    sections: [
+      {
+        id: 'sec-pull',
+        title: 'Download and Integrate',
+        titleBn: 'ডাউনলোড ও একীভূত',
+        blocks: [
+          {
+            type: 'command',
+            command: 'git pull origin main',
+            description: 'Fetch origin/main and merge it into your current branch.',
+            descriptionBn: 'origin/main fetch করে বর্তমান ব্রাঞ্চে মার্জ করুন।',
+          },
+          {
+            type: 'paragraph',
+            text: 'Because pull integrates, it can finish with a fast-forward, a merge commit, or a paused conflict for you to resolve. That is normal — pull surfaced real divergence between your work and the team’s, and now you get to reconcile it deliberately.',
+            textBn: 'পুল একীভূত করে বলে ফাস্ট-ফরোয়ার্ড, মার্জ কমিট বা সমাধানের জন্য থামা কনফ্লিক্টে শেষ হতে পারে। এটা স্বাভাবিক — পুল আপনার ও টিমের কাজের বাস্তব ডাইভারজেন্স সামনে এনেছে, এখন সচেতনভাবে মেলান।',
+          },
+        ],
+      },
+    ],
+    relatedCommands: ['git.pull', 'git.fetch', 'git.merge'],
+    relatedLessons: ['git.fundamentals.remote-repository'],
+  },
+];

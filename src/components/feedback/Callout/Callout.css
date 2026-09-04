@@ -1,0 +1,103 @@
+/* GitVerse Callout Component */
+
+.gv-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  margin: var(--space-4) 0;
+  border-left-width: 4px;
+  border-left-style: solid;
+  transition: background-color var(--motion-duration-short) ease,
+              border-color var(--motion-duration-short) ease;
+}
+
+.gv-callout__icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.gv-callout__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.gv-callout__title {
+  font-weight: 600;
+  margin-bottom: var(--space-1);
+}
+
+.gv-callout__body {
+  color: var(--color-text-primary);
+  line-height: 1.5;
+}
+
+.gv-callout__body p:last-child {
+  margin-bottom: 0;
+}
+
+/* Callout Variant Types */
+
+/* Note (Info) */
+.gv-callout--note {
+  background-color: var(--color-info-container);
+  border-left-color: var(--color-info);
+}
+.gv-callout--note .gv-callout__icon-wrapper,
+.gv-callout--note .gv-callout__title {
+  color: var(--color-on-info-container);
+}
+
+/* Tip (Secondary / Teal) */
+.gv-callout--tip {
+  background-color: var(--color-secondary-container);
+  border-left-color: var(--color-secondary);
+}
+.gv-callout--tip .gv-callout__icon-wrapper,
+.gv-callout--tip .gv-callout__title {
+  color: var(--color-on-secondary-container);
+}
+
+/* Important (Primary / Indigo) */
+.gv-callout--important {
+  background-color: var(--color-primary-container);
+  border-left-color: var(--color-primary);
+}
+.gv-callout--important .gv-callout__icon-wrapper,
+.gv-callout--important .gv-callout__title {
+  color: var(--color-on-primary-container);
+}
+
+/* Warning (Amber) */
+.gv-callout--warning {
+  background-color: var(--color-warning-container);
+  border-left-color: var(--color-warning);
+}
+.gv-callout--warning .gv-callout__icon-wrapper,
+.gv-callout--warning .gv-callout__title {
+  color: var(--color-on-warning-container);
+}
+
+/* Danger (Error / Red) */
+.gv-callout--danger {
+  background-color: var(--color-error-container);
+  border-left-color: var(--color-error);
+}
+.gv-callout--danger .gv-callout__icon-wrapper,
+.gv-callout--danger .gv-callout__title {
+  color: var(--color-on-error-container);
+}
+
+/* Interview Tip (Tertiary / Violet) */
+.gv-callout--interviewTip {
+  background-color: var(--color-tertiary-container);
+  border-left-color: var(--color-tertiary);
+}
+.gv-callout--interviewTip .gv-callout__icon-wrapper,
+.gv-callout--interviewTip .gv-callout__title {
+  color: var(--color-on-tertiary-container);
+}

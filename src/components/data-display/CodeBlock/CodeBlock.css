@@ -1,0 +1,93 @@
+/* GitVerse CodeBlock Component */
+
+.gv-code-block {
+  position: relative;
+  background-color: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius-md);
+  margin: var(--space-4) 0;
+  overflow: hidden;
+  box-shadow: var(--elevation-1);
+}
+
+.gv-code-block__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-4);
+  background-color: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid var(--code-border);
+}
+
+.gv-code-block__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.gv-code-block__filename {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.gv-code-block__language {
+  color: #64748b;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.gv-code-block__actions {
+  display: flex;
+  align-items: center;
+}
+
+.gv-code-block__actions .gv-copy-btn {
+  color: #94a3b8;
+}
+
+.gv-code-block__actions .gv-copy-btn:hover {
+  color: #f8fafc;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.gv-code-block__content {
+  display: flex;
+  overflow-x: auto;
+  padding: var(--space-4);
+}
+
+.gv-code-block__line-numbers {
+  display: flex;
+  flex-direction: column;
+  padding-right: var(--space-4);
+  margin-right: var(--space-4);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  user-select: none;
+  text-align: right;
+}
+
+.gv-code-block__line-number {
+  color: #475569;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.gv-code-block__pre {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--code-text);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  white-space: pre;
+  tab-size: 2;
+}
+
+.gv-code-block__pre code {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: transparent;
+  padding: 0;
+  border: 0;
+}

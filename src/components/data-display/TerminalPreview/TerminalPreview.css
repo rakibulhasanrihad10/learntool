@@ -1,0 +1,100 @@
+/* GitVerse TerminalPreview Presentation Component */
+
+.gv-terminal-preview {
+  background-color: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius-md);
+  margin: var(--space-4) 0;
+  overflow: hidden;
+  box-shadow: var(--elevation-2);
+}
+
+.gv-terminal-preview__titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-4);
+  background-color: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--code-border);
+  user-select: none;
+}
+
+.gv-terminal-preview__controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 54px;
+}
+
+.gv-terminal-preview__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.gv-terminal-preview__dot--close { background-color: #ef4444; }
+.gv-terminal-preview__dot--minimize { background-color: #f59e0b; }
+.gv-terminal-preview__dot--expand { background-color: #10b981; }
+
+.gv-terminal-preview__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: #94a3b8;
+  font-size: 0.75rem;
+}
+
+.gv-terminal-preview__title-icon {
+  color: #64748b;
+}
+
+.gv-terminal-preview__actions {
+  display: flex;
+  align-items: center;
+  width: 54px;
+  justify-content: flex-end;
+}
+
+.gv-terminal-preview__actions .gv-copy-btn {
+  color: #94a3b8;
+}
+
+.gv-terminal-preview__actions .gv-copy-btn:hover {
+  color: #f8fafc;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.gv-terminal-preview__window {
+  padding: var(--space-4);
+  overflow-x: auto;
+}
+
+.gv-terminal-preview__line {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.gv-terminal-preview__prompt-symbol {
+  color: #10b981;
+  font-weight: 700;
+  user-select: none;
+}
+
+.gv-terminal-preview__command-text {
+  color: #f8fafc;
+  font-weight: 500;
+}
+
+.gv-terminal-preview__output {
+  margin: var(--space-3) 0 0 0;
+  padding-top: var(--space-2);
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-all;
+}

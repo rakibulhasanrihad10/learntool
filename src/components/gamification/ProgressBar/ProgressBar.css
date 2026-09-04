@@ -1,0 +1,51 @@
+/* Progress Bar Styles */
+
+.m3-progress-bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.m3-progress-bar__label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.m3-progress-bar__percent {
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+}
+
+.m3-progress-bar {
+  width: 100%;
+  background-color: var(--md-sys-color-surface-container-highest);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.m3-progress-bar__fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width var(--motion-duration-long) var(--motion-easing-standard);
+}
+
+.m3-progress-bar__fill--primary {
+  background: linear-gradient(90deg, var(--md-sys-color-primary), var(--md-sys-color-secondary));
+}
+
+.m3-progress-bar__fill--secondary {
+  background-color: var(--md-sys-color-secondary);
+}
+
+.m3-progress-bar__fill--success {
+  background-color: var(--md-sys-color-success);
+}
+
+.m3-progress-bar__fill--warning {
+  background-color: var(--md-sys-color-warning);
+}

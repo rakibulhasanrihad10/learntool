@@ -1,0 +1,70 @@
+.sim-player {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.sim-player__step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sim-player__step-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.sim-player__step-title {
+  margin: 0;
+  color: var(--md-sys-color-on-surface);
+}
+
+.sim-player__step-text {
+  margin: 0;
+  color: var(--md-sys-color-on-surface-variant);
+  line-height: 1.7;
+}
+
+.sim-player__cmd {
+  max-width: 560px;
+}
+
+.sim-player__graph-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) 1fr;
+  gap: var(--space-4);
+  align-items: stretch;
+}
+
+.sim-player__head-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sim-player__graph-card {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.sim-player__terminal {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sim-player__simnote {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+@media (max-width: 900px) {
+  .sim-player__graph-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,59 @@
+/* StatCard Styles */
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 108px;
+}
+
+.stat-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.stat-card__label {
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 500;
+}
+
+.stat-card__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-card--primary .stat-card__icon {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.stat-card--secondary .stat-card__icon {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.stat-card--tertiary .stat-card__icon {
+  background-color: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+.stat-card--success .stat-card__icon {
+  background-color: var(--md-sys-color-success-container);
+  color: var(--md-sys-color-on-success-container);
+}
+
+.stat-card__value {
+  color: var(--md-sys-color-on-surface);
+  margin-top: var(--space-2);
+}
+
+.stat-card__trend {
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: var(--space-1);
+}

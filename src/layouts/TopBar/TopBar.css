@@ -1,0 +1,170 @@
+/* TopBar Styles */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-topbar);
+  height: var(--topbar-height);
+  background-color: var(--md-sys-color-surface-bright);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-4);
+  gap: var(--space-4);
+  transition: background-color var(--motion-duration-short) ease,
+              border-color var(--motion-duration-short) ease;
+}
+
+.topbar__left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 240px;
+}
+
+.topbar__menu-btn {
+  display: flex;
+}
+
+@media (min-width: 1024px) {
+  .topbar__menu-btn {
+    display: none;
+  }
+}
+
+.topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+  color: inherit;
+}
+
+.topbar__brand-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--md-sys-color-primary), var(--md-sys-color-secondary));
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--elevation-1);
+}
+
+.topbar__brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar__brand-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.topbar__brand-title {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--md-sys-color-on-surface);
+}
+
+.topbar__brand-version {
+  font-size: 0.625rem;
+  padding: 1px 6px;
+}
+
+.topbar__brand-subtitle {
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .topbar__brand-subtitle {
+    display: none;
+  }
+}
+
+.topbar__center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  max-width: 540px;
+}
+
+@media (max-width: 700px) {
+  .topbar__center {
+    display: none;
+  }
+}
+
+.topbar__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Mode Switcher */
+.topbar__mode-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background-color: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  transition: all var(--motion-duration-short) ease;
+}
+
+.topbar__mode-btn:hover {
+  background-color: var(--md-sys-color-surface-container-high);
+  border-color: var(--md-sys-color-outline);
+}
+
+.topbar__mode-icon {
+  color: var(--md-sys-color-primary);
+}
+
+@media (max-width: 860px) {
+  .topbar__mode-btn {
+    display: none;
+  }
+}
+
+/* Level Indicator Pill */
+.topbar__level-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  background-color: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  color: inherit;
+  transition: background-color var(--motion-duration-short) ease;
+}
+
+.topbar__level-link:hover {
+  background-color: var(--md-sys-color-surface-container-high);
+}
+
+.topbar__xp-badge {
+  color: var(--md-sys-color-primary);
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 500px) {
+  .topbar__level-link {
+    display: none;
+  }
+}
+
+.topbar__lang-btn {
+  font-weight: 600;
+}

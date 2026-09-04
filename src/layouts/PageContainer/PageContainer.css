@@ -1,0 +1,29 @@
+/* PageContainer Styles */
+
+.page-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-6) var(--space-12);
+}
+
+.page-container--sm {
+  max-width: 800px;
+}
+
+.page-container--md {
+  max-width: 1080px;
+}
+
+.page-container--lg {
+  max-width: 1380px;
+}
+
+.page-container--full {
+  max-width: 100%;
+}
+
+@media (max-width: 767px) {
+  .page-container {
+    padding: var(--space-4) var(--space-4) var(--space-16);
+  }
+}

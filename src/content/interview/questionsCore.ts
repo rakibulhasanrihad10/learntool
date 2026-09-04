@@ -1,0 +1,517 @@
+/**
+ * Interview questions — fundamentals (15) + commands (15).
+ * Data only. Stable ids (`git.interview.<slug>`), bilingual copy.
+ * Git syntax, filenames, branch names and hashes stay in English.
+ */
+import { InterviewQuestion } from '@/types/interview';
+
+export const CORE_QUESTIONS: InterviewQuestion[] = [
+  /* ---------------- Fundamentals (15) ---------------- */
+  {
+    id: 'git.interview.what-is-git',
+    category: 'fundamentals',
+    difficulty: 'beginner',
+    type: 'conceptual',
+    question: {
+      en: 'What is Git, and what problem does it solve?',
+      bn: 'গিট কী, এবং এটি কোন সমস্যার সমাধান করে?',
+    },
+    shortAnswer: {
+      en: 'Git is a distributed version control system that records snapshots of your project over time, so every change is tracked, reversible, and collaborable.',
+      bn: 'গিট একটি ডিস্ট্রিবিউটেড ভার্সন কন্ট্রোল সিস্টেম যা সময়ের সাথে প্রজেক্টের স্ন্যাপশট রেকর্ড করে, ফলে প্রতিটি পরিবর্তন ট্র্যাকযোগ্য, প্রত্যাবর্তনযোগ্য ও সহযোগিতাযোগ্য হয়।',
+    },
+    explanation: {
+      en: 'Before version control, teams passed zip files around and overwrote each other. Git gives every developer a full local history: who changed what, when, and why — plus branches for parallel work and the ability to undo almost anything.',
+      bn: 'ভার্সন কন্ট্রোলের আগে টিম জিপ ফাইল আদান-প্রদান করত ও একে অপরের কাজ মুছে ফেলত। গিট প্রতিটি ডেভেলপারকে পূর্ণ লোকাল হিস্ট্রি দেয়: কে কী, কখন, কেন বদলেছে — সাথে সমান্তরাল কাজের ব্রাঞ্চ ও প্রায় সবকিছু আনডু করার ক্ষমতা।',
+    },
+    interviewTip: {
+      en: 'Interviewers want the word "distributed" and one concrete pain it removes, like lost work or overwritten teammates’ changes.',
+      bn: 'ইন্টারভিউয়াররা "distributed" শব্দটি এবং একটি সুনির্দিষ্ট যন্ত্রণা শুনতে চান যা এটি দূর করে, যেমন হারানো কাজ বা মুছে যাওয়া সহকর্মীর পরিবর্তন।',
+    },
+    commonMistake: {
+      en: 'Saying "Git is GitHub" — Git works fully offline on your machine; GitHub is just one place to host Git repositories.',
+      bn: '"গিটই গিটহাব" বলা — গিট মেশিনে সম্পূর্ণ অফলাইনে চলে; গিটহাব শুধু গিট রিপোজিটরি হোস্ট করার একটি জায়গা।',
+    },
+    relatedCommands: ['git.init', 'git.log'],
+    relatedLessons: ['git.fundamentals.what-is-git'],
+    relatedTroubleshooting: [],
+    relatedPractice: ['git.practice.initialize-repository'],
+    relatedInternals: ['git.internals.how-git-thinks'],
+    tags: ['basics', 'vcs', 'distributed'],
+    order: 1,
+  },
+  {
+    id: 'git.interview.why-distributed',
+    category: 'fundamentals',
+    difficulty: 'beginner',
+    type: 'conceptual',
+    question: {
+      en: 'Why is Git called "distributed"? What breaks if the central server dies?',
+      bn: 'গিটকে কেন "ডিস্ট্রিবিউটেড" বলা হয়? সেন্ট্রাল সার্ভার নষ্ট হলে কী ভাঙে?',
+    },
+    shortAnswer: {
+      en: 'Every clone carries the full history, so no single server is a single point of failure — any developer’s machine can restore the project.',
+      bn: 'প্রতিটি ক্লোনে পূর্ণ হিস্ট্রি থাকে, তাই কোনো একক সার্ভার একক ব্যর্থতার বিন্দু নয় — যেকোনো ডেভেলপারের মেশিন থেকে প্রজেক্ট পুনরুদ্ধার করা যায়।',
+    },
+    explanation: {
+      en: 'In centralized systems (like SVN), the server holds the only history; lose it and everything is gone. In Git, cloning copies every commit, branch, and tag. A dead server is an inconvenience, not a disaster: push any clone somewhere new and continue.',
+      bn: 'সেন্ট্রালাইজড সিস্টেমে (যেমন SVN) সার্ভারেই একমাত্র হিস্ট্রি থাকে; তা হারালে সব শেষ। গিটে ক্লোন করলে প্রতিটি কমিট, ব্রাঞ্চ ও ট্যাগ কপি হয়। মৃত সার্ভার অসুবিধা মাত্র, বিপর্যয় নয়: যেকোনো ক্লোন নতুন কোথাও পুশ করে এগিয়ে যান।',
+    },
+    interviewTip: {
+      en: 'Contrast explicitly with SVN/CVS centralization — interviewers love the "any clone is a backup" line.',
+      bn: 'SVN/CVS কেন্দ্রীকরণের সাথে স্পষ্ট তুলনা করুন — "যেকোনো ক্লোনই ব্যাকআপ" লাইনটি ইন্টারভিউয়াররা পছন্দ করেন।',
+    },
+    commonMistake: {
+      en: 'Claiming developers cannot work without internet — nearly every Git operation is local; only push/fetch/pull need a network.',
+      bn: 'ইন্টারনেট ছাড়া ডেভেলপাররা কাজ করতে পারে না বলা — প্রায় প্রতিটি গিট অপারেশন লোকাল; শুধু push/fetch/pull-এ নেটওয়ার্ক লাগে।',
+    },
+    relatedCommands: ['git.clone', 'git.push'],
+    relatedLessons: ['git.fundamentals.why-git'],
+    relatedTroubleshooting: [],
+    relatedPractice: ['git.practice.initialize-repository'],
+    relatedInternals: ['git.internals.how-git-thinks'],
+    tags: ['basics', 'distributed', 'clone'],
+    order: 2,
+  },
+  {
+    id: 'git.interview.git-vs-github',
+    category: 'fundamentals',
+    difficulty: 'beginner',
+    type: 'compare',
+    question: {
+      en: 'What is the difference between Git and GitHub?',
+      bn: 'গিট ও গিটহাবের মধ্যে পার্থক্য কী?',
+    },
+    shortAnswer: {
+      en: 'Git is the local version-control tool; GitHub is a cloud platform that hosts Git repositories and adds pull requests, reviews, and automation.',
+      bn: 'গিট হলো লোকাল ভার্সন-কন্ট্রোল টুল; গিটহাব হলো ক্লাউড প্ল্যাটফর্ম যা গিট রিপোজিটরি হোস্ট করে এবং পুল রিকোয়েস্ট, রিভিউ ও অটোমেশন যোগ করে।',
+    },
+    explanation: {
+      en: 'You can use Git forever without ever touching GitHub — committing, branching, and merging all happen on your machine. GitHub (like GitLab or Bitbucket) becomes relevant when you want to share, back up, review code as a team, or run CI on pushes and pull requests.',
+      bn: 'গিটহাব কখনো না ছুঁয়েও চিরকাল গিট ব্যবহার করা যায় — কমিট, ব্রাঞ্চিং ও মার্জিং সব মেশিনেই হয়। শেয়ার, ব্যাকআপ, টিম হিসেবে কোড রিভিউ বা পুশ ও পুল রিকোয়েস্টে CI চালাতে চাইলে গিটহাব (GitLab বা Bitbucket-এর মতো) প্রাসঙ্গিক হয়।',
+    },
+    interviewTip: {
+      en: 'Say it in one breath: "Git versions, GitHub hosts and collaborates." Then give one offline example.',
+      bn: 'এক নিঃশ্বাসে বলুন: "গিট সংস্করণ করে, গিটহাব হোস্ট ও সহযোগিতা করে।" তারপর একটি অফলাইন উদাহরণ দিন।',
+    },
+    commonMistake: {
+      en: 'Implying git push or git commit needs GitHub — both the tool and the platform get blurred.',
+      bn: 'git push বা git commit-এ গিটহাব লাগে এমন ইঙ্গিত — টুল ও প্ল্যাটফর্ম গুলিয়ে ফেলা।',
+    },
+    relatedCommands: ['git.clone', 'git.push'],
+    relatedLessons: ['git.fundamentals.git-vs-github'],
+    relatedTroubleshooting: [],
+    relatedPractice: ['git.practice.initialize-repository'],
+    relatedInternals: [],
+    tags: ['basics', 'github', 'compare'],
+    order: 3,
+  },
+  {
+    id: 'git.interview.what-is-repository',
+    category: 'fundamentals',
+    difficulty: 'beginner',
+    type: 'conceptual',
+    question: {
+      en: 'What exactly is a Git repository? Where does it live?',
+      bn: 'গিট রিপোজিটরি আসলে কী? এটি কোথায় থাকে?',
+    },
+    shortAnswer: {
+      en: 'A repository is your project plus its full history, stored in the hidden .git directory — objects, references, and configuration together.',
+      bn: 'রিপোজিটরি হলো আপনার প্রজেক্ট সাথে পূর্ণ হিস্ট্রি, লুকানো .git ডিরেক্টরিতে সংরক্ষিত — অবজেক্ট, রেফারেন্স ও কনফিগারেশন একসাথে।',
+    },
+    explanation: {
+      en: 'The working files you edit are only half the story. The .git directory holds every committed snapshot (the object database), every branch and tag pointer (refs), the staging index, and the reflog. Delete .git and the history is gone while the files remain.',
+      bn: 'এডিট করা ওয়ার্কিং ফাইল গল্পের অর্ধেক মাত্র। .git ডিরেক্টরিতে প্রতিটি কমিটেড স্ন্যাপশট (অবজেক্ট ডাটাবেস), প্রতিটি ব্রাঞ্চ ও ট্যাগ পয়েন্টার (refs), স্টেজিং ইনডেক্স ও রিফ্লগ থাকে। .git মুছলে ফাইল থাকলেও হিস্ট্রি চলে যায়।',
+    },
+    interviewTip: {
+      en: 'Mention .git explicitly — it signals you know history lives separately from working files.',
+      bn: 'স্পষ্টভাবে .git উল্লেখ করুন — এতে বোঝায় ওয়ার্কিং ফাইল থেকে হিস্ট্রি আলাদা থাকে তা জানেন।',
+    },
+    commonMistake: {
+      en: 'Pointing at the project folder itself — the repository is the .git directory, not the checked-out files.',
+      bn: 'প্রজেক্ট ফোল্ডারের দিকে ইঙ্গিত — রিপোজিটরি হলো .git ডিরেক্টরি, চেক-আউট ফাইল নয়।',
+    },
+    relatedCommands: ['git.init', 'git.status'],
+    relatedLessons: ['git.fundamentals.repository'],
+    relatedTroubleshooting: [],
+    relatedPractice: ['git.practice.initialize-repository'],
+    relatedInternals: ['git.internals.object-database'],
+    tags: ['basics', 'repository', '.git'],
+    order: 4,
+  },
+  {
+    id: 'git.interview.working-tree',
+    category: 'fundamentals',
+    difficulty: 'beginner',
+    type: 'conceptual',
+    question: {
+      en: 'What is the working tree, and how is it different from what Git has saved?',
+      bn: 'ওয়ার্কিং ট্রি কী, এবং গিট যা সেভ করেছে তার থেকে কীভাবে আলাদা?',
+    },
+    shortAnswer: {
+      en: 'The working tree is your checked-out, editable files on disk. Git has only "saved" what is committed — everything else is just unsaved disk state.',
+      bn: 'ওয়ার্কিং ট্রি হলো ডিস্কে চেক-আউট করা, এডিটযোগ্য ফাইল। গিট শুধু কমিট করা জিনিস "সেভ" করেছে — বাকি সব শুধু অসংরক্ষিত ডিস্ক অবস্থা।',
+    },
+    explanation: {
+      en: 'Editing files changes the working tree only. Until you stage and commit, Git treats those bytes as unprotected scratch state: no snapshot exists, so commands like reset --hard or checkout can discard them permanently.',
+      bn: 'ফাইল এডিটে শুধু ওয়ার্কিং ট্রি বদলায়। স্টেজ ও কমিট না করা পর্যন্ত গিট সেই বাইটকে অরক্ষিত খসড়া ধরে: কোনো স্ন্যাপশট নেই, তাই reset --hard বা checkout-এর মতো কমান্ড চিরতরে মুছে দিতে পারে।',
+    },
+    interviewTip: {
+      en: 'Tie it to safety: "uncommitted means unprotected" is the one-liner interviewers remember.',
+      bn: 'নিরাপত্তার সাথে যুক্ত করুন: "আনকমিটেড মানে অরক্ষিত" — এই এক লাইন ইন্টারভিউয়াররা মনে রাখেন।',
+    },
+    commonMistake: {
+      en: 'Assuming edited files are safe because Git "sees" them — visibility in git status is not protection.',
+      bn: 'এডিট ফাইল নিরাপদ ভাবা কারণ গিট "দেখে" — git status-এ দৃশ্যমানতা সুরক্ষা নয়।',
+    },
+    relatedCommands: ['git.status', 'git.diff'],
+    relatedLessons: ['git.fundamentals.working-directory'],
+    relatedTroubleshooting: ['git.troubleshooting.deleted-changes'],
+    relatedPractice: ['git.practice.command-inspect-status'],
+    relatedInternals: ['git.internals.working-tree-index-repository'],
+    tags: ['basics', 'working-tree', 'safety'],
+    order: 5,
+  },
+  {
+    id: 'git.interview.staging-area',
+    category: 'fundamentals',
+    difficulty: 'beginner',
+    type: 'conceptual',
+    question: {
+      en: 'What is the staging area (index), and why does Git have this extra step?',
+      bn: 'স্টেজিং এরিয়া (ইনডেক্স) কী, এবং গিটে এই অতিরিক্ত ধাপ কেন?',
+    },
+    shortAnswer: {
+      en: 'The staging area is where you assemble exactly what the next commit will contain. It lets you craft small, reviewable commits instead of snapshotting everything at once.',
+      bn: 'স্টেজিং এরিয়া হলো যেখানে পরবর্তী কমিটে ঠিক কী থাকবে তা সাজান। এতে একসাথে সব স্ন্যাপশট না করে ছোট, পর্যালোচনাযোগ্য কমিট তৈরি করা যায়।',
+    },
+    explanation: {
+      en: 'Without staging, every commit would sweep in all current edits — debugging leftovers included. With git add, you curate: stage the login fix now, leave the unrelated refactor for its own commit. git diff shows unstaged work; git diff --staged shows what is queued.',
+      bn: 'স্টেজিং ছাড়া প্রতিটি কমিট সব বর্তমান এডিট টেনে নিত — ডিবাগিং অবশিষ্টাংশসহ। git add দিয়ে সাজান: লগইন ফিক্স এখন স্টেজ করুন, সম্পর্কহীন রিফ্যাক্টর নিজের কমিটের জন্য রাখুন। git diff আনস্টেজড কাজ দেখায়; git diff --staged সারিবদ্ধ কী আছে দেখায়।',
+    },
+    interviewTip: {
+      en: 'Frame staging as "commit curation" — interviewers want to hear you split work deliberately, not commit everything blindly.',
+      bn: 'স্টেজিংকে "কমিট সাজানো" হিসেবে বলুন — ইন্টারভিউয়াররা শুনতে চান ইচ্ছাকৃতভাবে কাজ ভাগ করেন, অন্ধভাবে সব কমিট নয়।',
+    },
+    commonMistake: {
+      en: 'Treating git add as "save" — nothing is permanent until git commit records the staged snapshot.',
+      bn: 'git add-কে "সেভ" ভাবা — স্টেজড স্ন্যাপশট git commit রেকর্ড না করা পর্যন্ত কিছুই স্থায়ী নয়।',
+    },
+    relatedCommands: ['git.add', 'git.diff', 'git.status'],
+    relatedLessons: ['git.fundamentals.staging-area'],
+    relatedTroubleshooting: ['git.troubleshooting.staged-file'],
+    relatedPractice: ['git.practice.command-stage-first-change'],
+    relatedInternals: ['git.internals.working-tree-index-repository'],
+    tags: ['basics', 'staging', 'index'],
+    order: 6,
+  },
+  {
+    id: 'git.interview.local-repository',
+    category: 'fundamentals',
+    difficulty: 'beginner',
+    type: 'conceptual',
+    question: {
+      en: 'What lives in your local repository that the remote does not necessarily have?',
+      bn: 'লোকাল রিপোজিটরিতে কী থাকে যা রিমোটে থাকতেও পারে, নাও পারে?',
+    },
+    shortAnswer: {
+      en: 'Unpushed commits, local-only branches, your staging area, and reflog history — everything you have not published yet.',
+      bn: 'আনপুশড কমিট, শুধু-লোকাল ব্রাঞ্চ, স্টেজিং এরিয়া ও রিফ্লগ হিস্ট্রি — যা এখনো প্রকাশ করেননি সব।',
+    },
+    explanation: {
+      en: 'Your clone is a full citizen: it can gain commits (unpushed work), branches nobody else knows, and staged changes no server has seen. git status phrases the gap as "ahead of origin/main by N commits" — that is purely local wealth waiting to be shared.',
+      bn: 'আপনার ক্লোন পূর্ণ নাগরিক: কমিট পেতে পারে (আনপুশড কাজ), অন্য কেউ জানে না এমন ব্রাঞ্চ, কোনো সার্ভার দেখেনি এমন স্টেজড পরিবর্তন। git status ব্যবধান বলে "origin/main থেকে N কমিট এগিয়ে" — সেটি শেয়ারের অপেক্ষায় শুধু লোকাল সম্পদ।',
+    },
+    interviewTip: {
+      en: 'Use "ahead of origin/main" as your example — it proves you read status output like a local-vs-remote ledger.',
+      bn: '"origin/main থেকে এগিয়ে" উদাহরণ দিন — এতে প্রমাণ হয় status আউটপুট লোকাল-বনাম-রিমোট খতিয়ান হিসেবে পড়েন।',
+    },
+    commonMistake: {
+      en: 'Assuming commit equals published — a commit is local until a successful push says otherwise.',
+      bn: 'কমিট মানেই প্রকাশিত ভাবা — সফল পুশ না বলা পর্যন্ত কমিট লোকাল।',
+    },
+    relatedCommands: ['git.status', 'git.push', 'git.log'],
+    relatedLessons: ['git.fundamentals.local-repository'],
+    relatedTroubleshooting: ['git.troubleshooting.push-rejected'],
+    relatedPractice: ['git.practice.push-feature'],
+    relatedInternals: [],
+    tags: ['basics', 'local', 'push'],
+    order: 7,
+  },
+  {
+    id: 'git.interview.commit-meaning',
+    category: 'fundamentals',
+    difficulty: 'beginner',
+    type: 'conceptual',
+    question: {
+      en: 'What does a commit actually record, and what makes a good commit message?',
+      bn: 'কমিট আসলে কী রেকর্ড করে, এবং ভালো কমিট বার্তা কেমন?',
+    },
+    shortAnswer: {
+      en: 'A commit records a full project snapshot plus metadata (author, date, message, parent). A good message uses an imperative summary under ~50 characters explaining what and why.',
+      bn: 'কমিট পূর্ণ প্রজেক্ট স্ন্যাপশট সাথে মেটাডেটা (লেখক, তারিখ, বার্তা, প্যারেন্ট) রেকর্ড করে। ভালো বার্তায় ~৫০ অক্ষরের মধ্যে আদেশসূচক সারাংশে কী ও কেন থাকে।',
+    },
+    explanation: {
+      en: 'Think "Add login validation" not "added stuff" or "fix". Future readers — including you — use git log and git blame to understand intent, so the why matters more than the what. One logical change per commit keeps history reviewable and revertible.',
+      bn: '"added stuff" বা "fix" নয়, "Add login validation" ভাবুন। ভবিষ্যৎ পাঠক — আপনিসহ — উদ্দেশ্য বুঝতে git log ও git blame ব্যবহার করে, তাই কী-এর চেয়ে কেন গুরুত্বপূর্ণ। প্রতি কমিটে একটি যৌক্তিক পরিবর্তন হিস্ট্রি পর্যালোচনা ও প্রত্যাবর্তনযোগ্য রাখে।',
+    },
+    interviewTip: {
+      en: 'Offer to show a real message format you use, like Conventional Commits (feat:, fix:). Concrete habits impress.',
+      bn: 'ব্যবহার করা আসল বার্তা ফরম্যাট দেখানোর প্রস্তাব দিন, যেমন Conventional Commits (feat:, fix:)। সুনির্দিষ্ট অভ্যাস মুগ্ধ করে।',
+    },
+    commonMistake: {
+      en: 'Vague messages ("update", "fix bug", "wip") that force archaeology later — or stuffing five features into one commit.',
+      bn: 'অস্পষ্ট বার্তা ("update", "fix bug", "wip") যা পরে প্রত্নতত্ত্ব বাধ্য করে — বা এক কমিটে পাঁচ ফিচার ঠাসা।',
+    },
+    relatedCommands: ['git.commit', 'git.log'],
+    relatedLessons: ['git.fundamentals.commit'],
+    relatedTroubleshooting: [],
+    relatedPractice: ['git.practice.basic-commit'],
+    relatedInternals: ['git.internals.commit-objects'],
+    tags: ['basics', 'commit', 'messages'],
+    order: 8,
+  },
+  {
+    id: 'git.interview.branch-meaning',
+    category: 'fundamentals',
+    difficulty: 'beginner',
+    type: 'conceptual',
+    question: {
+      en: 'What is a branch, really? Why is creating one nearly instant?',
+      bn: 'ব্রাঞ্চ আসলে কী? তৈরি করা প্রায় তাৎক্ষণিক কেন?',
+    },
+    shortAnswer: {
+      en: 'A branch is a tiny movable pointer — a 41-byte file holding one commit hash. Creating one writes that file; nothing is copied.',
+      bn: 'ব্রাঞ্চ হলো ক্ষুদ্র চলমান পয়েন্টার — একটি কমিট হ্যাশ ধারণকারী ৪১-বাইট ফাইল। তৈরি মানে সেই ফাইল লেখা; কিছু কপি হয় না।',
+    },
+    explanation: {
+      en: 'Older systems duplicated directories to branch, so branching was expensive. Git just records "feature points at C3". Commits, merges, and checkouts move these pointers around; the commit graph itself never duplicates shared history.',
+      bn: 'পুরনো সিস্টেম ব্রাঞ্চে ডিরেক্টরি ডুপ্লিকেট করত, তাই ব্রাঞ্চিং ব্যয়বহুল ছিল। গিট শুধু "feature C3-তে আছে" রেকর্ড করে। কমিট, মার্জ ও চেকআউট এই পয়েন্টার সরায়; কমিট গ্রাফ নিজে শেয়ার্ড হিস্ট্রি ডুপ্লিকেট করে না।',
+    },
+    interviewTip: {
+      en: 'Say "41-byte pointer" out loud — that single concrete number separates memorized answers from understood ones.',
+      bn: '"৪১-বাইট পয়েন্টার" জোরে বলুন — এই একটি সুনির্দিষ্ট সংখ্যা মুখস্থ উত্তরকে বোঝা উত্তর থেকে আলাদা করে।',
+    },
+    commonMistake: {
+      en: 'Picturing branches as folders or full copies — then fearing to create them. Branch freely; it costs bytes.',
+      bn: 'ব্রাঞ্চকে ফোল্ডার বা পূর্ণ কপি কল্পনা — তারপর তৈরি করতে ভয়। নির্ভয়ে ব্রাঞ্চ করুন; খরচ বাইটে।',
+    },
+    relatedCommands: ['git.branch', 'git.switch'],
+    relatedLessons: ['git.fundamentals.branch'],
+    relatedTroubleshooting: ['git.troubleshooting.deleted-branch'],
+    relatedPractice: ['git.practice.create-feature-branch'],
+    relatedInternals: ['git.internals.branch-references'],
+    tags: ['basics', 'branch', 'pointer'],
+    order: 9,
+  },
+  {
+    id: 'git.interview.head-meaning',
+    category: 'fundamentals',
+    difficulty: 'beginner',
+    type: 'conceptual',
+    question: {
+      en: 'What is HEAD, and how do you normally see it?',
+      bn: 'HEAD কী, এবং সাধারণত কীভাবে দেখেন?',
+    },
+    shortAnswer: {
+      en: 'HEAD is a pointer to your current position — normally the checked-out branch, which itself points at a commit. git status and git log show where it is.',
+      bn: 'HEAD হলো বর্তমান অবস্থানের পয়েন্টার — সাধারণত চেক-আউট ব্রাঞ্চ, যা নিজে কমিটের দিকে থাকে। git status ও git log দেখায় এটি কোথায়।',
+    },
+    explanation: {
+      en: 'HEAD → main → C3 is the normal chain: HEAD names the branch, the branch names the commit. New commits advance whichever branch HEAD points at. When HEAD points directly at a commit instead, you are in the famous "detached HEAD" state.',
+      bn: 'HEAD → main → C3 স্বাভাবিক শৃঙ্খল: HEAD ব্রাঞ্চের নাম বলে, ব্রাঞ্চ কমিটের নাম বলে। নতুন কমিট HEAD যে ব্রাঞ্চে আছে তাকে এগিয়ে নেয়। HEAD সরাসরি কমিটের দিকে গেলে বিখ্যাত "detached HEAD" অবস্থা হয়।',
+    },
+    interviewTip: {
+      en: 'Draw the three-node chain (HEAD → branch → commit) with your hands — visual answers stick.',
+      bn: 'তিন-নোড শৃঙ্খল (HEAD → ব্রাঞ্চ → কমিট) হাতে এঁকে দেখান — চাক্ষুষ উত্তর মনে থাকে।',
+    },
+    commonMistake: {
+      en: 'Calling HEAD a branch — it is a pointer that usually points at one, and the distinction matters for detached HEAD.',
+      bn: 'HEAD-কে ব্রাঞ্চ বলা — এটি পয়েন্টার যা সাধারণত একটিতে যায়, পার্থক্য ডিটাচড HEAD-এ গুরুত্বপূর্ণ।',
+    },
+    relatedCommands: ['git.status', 'git.log', 'git.switch'],
+    relatedLessons: ['git.fundamentals.head'],
+    relatedTroubleshooting: ['git.troubleshooting.detached-head'],
+    relatedPractice: ['git.practice.command-identify-current-branch'],
+    relatedInternals: ['git.internals.head-deep-dive'],
+    tags: ['basics', 'head', 'pointer'],
+    order: 10,
+  },
+  {
+    id: 'git.interview.snapshots-vs-deltas',
+    category: 'fundamentals',
+    difficulty: 'intermediate',
+    type: 'conceptual',
+    question: {
+      en: 'Git stores snapshots, not diffs. What does that actually mean in practice?',
+      bn: 'গিট ডিফ নয়, স্ন্যাপশট রাখে। বাস্তবে এর মানে কী?',
+    },
+    shortAnswer: {
+      en: 'Each commit records the state of every file, not just what changed. Unchanged files are shared by reference, so snapshots stay cheap.',
+      bn: 'প্রতিটি কমিট শুধু কী বদলেছে নয়, প্রতিটি ফাইলের অবস্থা রেকর্ড করে। অপরিবর্তিত ফাইল রেফারেন্সে ভাগ হয়, তাই স্ন্যাপশট সস্তা থাকে।',
+    },
+    explanation: {
+      en: 'Older systems stored a base file plus a chain of diffs — losing one link corrupted everything after it. Git stores a complete tree per commit and deduplicates identical blobs by hash. That is why checkout, diff, and log are instant offline operations: the data is all present, addressed directly.',
+      bn: 'পুরনো সিস্টেম বেস ফাইল সাথে ডিফ শৃঙ্খল রাখত — একটি লিঙ্ক হারালে পরের সব নষ্ট। গিট প্রতি কমিটে সম্পূর্ণ ট্রি রাখে ও হ্যাশে একই ব্লব ডিডুপ্লিকেট করে। তাই চেকআউট, diff ও log তাৎক্ষণিক অফলাইন অপারেশন: ডেটা সব উপস্থিত, সরাসরি ঠিকানাযুক্ত।',
+    },
+    interviewTip: {
+      en: 'Mention deduplication unprompted — it shows you understand why snapshots do not explode in size.',
+      bn: 'না জিজ্ঞেসেই ডিডুপ্লিকেশন উল্লেখ করুন — এতে বোঝায় কেন স্ন্যাপশট আকারে ফেটে যায় না তা বোঝেন।',
+    },
+    commonMistake: {
+      en: 'Concluding snapshots waste space — identical content is stored once and referenced everywhere.',
+      bn: 'স্ন্যাপশট জায়গা নষ্ট করে সিদ্ধান্ত — একই কন্টেন্ট একবার রেখে সর্বত্র রেফারেন্স হয়।',
+    },
+    relatedCommands: ['git.commit', 'git.show'],
+    relatedLessons: ['git.fundamentals.what-is-git'],
+    relatedTroubleshooting: [],
+    relatedPractice: [],
+    relatedInternals: ['git.internals.commits-are-snapshots', 'git.internals.blob-objects'],
+    tags: ['basics', 'snapshots', 'storage'],
+    order: 11,
+  },
+  {
+    id: 'git.interview.why-offline-works',
+    category: 'fundamentals',
+    difficulty: 'beginner',
+    type: 'conceptual',
+    question: {
+      en: 'Which Git operations need the internet, and why do the rest work offline?',
+      bn: 'কোন গিট অপারেশনে ইন্টারনেট লাগে, আর বাকিগুলো অফলাইনে চলে কেন?',
+    },
+    shortAnswer: {
+      en: 'Only operations that talk to another copy — clone, fetch, pull, push — need a network. Everything else reads your local object database.',
+      bn: 'শুধু অন্য কপির সাথে কথা বলা অপারেশন — clone, fetch, pull, push — নেটওয়ার্ক চায়। বাকি সব লোকাল অবজেক্ট ডাটাবেস পড়ে।',
+    },
+    explanation: {
+      en: 'Because your clone contains the full history, commit, branch, merge, log, diff, reset, and even rebase never leave your machine. Network operations are exactly the ones that synchronize two repositories.',
+      bn: 'ক্লোনে পূর্ণ হিস্ট্রি থাকায় কমিট, ব্রাঞ্চ, মার্জ, log, diff, reset, এমনকি rebase মেশিন ছাড়ে না। নেটওয়ার্ক অপারেশন ঠিক সেগুলো যা দুটি রিপোজিটরি সিঙ্ক করে।',
+    },
+    interviewTip: {
+      en: 'List the four network commands explicitly — precision here signals real daily Git usage.',
+      bn: 'চারটি নেটওয়ার্ক কমান্ড স্পষ্ট তালিকা করুন — এখানে নির্ভুলতা দৈনন্দিন গিট ব্যবহারের প্রমাণ দেয়।',
+    },
+    commonMistake: {
+      en: 'Thinking git commit uploads anywhere — committing is 100% local until you push.',
+      bn: 'git commit কোথাও আপলোড করে ভাবা — পুশ না করা পর্যন্ত কমিট ১০০% লোকাল।',
+    },
+    relatedCommands: ['git.fetch', 'git.push'],
+    relatedLessons: ['git.fundamentals.why-git'],
+    relatedTroubleshooting: [],
+    relatedPractice: ['git.practice.fetch-changes'],
+    relatedInternals: [],
+    tags: ['basics', 'offline', 'network'],
+    order: 12,
+  },
+  {
+    id: 'git.interview.git-config-identity',
+    category: 'fundamentals',
+    difficulty: 'beginner',
+    type: 'choice',
+    question: {
+      en: 'Every commit needs an author identity. How do you configure yours?',
+      bn: 'প্রতিটি কমিটে লেখক পরিচয় দরকার। আপনারটি কীভাবে কনফিগার করবেন?',
+    },
+    shortAnswer: {
+      en: 'Set user.name and user.email with git config — globally once, per-repository when the identity differs.',
+      bn: 'git config দিয়ে user.name ও user.email সেট করুন — একবার গ্লোবালি, পরিচয় আলাদা হলে প্রতি-রিপোজিটরি।',
+    },
+    explanation: {
+      en: 'Git stamps every commit with author and committer identity from config. Global config (--global) covers all your repos; drop the flag inside one repository to override it there (e.g. work vs personal email).',
+      bn: 'গিট প্রতিটি কমিটে কনফিগ থেকে লেখক ও কমিটার পরিচয় ছাপে। গ্লোবাল কনফিগ (--global) সব রেপো ঢাকে; কোনো রিপোজিটরির ভেতরে ফ্ল্যাগ বাদ দিলে সেখানে ওভাররাইড হয় (যেমন কাজ বনাম ব্যক্তিগত ইমেইল)।',
+    },
+    interviewTip: {
+      en: 'Mention the work-vs-personal email split — it shows you have actually collaborated.',
+      bn: 'কাজ বনাম ব্যক্তিগত ইমেইল ভাগ উল্লেখ করুন — এতে বোঝায় সত্যিই সহযোগিতা করেছেন।',
+    },
+    commonMistake: {
+      en: 'Committing with a placeholder or teammate’s identity and polluting shared history.',
+      bn: 'প্লেসহোল্ডার বা সহকর্মীর পরিচয়ে কমিট করে শেয়ার্ড হিস্ট্রি দূষণ।',
+    },
+    options: [
+      { id: 'a', label: 'git config --global user.name "Ada" && git config --global user.email "ada@example.com"', correct: true },
+      { id: 'b', label: 'git config --global author "Ada"', correct: false },
+      { id: 'c', label: 'git set user "Ada"', correct: false },
+      { id: 'd', label: 'git init --author "Ada"', correct: false },
+    ],
+    relatedCommands: ['git.commit'],
+    relatedLessons: ['git.fundamentals.repository'],
+    relatedTroubleshooting: [],
+    relatedPractice: [],
+    relatedInternals: [],
+    tags: ['basics', 'config', 'identity'],
+    order: 13,
+  },
+  {
+    id: 'git.interview.staging-purpose',
+    category: 'fundamentals',
+    difficulty: 'beginner',
+    type: 'choice',
+    question: {
+      en: 'Which command updates the staging area?',
+      bn: 'কোন কমান্ড স্টেজিং এরিয়া আপডেট করে?',
+    },
+    shortAnswer: {
+      en: 'git add — it snapshots working-tree content into the index without committing anything.',
+      bn: 'git add — এটি কমিট না করে ওয়ার্কিং-ট্রি কন্টেন্ট ইনডেক্সে স্ন্যাপশট করে।',
+    },
+    explanation: {
+      en: 'git commit freezes whatever is staged; git push shares it. Only git add moves content into the staging area — which is exactly why "add, then commit" is the daily rhythm.',
+      bn: 'git commit স্টেজড যা আছে হিমায়িত করে; git push শেয়ার করে। শুধু git add কন্টেন্ট স্টেজিং এরিয়ায় নেয় — তাই "add, তারপর commit" দৈনন্দিন ছন্দ।',
+    },
+    interviewTip: {
+      en: 'If they push further, mention git add -p for staging hunks separately — instant credibility.',
+      bn: 'আরো জানতে চাইলে git add -p দিয়ে হাঙ্ক আলাদা স্টেজের কথা বলুন — সাথে সাথে বিশ্বাসযোগ্যতা।',
+    },
+    commonMistake: {
+      en: 'Answering git commit — committing records the staging area but never fills it.',
+      bn: 'git commit উত্তর — কমিট স্টেজিং এরিয়া রেকর্ড করে কিন্তু কখনো পূর্ণ করে না।',
+    },
+    options: [
+      { id: 'a', label: 'git add', correct: true },
+      { id: 'b', label: 'git commit', correct: false },
+      { id: 'c', label: 'git push', correct: false },
+      { id: 'd', label: 'git fetch', correct: false },
+    ],
+    relatedCommands: ['git.add', 'git.status'],
+    relatedLessons: ['git.fundamentals.staging-area'],
+    relatedTroubleshooting: ['git.troubleshooting.staged-file'],
+    relatedPractice: ['git.practice.command-stage-first-change'],
+    relatedInternals: ['git.internals.working-tree-index-repository'],
+    tags: ['basics', 'staging', 'add'],
+    order: 14,
+  },
+  {
+    id: 'git.interview.repositories-hosting',
+    category: 'fundamentals',
+    difficulty: 'beginner',
+    type: 'conceptual',
+    question: {
+      en: 'Where should a team keep its shared history, and why not just email patches?',
+      bn: 'টিম শেয়ার্ড হিস্ট্রি কোথায় রাখবে, এবং শুধু প্যাচ ইমেইল কেন নয়?',
+    },
+    shortAnswer: {
+      en: 'On a hosted remote (GitHub, GitLab, a company server) that everyone pushes to and pulls from — one agreed source of truth instead of scattered inboxes.',
+      bn: 'হোস্টেড রিমোটে (গিটহাব, GitLab, কোম্পানি সার্ভার) যেখানে সবাই পুশ-পুল করে — ছড়ানো ইনবক্সের বদলে একটি সম্মত সত্যের উৎস।',
+    },
+    explanation: {
+      en: 'Email patches technically work but lose track of versions, reviews, and CI. A shared remote centralizes collaboration without centralizing version control itself: every clone remains complete, while the remote is simply where the team agrees history lives.',
+      bn: 'ইমেইল প্যাচ কারিগরিভাবে চলে কিন্তু সংস্করণ, রিভিউ ও CI-এর হিসাব হারায়। শেয়ার্ড রিমোট সহযোগিতা কেন্দ্রীভূত করে ভার্সন কন্ট্রোল কেন্দ্রীভূত না করে: প্রতিটি ক্লোন সম্পূর্ণ থাকে, রিমোট শুধু যেখানে টিম মানে হিস্ট্রি থাকে।',
+    },
+    interviewTip: {
+      en: 'Name the "source of truth" concept — teams hire people who think in shared agreements, not just commands.',
+      bn: '"সত্যের উৎস" ধারণার নাম বলুন — টিম এমন মানুষ নিয়োগ করে যারা শুধু কমান্ড নয়, শেয়ার্ড সমঝোতায় ভাবে।',
+    },
+    commonMistake: {
+      en: 'Treating the remote as magical — it is just another Git repository with a URL and permissions.',
+      bn: 'রিমোটকে জাদুকরী ভাবা — এটি URL ও অনুমতিসহ আরেকটি গিট রিপোজিটরি মাত্র।',
+    },
+    relatedCommands: ['git.clone', 'git.push', 'git.remote'],
+    relatedLessons: ['git.fundamentals.remote-repository'],
+    relatedTroubleshooting: [],
+    relatedPractice: ['git.practice.command-connect-remote'],
+    relatedInternals: [],
+    tags: ['basics', 'remote', 'collaboration'],
+    order: 15,
+  },
+];

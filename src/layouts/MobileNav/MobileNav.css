@@ -1,0 +1,56 @@
+/* Mobile Bottom Navigation Styles */
+
+.mobile-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--mobile-nav-height);
+  background-color: var(--md-sys-color-surface-bright);
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: var(--z-sticky);
+  padding: 0 var(--space-2);
+}
+
+@media (min-width: 768px) {
+  .mobile-nav {
+    display: none;
+  }
+}
+
+.mobile-nav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  flex: 1;
+  height: 100%;
+  color: var(--md-sys-color-on-surface-variant);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color var(--motion-duration-short) ease;
+}
+
+.mobile-nav__item:hover {
+  color: var(--md-sys-color-on-surface);
+}
+
+.mobile-nav__item--active {
+  color: var(--md-sys-color-primary);
+}
+
+.mobile-nav__icon {
+  flex-shrink: 0;
+}
+
+.mobile-nav__label {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  white-space: nowrap;
+}

@@ -1,0 +1,17 @@
+/* GitVerse CodeText Typography Component */
+
+.gv-code-text {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--radius-xs);
+  background-color: var(--code-inline-bg);
+  color: var(--code-inline-text);
+  border: 1px solid var(--color-outline-variant);
+  word-break: break-word;
+}
+
+.gv-code-text--primary {
+  color: var(--color-primary);
+  border-color: var(--color-primary-container);
+}

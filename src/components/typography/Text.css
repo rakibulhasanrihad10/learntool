@@ -1,0 +1,58 @@
+/* GitVerse Text Typography Component */
+
+.gv-text {
+  margin: 0;
+  font-family: inherit;
+}
+
+/* Variants */
+.gv-text--body-lg {
+  font-size: 1.0625rem;
+  line-height: 1.6875rem;
+  letter-spacing: 0.005em;
+}
+
+.gv-text--body-md {
+  font-size: 0.9375rem;
+  line-height: 1.5rem;
+  letter-spacing: 0.01em;
+}
+
+.gv-text--body-sm {
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.015em;
+}
+
+.gv-text--caption {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  letter-spacing: 0.02em;
+}
+
+.gv-text--label {
+  font-size: 0.8125rem;
+  line-height: 1.125rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* Weights */
+.gv-text--weight-normal { font-weight: 400; }
+.gv-text--weight-medium { font-weight: 500; }
+.gv-text--weight-semibold { font-weight: 600; }
+.gv-text--weight-bold { font-weight: 700; }
+
+/* Colors */
+.gv-text--color-default { color: var(--color-text-primary); }
+.gv-text--color-muted { color: var(--color-text-secondary); }
+.gv-text--color-subtle { color: var(--color-text-tertiary); }
+.gv-text--color-primary { color: var(--color-primary); }
+.gv-text--color-error { color: var(--color-error); }
+.gv-text--color-success { color: var(--color-success); }
+.gv-text--color-inherit { color: inherit; }
+
+/* Align */
+.gv-text--align-left { text-align: left; }
+.gv-text--align-center { text-align: center; }
+.gv-text--align-right { text-align: right; }

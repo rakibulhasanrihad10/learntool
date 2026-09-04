@@ -1,0 +1,125 @@
+/* GitVerse Design System Showcase Page Styles */
+
+.gv-design-system-page {
+  width: 100%;
+  padding-bottom: var(--space-16);
+}
+
+.gv-design-system-hero {
+  background: linear-gradient(180deg, var(--color-surface-container), var(--color-surface));
+  border-bottom: 1px solid var(--color-outline-variant);
+  padding: var(--space-10) 0 var(--space-8);
+  margin-bottom: var(--space-8);
+}
+
+.gv-design-system-hero__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.gv-design-system-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.gv-design-system-hero__title {
+  margin: 0;
+  color: var(--color-text-primary);
+}
+
+.gv-design-system-hero__subtitle {
+  margin: 0;
+  max-width: var(--layout-reading-width);
+}
+
+.gv-design-system-hero__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.gv-design-system-body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Swatches */
+.gv-palette-title {
+  margin: 0 0 var(--space-3) 0;
+  color: var(--color-text-primary);
+}
+
+.gv-swatch-stack {
+  width: 100%;
+}
+
+.gv-swatch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Typography Samples */
+.gv-type-sample {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.gv-type-label {
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.6875rem;
+}
+
+/* Demo Rows */
+.gv-demo-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.gv-demo-label {
+  color: var(--color-text-secondary);
+  margin-right: var(--space-2);
+}
+
+/* Circular demo */
+.gv-circular-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Modal Actions */
+.gv-modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.mb-3 { margin-bottom: var(--space-3) !important; }
+.mb-4 { margin-bottom: var(--space-4) !important; }

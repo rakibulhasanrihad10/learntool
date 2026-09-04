@@ -1,0 +1,71 @@
+.sim-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sim-summary__headline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sim-summary__title {
+  margin: 0;
+}
+
+.sim-summary__text {
+  margin: 0;
+  color: var(--md-sys-color-on-surface-variant);
+  line-height: 1.65;
+}
+
+.sim-summary__text strong {
+  color: var(--md-sys-color-on-surface);
+}
+
+.sim-summary__row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sim-summary__label {
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sim-summary__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.sim-summary__remember {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+}
+
+.sim-summary__remember svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #b45309;
+}
+
+.sim-summary__learnmore {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+  text-decoration: none;
+  align-self: flex-start;
+}
+
+.sim-summary__learnmore:hover {
+  text-decoration: underline;
+}

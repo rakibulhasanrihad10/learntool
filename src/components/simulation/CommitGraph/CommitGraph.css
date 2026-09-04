@@ -1,0 +1,121 @@
+.sim-graph {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sim-graph__title {
+  margin: 0;
+}
+
+.sim-graph__scroll {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background-color: var(--md-sys-color-surface-container-lowest);
+}
+
+.sim-graph__svg {
+  display: block;
+  min-width: 100%;
+}
+
+.sim-graph__lane {
+  stroke: var(--md-sys-color-outline-variant);
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
+  opacity: 0.6;
+}
+
+.sim-graph__edge {
+  stroke: var(--md-sys-color-on-surface-variant);
+  stroke-width: 2;
+}
+
+.sim-graph__edge--merge {
+  stroke: var(--md-sys-color-tertiary);
+  stroke-dasharray: 6 3;
+}
+
+.sim-graph__node {
+  fill: var(--md-sys-color-surface-container-high);
+  stroke: var(--md-sys-color-primary);
+  stroke-width: 2.5;
+}
+
+.sim-graph__node--head {
+  fill: var(--md-sys-color-primary-container);
+  stroke: var(--md-sys-color-primary);
+  stroke-width: 3.5;
+}
+
+.sim-graph__node--merge {
+  stroke: var(--md-sys-color-tertiary);
+}
+
+.sim-graph__node-label {
+  font-family: monospace;
+  font-size: 9.5px;
+  font-weight: 700;
+  fill: var(--md-sys-color-on-surface);
+  pointer-events: none;
+}
+
+.sim-graph__badge {
+  fill: var(--md-sys-color-surface-container-high);
+  stroke: var(--md-sys-color-outline);
+  stroke-width: 1;
+}
+
+.sim-graph__badge--current {
+  fill: var(--md-sys-color-primary-container);
+  stroke: var(--md-sys-color-primary);
+}
+
+.sim-graph__badge--tracking {
+  fill: transparent;
+  stroke: var(--md-sys-color-on-surface-variant);
+  stroke-dasharray: 3 2;
+}
+
+.sim-graph__badge-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  fill: var(--md-sys-color-on-surface);
+}
+
+.sim-graph__badge-label--tracking {
+  font-size: 9.5px;
+  font-weight: 500;
+  fill: var(--md-sys-color-on-surface-variant);
+}
+
+.sim-graph__head-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  fill: var(--md-sys-color-tertiary);
+}
+
+.sim-graph__alt {
+  font-size: 0.875rem;
+}
+
+.sim-graph__alt-summary {
+  cursor: pointer;
+  color: var(--md-sys-color-primary);
+}
+
+.sim-graph__alt-head {
+  color: var(--md-sys-color-on-surface);
+  margin: var(--space-2) 0;
+}
+
+.sim-graph__alt-list {
+  margin: 0;
+  padding-left: var(--space-5);
+  color: var(--md-sys-color-on-surface-variant);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}

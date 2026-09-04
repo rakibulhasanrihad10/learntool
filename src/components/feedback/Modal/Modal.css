@@ -1,0 +1,50 @@
+/* Modal Styles */
+
+.m3-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal-backdrop);
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+.m3-modal {
+  background-color: var(--md-sys-color-surface-bright);
+  color: var(--md-sys-color-on-surface);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  box-shadow: var(--elevation-5);
+  width: 100%;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.m3-modal--sm {
+  max-width: 420px;
+}
+
+.m3-modal--md {
+  max-width: 600px;
+}
+
+.m3-modal--lg {
+  max-width: 800px;
+}
+
+.m3-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.m3-modal__body {
+  padding: var(--space-6);
+}

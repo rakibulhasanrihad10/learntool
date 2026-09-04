@@ -1,0 +1,60 @@
+/* GitVerse CircularProgress Component */
+
+.gv-circular-progress {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.gv-circular-progress__svg {
+  transform: rotate(-90deg);
+  display: block;
+}
+
+.gv-circular-progress__track {
+  fill: none;
+  stroke: var(--color-surface-container-high);
+}
+
+.gv-circular-progress__indicator {
+  fill: none;
+  stroke-linecap: round;
+  transition: stroke-dashoffset var(--motion-duration-medium) var(--motion-easing-standard);
+}
+
+.gv-circular-progress__center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.gv-circular-progress__label {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* Variant colors */
+.gv-circular-progress--primary .gv-circular-progress__indicator {
+  stroke: var(--color-primary);
+}
+
+.gv-circular-progress--secondary .gv-circular-progress__indicator {
+  stroke: var(--color-secondary);
+}
+
+.gv-circular-progress--success .gv-circular-progress__indicator {
+  stroke: var(--color-success);
+}
+
+.gv-circular-progress--warning .gv-circular-progress__indicator {
+  stroke: var(--color-warning);
+}
+
+.gv-circular-progress--tertiary .gv-circular-progress__indicator {
+  stroke: var(--color-tertiary);
+}

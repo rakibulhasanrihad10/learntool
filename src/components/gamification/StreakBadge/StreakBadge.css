@@ -1,0 +1,30 @@
+/* GitVerse StreakBadge Component */
+
+.gv-streak-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  border-radius: var(--radius-full);
+  background-color: var(--color-warning-container);
+  color: var(--color-on-warning-container);
+  border: 1px solid var(--color-warning);
+  font-weight: 600;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.gv-streak-badge--sm {
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.gv-streak-badge--md {
+  padding: 0.25rem 0.625rem;
+  font-size: 0.8125rem;
+  line-height: 1.125rem;
+}
+
+.gv-streak-badge__icon {
+  color: var(--color-warning);
+}

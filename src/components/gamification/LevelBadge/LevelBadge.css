@@ -1,0 +1,37 @@
+/* LevelBadge Styles */
+
+.m3-level-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.m3-level-badge__icon-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--md-sys-color-primary);
+}
+
+.m3-level-badge__number {
+  position: absolute;
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+  line-height: 1;
+}
+
+.m3-level-badge--sm .m3-level-badge__number {
+  font-size: 0.5rem;
+}
+
+.m3-level-badge--lg .m3-level-badge__number {
+  font-size: 0.75rem;
+}
+
+.m3-level-badge__title {
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  white-space: nowrap;
+}
