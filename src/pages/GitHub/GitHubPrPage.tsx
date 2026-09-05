@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { setPageMeta } from '@/utils/pageMeta';
 import { Link } from 'react-router-dom';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Breadcrumb } from '@/components/navigation/Breadcrumb/Breadcrumb';
@@ -27,8 +28,8 @@ export const GitHubPrPage: React.FC = () => {
   const [openGuide, setOpenGuide] = useState<string | null>(GITHUB_WORKFLOWS[0]?.id ?? null);
 
   useEffect(() => {
-    document.title = `${g.metaTitle} | GitVerse`;
-  }, [g.metaTitle]);
+    setPageMeta({ title: g.metaTitle, description: g.guidedSubtitle });
+  }, [g.metaTitle, g.guidedSubtitle]);
 
   const lessonIds = [
     'github.pr.what-is-a-pull-request',

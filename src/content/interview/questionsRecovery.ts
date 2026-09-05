@@ -910,4 +910,76 @@ export const RECOVERY_QUESTIONS: InterviewQuestion[] = [
     tags: ['secret', 'security', 'incident', 'advanced'],
     order: 80,
   },
+  {
+    id: 'git.interview.reset-vs-revert',
+    category: 'troubleshooting',
+    difficulty: 'intermediate',
+    type: 'compare',
+    question: {
+      en: 'When do you reach for git reset, and when must it be git revert instead?',
+      bn: 'কখন git reset ধরবেন, আর কখন বদলে git revert হতেই হবে?',
+    },
+    shortAnswer: {
+      en: 'Reset private history you have not pushed; revert anything anyone else may have seen — revert adds, reset rewrites.',
+      bn: 'পুশ-না-করা ব্যক্তিগত হিস্ট্রি রিসেট করুন; অন্য কেউ দেখে থাকতে পারে এমন সব revert করুন — revert যোগ করে, reset পুনর্লেখে।',
+    },
+    explanation: {
+      en: 'The decision rule is audience, not severity: reset moves the branch pointer backward (orphaning whatever was there), which is fine when you are the only audience. Revert records a new commit that undoes the change, so every clone stays compatible. Teams forgive slow reverts; they do not forgive rewritten shared history.',
+      bn: 'সিদ্ধান্ত নিয়ম দর্শক, তীব্রতা নয়: reset ব্রাঞ্চ পয়েন্টার পেছনে সরায় (যা ছিল এতিম করে), দর্শক শুধু আপনি হলে ঠিক। Revert পরিবর্তন বাতিলকারী নতুন কমিট রেকর্ড করে, তাই প্রতিটি ক্লোন সামঞ্জস্যপূর্ণ থাকে। ধীর revert টিম ক্ষমা করে; পুনর্লিখিত শেয়ার্ড হিস্ট্রি করে না।',
+    },
+    interviewTip: {
+      en: 'State the audience rule first, then give one example of each. Interviewers promote answers with a rule plus receipts.',
+      bn: 'আগে দর্শক নিয়ম বলুন, তারপর প্রতিটির একটি উদাহরণ দিন। নিয়ম ও প্রমাণসহ উত্তরে ইন্টারভিউয়াররা পদোন্নতি দেন।',
+    },
+    commonMistake: {
+      en: 'Choosing by comfort ("reset is what I know") instead of by audience — then force-pushing teammates into repair work.',
+      bn: 'দর্শক নয় আরামে বাছাই ("reset-ই জানি") — তারপর সহকর্মীদের মেরামতে ফোর্স-পুশ করা।',
+    },
+    options: [
+      { id: 'a', label: 'Reset private, revert shared', correct: true },
+      { id: 'b', label: 'Always reset — it is cleaner', correct: false },
+      { id: 'c', label: 'Always revert — it is safer', correct: false },
+      { id: 'd', label: 'Delete and re-clone either way', correct: false },
+    ],
+    relatedCommands: ['git.reset', 'git.revert'],
+    relatedLessons: ['git.fundamentals.commit', 'git.recovery.restore-and-revert', 'git.recovery.reset-matrix'],
+    relatedTroubleshooting: ['git.troubleshooting.undo-last-commit', 'git.troubleshooting.reset-hard'],
+    relatedPractice: ['git.practice.revert-pushed-commit', 'git.practice.command-undo-unwanted-change'],
+    relatedInternals: [],
+    tags: ['reset', 'revert', 'shared-history', 'compare'],
+    order: 81,
+  },
+  {
+    id: 'git.interview.tag-lightweight-vs-annotated',
+    category: 'internals',
+    difficulty: 'intermediate',
+    type: 'conceptual',
+    question: {
+      en: 'What is the difference between a lightweight and an annotated tag, and which should mark a release?',
+      bn: 'লাইটওয়েট ও অ্যানোটেটেড ট্যাগের পার্থক্য কী, এবং রিলিজ চিহ্নিত করবে কোনটি?',
+    },
+    shortAnswer: {
+      en: 'Lightweight is a bare pointer; annotated is a full object with message, tagger, and date. Releases deserve annotated tags.',
+      bn: 'লাইটওয়েট নগ্ন পয়েন্টার; অ্যানোটেটেড বার্তা, ট্যাগার ও তারিখসহ পূর্ণ অবজেক্ট। রিলিজে অ্যানোটেটেড প্রাপ্য।',
+    },
+    explanation: {
+      en: 'A lightweight tag is just a ref file pointing at a commit — no who, no when, no why. An annotated tag stores its own object with all three, can be signed, and travels with meaning. That is why release tooling and GitHub releases expect annotated tags, and why plain git push leaves all tags behind until you push them explicitly.',
+      bn: 'লাইটওয়েট ট্যাগ কমিটে দেখানো সাধারণ ref ফাইল — কে, কখন, কেন কিছু নেই। অ্যানোটেটেড ট্যাগ তিনটিসহ নিজস্ব অবজেক্ট সংরক্ষণ করে, সাইন করা যায়, অর্থসহ ভ্রমণ করে। তাই রিলিজ টুলিং ও গিটহাব রিলিজ অ্যানোটেটেড আশা করে, এবং সাধারণ git push সব ট্যাগ পেছনে রেখে যায় স্পষ্ট পুশ না করা পর্যন্ত।',
+    },
+    interviewTip: {
+      en: 'Mention that tags do not push by default — it proves you have actually released something.',
+      bn: 'ট্যাগ ডিফল্টে পুশ হয় না উল্লেখ করুন — এটি প্রমাণ করে সত্যিই রিলিজ দিয়েছেন।',
+    },
+    commonMistake: {
+      en: 'Tagging every nightly build the same way as releases, then wondering why nobody trusts the tag list.',
+      bn: 'রিলিজের মতো প্রতি নাইটলি বিল্ডে ট্যাগ দিয়ে ভাবা কেন কেউ ট্যাগ তালিকা বিশ্বাস করে না।',
+    },
+    relatedCommands: ['git.tag', 'git.log', 'git.push'],
+    relatedLessons: ['git.internals.lightweight-vs-annotated-tags'],
+    relatedTroubleshooting: [],
+    relatedPractice: [],
+    relatedInternals: ['git.internals.lightweight-vs-annotated-tags', 'git.internals.branch-references'],
+    tags: ['tag', 'release', 'annotated', 'refs'],
+    order: 86,
+  },
 ];

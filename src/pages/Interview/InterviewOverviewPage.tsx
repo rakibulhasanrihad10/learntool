@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { setPageMeta } from '@/utils/pageMeta';
 import { Link } from 'react-router-dom';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Breadcrumb } from '@/components/navigation/Breadcrumb/Breadcrumb';
@@ -21,8 +22,8 @@ export const InterviewOverviewPage: React.FC = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = `${p.title} | GitVerse`;
-  }, [p.title]);
+    setPageMeta({ title: p.title, description: p.subtitle });
+  }, [p.title, p.subtitle]);
 
   return (
     <PageContainer maxWidth="lg" className="animate-fade-in">

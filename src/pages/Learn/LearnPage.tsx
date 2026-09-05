@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { setPageMeta } from '@/utils/pageMeta';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Card } from '@/components/common/Card/Card';
 import { Badge } from '@/components/common/Badge/Badge';
@@ -19,6 +20,10 @@ import {
 
 export const LearnPage: React.FC = () => {
   const { t, language } = useTranslation();
+
+  useEffect(() => {
+    setPageMeta({ title: t.pages.learn.title, description: t.pages.learn.subtitle });
+  }, [t.pages.learn.title, t.pages.learn.subtitle]);
   const { isLessonCompleted } = useGamification();
   const navigate = useNavigate();
   const { subjectId } = useParams<{ subjectId: string }>();

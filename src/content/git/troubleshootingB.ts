@@ -618,6 +618,183 @@ export const TROUBLESHOOTING_GUIDES_B: TroubleshootingGuide[] = [
     safeForBeginners: false,
     order: 20,
   },
+  {
+    id: 'git.troubleshooting.unrelated-histories',
+    slug: 'unrelated-histories',
+    title: { en: 'Pull refused: "refusing to merge unrelated histories"', bn: 'পুল প্রত্যাখ্যাত: "unrelated histories মার্জ নয়"' },
+    shortDescription: {
+      en: 'Your repo and the remote started as strangers — no common ancestor. Confirm that is really true, then allow the join explicitly.',
+      bn: 'আপনার রেপো ও রিমোট অপরিচিত হিসেবে শুরু — কমন অ্যানসেস্টর নেই। সত্যিই তাই নিশ্চিত করুন, তারপর স্পষ্ট অনুমতিতে জোড়া দিন।',
+    },
+    category: 'remote-push',
+    difficulty: 'intermediate',
+    severity: 'medium',
+    symptoms: [
+      { en: 'git pull fails with "fatal: refusing to merge unrelated histories" — often after initializing locally AND creating the remote with a README.', bn: 'git pull ব্যর্থ হয় "fatal: refusing to merge unrelated histories" নিয়ে — প্রায়ই লোকালি init করে রিমোটে README বানানোর পর।' },
+    ],
+    sightings: [
+      { command: 'git pull origin main', output: 'fatal: refusing to merge unrelated histories' },
+    ],
+    diagnosis: {
+      en: 'A merge needs a merge base — a commit both sides descend from. Two independent initial commits (yours locally, the README remotely) share nothing, so Git refuses rather than silently gluing strangers together.',
+      bn: 'মার্জে মার্জ বেস লাগে — উভয় পক্ষের কমন পূর্বপুরুষ কমিট। দুটি স্বাধীন ইনিশিয়াল কমিট (লোকালি আপনারটা, রিমোটে README) কিছু ভাগ করে না, তাই গিট নীরবে অপরিচিত জোড়া না দিয়ে প্রত্যাখ্যান করে।',
+    },
+    likelyCauses: [
+      { en: 'Creating a remote repository with a README/license while also committing locally from scratch.', bn: 'স্ক্র্যাচ থেকে লোকালি কমিট করেও README/লাইসেন্সসহ রিমোট রিপোজিটরি বানানো।' },
+    ],
+    checks: [
+      { label: { en: 'Confirm the two roots really are independent.', bn: 'দুই রুট সত্যিই স্বাধীন নিশ্চিত করুন।' }, command: 'git log --oneline --all --max-parents=0' },
+      { label: { en: 'See what the remote side actually contains.', bn: 'রিমোট পক্ষে আসলে কী আছে দেখুন।' }, command: 'git fetch origin' },
+    ],
+    fix: {
+      title: { en: 'Allow the one-time join, then verify both roots survived', bn: 'এককালীন জয়েন অনুমতি দিন, তারপর দুই রুট বেঁচেছে যাচাই করুন' },
+      steps: [
+        { en: 'Pull with the explicit flag — this records a merge of two independent roots.', bn: 'স্পষ্ট ফ্ল্যাগে পুল করুন — এটি দুই স্বাধীন রুটের মার্জ রেকর্ড করে।' },
+        { en: 'Inspect the log graph to confirm both histories are present, then push normally.', bn: 'log গ্রাফে দুই হিস্ট্রি আছে নিশ্চিত করে স্বাভাবিক পুশ করুন।' },
+      ],
+      commands: ['git pull origin main --allow-unrelated-histories', 'git log --graph --oneline --all', 'git push'],
+    },
+    alternatives: [
+      {
+        title: { en: 'Cleaner start: re-clone instead', bn: 'পরিষ্কার শুরু: বদলে পুনঃক্লোন' },
+        detail: {
+          en: 'If your local work is tiny, cloning the remote fresh and copying your files over avoids a forever-visible merge of strangers.',
+          bn: 'লোকাল কাজ সামান্য হলে রিমোট নতুন ক্লোন করে ফাইল কপি করলে অপরিচিতের চিরস্থায়ী মার্জ এড়ানো যায়।',
+        },
+        commands: ['git clone <url> fresh-copy'],
+      },
+    ],
+    warnings: [
+      { level: 'caution', text: { en: 'Only allow the join when you know where both roots came from. Blindly allowing it can merge a wrong repository into yours.', bn: 'উভয় রুট কোথা থেকে এসেছে জানলেই জয়েন অনুমতি দিন। অন্ধভাবে অনুমতি ভুল রিপোজিটরি আপনারটায় মার্জ করতে পারে।' } },
+    ],
+    verify: [
+      { en: 'git log --graph shows both initial commits joined by one merge.', bn: 'git log --graph একটি মার্জে যুক্ত উভয় ইনিশিয়াল কমিট দেখায়।' },
+    ],
+    commands: ['pull', 'fetch', 'log'],
+    lessons: [L.remote, L.local, 'git.internals.parent-relationships'],
+    scenarios: ['push-rejected', 'behind-remote', 'pull-conflict'],
+    tags: ['unrelated histories', 'pull', 'merge base', 'fresh repo'],
+    searchKeywords: ['unrelated histories', 'refusing to merge', 'no common ancestor', 'readme remote', 'allow unrelated'],
+    safeForBeginners: false,
+    order: 21,
+  },
+  {
+    id: 'git.troubleshooting.stale-remote-tracking',
+    slug: 'stale-remote-tracking',
+    title: { en: 'Deleted remote branches still show up locally', bn: 'মোছা রিমোট ব্রাঞ্চ লোকালি এখনো দেখায়' },
+    shortDescription: {
+      en: 'Remote-tracking refs are a photograph, not a live feed. Prune the stale ones so git branch -r tells the truth again.',
+      bn: 'রিমোট-ট্র্যাকিং ref ছবি, লাইভ ফিড নয়। বাসিগুলো ছাঁটুন যাতে git branch -r আবার সত্য বলে।',
+    },
+    category: 'remote-push',
+    difficulty: 'beginner',
+    severity: 'low',
+    symptoms: [
+      { en: 'git branch -r lists origin/feature-x, but teammates deleted that branch days ago and the GitHub page agrees.', bn: 'git branch -r origin/feature-x দেখায়, কিন্তু সহকর্মীরা দিন আগে ব্রাঞ্চ মুছেছে ও গিটহাব পাতা একমত।' },
+    ],
+    sightings: [
+      { command: 'git branch -r', output: '  origin/HEAD -> origin/main\n  origin/main\n  origin/feature-x' },
+    ],
+    diagnosis: {
+      en: 'fetch only adds and moves remote-tracking refs — it never deletes them, because deleting your view of history by default would be rude. Stale origin/* entries are fossils of branches that no longer exist on the server.',
+      bn: 'fetch শুধু রিমোট-ট্র্যাকিং ref যোগ ও সরায় — মোছে না, কারণ ডিফল্টে আপনার হিস্ট্রি-দৃষ্টি মোছা অভদ্র হতো। বাসি origin/* এন্ট্রি সার্ভারে নেই এমন ব্রাঞ্চের জীবাশ্ম।',
+    },
+    likelyCauses: [
+      { en: 'Fetching without --prune after teammates delete merged branches.', bn: 'সহকর্মীরা মার্জড ব্রাঞ্চ মোছার পর --prune ছাড়া fetch করা।' },
+    ],
+    checks: [
+      { label: { en: 'List what the server actually has right now.', bn: 'সার্ভারে এখন আসলে কী আছে তালিকা করুন।' }, command: 'git ls-remote --heads origin' },
+    ],
+    fix: {
+      title: { en: 'Prune once, then fetch pruned by habit', bn: 'একবার ছাঁটুন, তারপর অভ্যাসে prune-সহ fetch' },
+      steps: [
+        { en: 'Delete tracking refs for branches gone from the server. Your local branches and commits are untouched.', bn: 'সার্ভারে নেই এমন ব্রাঞ্চের ট্র্যাকিং ref মুছুন। লোকাল ব্রাঞ্চ ও কমিট অক্ষত থাকে।' },
+        { en: 'Confirm origin/feature-x is gone from the listing.', bn: 'তালিকায় origin/feature-x নেই নিশ্চিত করুন।' },
+      ],
+      commands: ['git fetch origin --prune', 'git branch -r'],
+    },
+    alternatives: [
+      {
+        title: { en: 'Make pruning automatic', bn: 'ছাঁটাই স্বয়ংক্রিয় করুন' },
+        detail: {
+          en: 'Set fetch.prune once and every future fetch tidies stale refs by itself.',
+          bn: 'একবার fetch.prune সেট করুন, ভবিষ্যৎ প্রতিটি fetch নিজে বাসি ref গোছায়।',
+        },
+        commands: ['git config fetch.prune true'],
+      },
+    ],
+    warnings: [],
+    verify: [
+      { en: 'git branch -r matches the branch list on the server.', bn: 'git branch -r সার্ভারের ব্রাঞ্চ তালিকায় মেলে।' },
+    ],
+    commands: ['fetch', 'branch', 'remote'],
+    lessons: [L.remote, 'git.internals.remote-tracking-references'],
+    scenarios: ['behind-remote', 'remote-branch-missing', 'wrong-remote'],
+    tags: ['prune', 'stale', 'remote-tracking', 'fetch'],
+    searchKeywords: ['stale branch', 'deleted branch still shows', 'prune', 'branch -r outdated', 'origin branch gone'],
+    safeForBeginners: true,
+    order: 22,
+  },
+  {
+    id: 'git.troubleshooting.gitignore-tracked',
+    slug: 'gitignore-tracked',
+    title: { en: '.gitignore ignores nothing — the file is still tracked', bn: '.gitignore কিছু উপেক্ষা করে না — ফাইল এখনো ট্র্যাকড' },
+    shortDescription: {
+      en: '.gitignore only shields untracked files. A file Git already tracks needs untracking first — without deleting your copy.',
+      bn: '.gitignore শুধু আনট্র্যাকড ফাইল রক্ষা করে। গিট ইতিমধ্যে ট্র্যাক করা ফাইলে আগে আনট্র্যাকিং লাগে — কপি না মুছে।',
+    },
+    category: 'everyday-mistakes',
+    difficulty: 'beginner',
+    severity: 'low',
+    symptoms: [
+      { en: 'You added build.log to .gitignore, but git status still lists it as modified and every commit still snapshots it.', bn: '.gitignore-এ build.log যোগ করেছেন, কিন্তু git status এখনো modified দেখায় ও প্রতিটি কমিট স্ন্যাপশট নেয়।' },
+    ],
+    sightings: [
+      { command: 'git status --short', output: ' M build.log' },
+    ],
+    diagnosis: {
+      en: 'Ignore rules apply at the moment a file would become tracked — they never eject a file that is already in the index. Your rule is probably correct; it simply arrived after the file was committed.',
+      bn: 'উপেক্ষা নিয়ম তখনই প্রযোজ্য যখন ফাইল ট্র্যাকড হতো — ইনডেক্সে থাকা ফাইল বের করে না। নিয়ম সম্ভবত ঠিক; শুধু ফাইল কমিটের পরে এসেছে।',
+    },
+    likelyCauses: [
+      { en: 'Committing first (often via git add .) and writing .gitignore afterwards.', bn: 'আগে কমিট (প্রায়ই git add . দিয়ে) পরে .gitignore লেখা।' },
+    ],
+    checks: [
+      { label: { en: 'Confirm the file is tracked, not untracked.', bn: 'ফাইল ট্র্যাকড, আনট্র্যাকড নয় নিশ্চিত করুন।' }, command: 'git ls-files build.log' },
+      { label: { en: 'Check which rule (if any) covers the path.', bn: 'কোন নিয়ম (থাকলে) পাথ ঢাকে দেখুন।' }, command: 'git check-ignore -v build.log' },
+    ],
+    fix: {
+      title: { en: 'Untrack once, keep the file, ignore forever', bn: 'একবার আনট্র্যাক, ফাইল রাখুন, চিরতরে উপেক্ষা' },
+      steps: [
+        { en: 'Stop tracking the file while keeping your disk copy exactly as it is.', bn: 'ডিস্ক কপি ঠিক রেখে ফাইল ট্র্যাকিং বন্ধ করুন।' },
+        { en: 'Commit the removal so the whole team stops tracking it too, with the .gitignore rule in the same commit.', bn: 'অপসারণ কমিট করুন যাতে পুরো টিম ট্র্যাকিং বন্ধ করে, একই কমিটে .gitignore নিয়মসহ।' },
+      ],
+      commands: ['git rm --cached build.log', 'git commit -m "Stop tracking build output"'],
+    },
+    alternatives: [
+      {
+        title: { en: 'If teammates need different local copies', bn: 'সহকর্মীদের ভিন্ন লোকাল কপি দরকার হলে' },
+        detail: {
+          en: 'Commit a build.log.example template instead, and let everyone keep their real file untracked and ignored.',
+          bn: 'বদলে build.log.example টেমপ্লেট কমিট করুন, আসল ফাইল সবার আনট্র্যাকড ও উপেক্ষিত থাকুক।',
+        },
+        commands: ['git add build.log.example'],
+      },
+    ],
+    warnings: [
+      { level: 'caution', text: { en: 'git rm without --cached deletes your disk copy too. The flag is the whole safety story here.', bn: '--cached ছাড়া git rm ডিস্ক কপিও মুছে দেয়। এখানে ফ্ল্যাগটাই পুরো নিরাপত্তা গল্প।' } },
+    ],
+    verify: [
+      { en: 'git status no longer lists the file, and git check-ignore -v names your rule.', bn: 'git status আর ফাইল দেখায় না, এবং git check-ignore -v নিয়মের নাম বলে।' },
+    ],
+    commands: ['status', 'add'],
+    lessons: [L.workingDirectory, L.stagingArea],
+    scenarios: ['staged-file', 'remove-file-from-commit', 'nothing-to-commit'],
+    tags: ['gitignore', 'tracked', 'untrack', 'cached'],
+    searchKeywords: ['gitignore not working', 'still tracked', 'ignore tracked file', 'untrack file', 'check-ignore'],
+    safeForBeginners: true,
+    order: 23,
+  },
 ];
 
 export const DECISION_TREES: DecisionTree[] = [

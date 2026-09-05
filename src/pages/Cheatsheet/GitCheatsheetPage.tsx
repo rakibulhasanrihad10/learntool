@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
+import { setPageMeta } from '@/utils/pageMeta';
 import { Link } from 'react-router-dom';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Breadcrumb } from '@/components/navigation/Breadcrumb/Breadcrumb';
@@ -6,30 +7,37 @@ import { Card } from '@/components/common/Card/Card';
 import { Badge } from '@/components/common/Badge/Badge';
 import { Button } from '@/components/common/Button/Button';
 import { CopyButton } from '@/components/common/CopyButton/CopyButton';
+import { SafetyBadge } from '@/components/troubleshooting/SafetyBadge/SafetyBadge';
 import { FileText, Printer, ChevronRight } from 'lucide-react';
 import { useTranslation } from '@/i18n/context';
-import { GIT_COMMANDS } from '@/content/git';
-import { getCommandBySlug } from '@/utils/commandSearch';
+import { CHEAT_SHEET_SECTIONS } from '@/content/cheatsheet/cheatSheet';
+import { resolveEntry } from '@/features/cheatsheet/cheatsheet';
 
-interface CheatsheetSection {
-  title: string;
-  titleBn: string;
-  slugs: string[];
-}
-
-const CHEAT_SECTIONS: CheatsheetSection[] = [
-  { title: 'Repository Setup', titleBn: 'রিপোজিটরি সেটআপ', slugs: ['init', 'clone'] },
-  { title: 'Inspect', titleBn: 'নিরীক্ষণ', slugs: ['status', 'log', 'diff', 'show'] },
-  { title: 'Stage & Commit', titleBn: 'স্টেজ ও কমিট', slugs: ['add', 'commit'] },
-  { title: 'Branch', titleBn: 'ব্রাঞ্চ', slugs: ['branch', 'switch', 'checkout'] },
-  { title: 'Merge & Rebase', titleBn: 'মার্জ ও রিব্যাস', slugs: ['merge', 'rebase'] },
-  { title: 'Remote', titleBn: 'রিমোট', slugs: ['remote', 'fetch', 'pull', 'push'] },
-  { title: 'Undo & Recovery', titleBn: 'আনডু ও রিকভারি', slugs: ['restore', 'reset'] },
-];
-
+/**
+ * Dense printable command grid. Driven by the same cheat-sheet metadata
+ * as /cheatsheet, but renders only encyclopedia command references —
+ * one syntax line, one purpose, copy, and a detail link per row.
+ */
 export const GitCheatsheetPage: React.FC = () => {
   const { language, t } = useTranslation();
+
+  useEffect(() => {
+    setPageMeta({ title: t.pages.cheatsheet.git.title, description: t.pages.cheatsheet.git.subtitle });
+  }, [t.pages.cheatsheet.git.title, t.pages.cheatsheet.git.subtitle]);
   const isBn = language === 'bn';
+
+  const sections = useMemo(
+    () =>
+      CHEAT_SHEET_SECTIONS.map((section) => ({
+        section,
+        entries: section.entries
+          .map((entry, index) =>
+            entry.kind === 'command' ? resolveEntry(section.id, index, entry) : null
+          )
+          .filter((e): e is NonNullable<typeof e> => e !== null),
+      })).filter((s) => s.entries.length > 0),
+    []
+  );
 
   return (
     <PageContainer maxWidth="lg" className="animate-fade-in">
@@ -50,8 +58,8 @@ export const GitCheatsheetPage: React.FC = () => {
                 <span>{t.pages.cheatsheet.git.badge}</span>
               </Badge>
             </div>
-            <h1 className="headline-lg">{t.pages.cheatsheet.git.title}</h1>
-            <p className="body-lg" style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>
+            <h1 className="headline-lg" style={{ margin: 0 }}>{t.pages.cheatsheet.git.title}</h1>
+            <p className="body-lg" style={{ color: 'var(--md-sys-color-on-surface-variant)', margin: 0 }}>
               {t.pages.cheatsheet.git.subtitle}
             </p>
           </div>
@@ -68,41 +76,39 @@ export const GitCheatsheetPage: React.FC = () => {
 
         {/* Cheat Sheet Grid */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 'var(--space-5)' }}>
-          {CHEAT_SECTIONS.map((sec) => {
-            const entries = sec.slugs
-              .map((slug) => getCommandBySlug(GIT_COMMANDS, slug))
-              .filter((c): c is (typeof GIT_COMMANDS)[number] => Boolean(c));
-            if (entries.length === 0) return null;
+          {sections.map(({ section, entries }) => (
+            <Card key={section.id} variant="filled" padding="lg" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+              <h2 className="title-md" style={{ color: 'var(--md-sys-color-on-surface)', borderBottom: '1px solid var(--md-sys-color-outline-variant)', paddingBottom: 'var(--space-2)', margin: 0 }}>
+                {isBn ? section.title.bn : section.title.en}
+              </h2>
 
-            return (
-              <Card key={sec.title} variant="filled" padding="lg" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-                <h2 className="title-md" style={{ color: 'var(--md-sys-color-on-surface)', borderBottom: '1px solid var(--md-sys-color-outline-variant)', paddingBottom: 'var(--space-2)', margin: 0 }}>
-                  {isBn ? sec.titleBn : sec.title}
-                </h2>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-                  {entries.map((cmd) => (
-                    <div
-                      key={cmd.id}
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 'var(--space-1)',
-                        padding: 'var(--space-3)',
-                        borderRadius: 'var(--radius-md)',
-                        backgroundColor: 'var(--md-sys-color-surface-container-low)',
-                        border: '1px solid var(--md-sys-color-outline-variant)',
-                      }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-2)' }}>
-                        <code className="font-mono" style={{ fontSize: '0.875rem', fontWeight: 700 }}>{cmd.syntax}</code>
-                        <CopyButton text={cmd.syntax} variant="icon" size="sm" />
-                      </div>
-                      <p className="body-sm" style={{ margin: 0, color: 'var(--md-sys-color-on-surface-variant)' }}>
-                        {isBn && cmd.whatItDoesBn ? cmd.whatItDoesBn : cmd.whatItDoes}
-                      </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+                {entries.map((entry) => (
+                  <div
+                    key={entry.key}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 'var(--space-1)',
+                      padding: 'var(--space-3)',
+                      borderRadius: 'var(--radius-md)',
+                      backgroundColor: 'var(--md-sys-color-surface-container-low)',
+                      border: '1px solid var(--md-sys-color-outline-variant)',
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-2)' }}>
+                      <code className="font-mono" style={{ fontSize: '0.875rem', fontWeight: 700, overflowWrap: 'anywhere' }}>{entry.command}</code>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--space-2)', flexShrink: 0 }}>
+                        {entry.safety !== 'safe' && <SafetyBadge level={entry.safety} />}
+                        <CopyButton text={entry.command} variant="icon" size="sm" />
+                      </span>
+                    </div>
+                    <p className="body-sm" style={{ margin: 0, color: 'var(--md-sys-color-on-surface-variant)' }}>
+                      {isBn ? entry.purpose.bn : entry.purpose.en}
+                    </p>
+                    {entry.commandRoute && (
                       <Link
-                        to={`/commands/git/${cmd.slug}`}
+                        to={entry.commandRoute}
                         style={{
                           display: 'inline-flex',
                           alignItems: 'center',
@@ -116,12 +122,12 @@ export const GitCheatsheetPage: React.FC = () => {
                         {t.pages.cheatsheet.git.viewDetail}
                         <ChevronRight size={13} />
                       </Link>
-                    </div>
-                  ))}
-                </div>
-              </Card>
-            );
-          })}
+                    )}
+                  </div>
+                ))}
+              </div>
+            </Card>
+          ))}
         </div>
       </div>
     </PageContainer>

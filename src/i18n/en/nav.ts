@@ -2,6 +2,7 @@ export const enNav = {
   home: 'Dashboard',
   learn: 'Learning Tracks',
   paths: 'Learning Paths',
+  progress: 'Progress',
   commands: 'Command Index',
   workflows: 'Real-world Workflows',
   troubleshooting: 'Troubleshooting & Fixes',

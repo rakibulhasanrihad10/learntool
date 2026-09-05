@@ -420,4 +420,86 @@ export const RECOVERY_EXERCISES: PracticeExercise[] = [
     relatedScenarios: ['git.troubleshooting.diverged'],
     relatedWorkflows: [],
   },
+  {
+    id: 'git.practice.revert-pushed-commit',
+    category: 'recovery',
+    difficulty: 'intermediate',
+    order: 33,
+    estimatedMinutes: 8,
+    xpReward: 20,
+    tags: ['revert', 'pushed', 'shared', 'safe-undo'],
+    keywords: ['revert pushed commit', 'undo shared history', 'revert vs reset'],
+    title: { en: 'Revert a Pushed Commit', bn: 'পুশড কমিট revert করুন' },
+    description: {
+      en: 'Undo a shared commit the safe way: a new commit that reverses it, pushed normally.',
+      bn: 'শেয়ার্ড কমিট নিরাপদে বাতিল করুন: বিপরীতকারী নতুন কমিট, স্বাভাবিক পুশ।',
+    },
+    objective: {
+      en: 'Choose revert over reset for published history and run it.',
+      bn: 'প্রকাশিত হিস্ট্রিতে রিসেটের বদলে revert বেছে চালান।',
+    },
+    tasks: [
+      {
+        id: 't1',
+        kind: 'select',
+        prompt: {
+          en: 'Teammates already pulled the bad commit. Which undo keeps everyone in sync?',
+          bn: 'সহকর্মীরা খারাপ কমিট ইতিমধ্যে পুল করেছে। কোন আনডু সবাইকে সিঙ্কে রাখে?',
+        },
+        explanation: {
+          en: 'Revert only adds history, so every clone stays compatible. Reset would orphan commits teammates built on.',
+          bn: 'Revert শুধু হিস্ট্রি যোগ করে, তাই প্রতিটি ক্লোন সামঞ্জস্যপূর্ণ থাকে। Reset সহকর্মীদের গড়া কমিট এতিম করত।',
+        },
+        options: [
+          { id: 'revert', label: 'git revert the commit, then push', labelBn: 'কমিট revert করে পুশ', correct: true },
+          { id: 'hard', label: 'git reset --hard, then force-push', labelBn: 'git reset --hard, তারপর ফোর্স-পুশ', correct: false },
+          { id: 'amend', label: 'git commit --amend, then push', labelBn: 'git commit --amend, তারপর পুশ', correct: false },
+          { id: 'delete', label: 'Delete the branch and start over', labelBn: 'ব্রাঞ্চ মুছে নতুন শুরু', correct: false },
+        ],
+      },
+      {
+        id: 't2',
+        kind: 'complete',
+        prefix: 'git revert',
+        placeholder: '___   (undo the tip commit)',
+        prompt: {
+          en: 'Complete the command that undoes the tip commit with a new commit.',
+          bn: 'টিপ কমিট নতুন কমিটে বাতিল করা কমান্ডটি সম্পূর্ণ করুন।',
+        },
+        explanation: {
+          en: 'git revert HEAD records the inverse as a fresh commit — the shared-history-safe undo.',
+          bn: 'git revert HEAD বিপরীতকে নতুন কমিটে রেকর্ড করে — শেয়ার্ড-হিস্ট্রি-নিরাপদ আনডু।',
+        },
+        acceptedAnswers: ['HEAD'],
+      },
+      {
+        id: 't3',
+        kind: 'select',
+        prompt: {
+          en: 'After reverting, what does the history look like?',
+          bn: 'Revert-এর পর হিস্ট্রি কেমন দেখায়?',
+        },
+        explanation: {
+          en: 'Both commits remain: the mistake and its reversal. That permanent audit trail is exactly why revert is safe to share.',
+          bn: 'উভয় কমিট থাকে: ভুল ও তার বিপরীত। এই স্থায়ী নিরীক্ষা-ছাপই revert শেয়ারে নিরাপদ করে।',
+        },
+        options: [
+          { id: 'both', label: 'Mistake + reversal, both visible', labelBn: 'ভুল + বিপরীত, দুটোই দৃশ্যমান', correct: true },
+          { id: 'gone', label: 'Mistake erased as if never committed', labelBn: 'ভুল মোছা যেন কমিট হয়নি', correct: false },
+          { id: 'moved', label: 'Branch pointer moved backward', labelBn: 'ব্রাঞ্চ পয়েন্টার পিছিয়ে গেছে', correct: false },
+        ],
+      },
+    ],
+    hints: [
+      {
+        en: 'Published history belongs to the team — only additive fixes (revert) are safe there.',
+        bn: 'প্রকাশিত হিস্ট্রি টিমের — সেখানে শুধু সংযোজনমূলক ফিক্স (revert) নিরাপদ।',
+      },
+    ],
+    prerequisites: ['git.practice.command-undo-unwanted-change'],
+    relatedCommands: ['git.revert', 'git.reset', 'git.push'],
+    relatedLessons: ['git.fundamentals.commit'],
+    relatedScenarios: ['git.troubleshooting.undo-last-commit'],
+    relatedWorkflows: [],
+  },
 ];

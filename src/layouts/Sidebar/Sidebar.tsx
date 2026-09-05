@@ -15,6 +15,7 @@ import {
   ChevronRight,
   GitBranch,
   Route,
+  Gauge,
 } from 'lucide-react';
 import { useTranslation } from '@/i18n/context';
 import { Badge } from '@/components/common/Badge/Badge';
@@ -53,6 +54,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       title: t.nav.sections.core,
       items: [
         { path: '/', label: t.nav.home, icon: LayoutDashboard, exact: true },
+        { path: '/progress', label: t.nav.progress, icon: Gauge },
         { path: '/learn', label: t.nav.learn, icon: BookOpen, badge: '8 Modules', isLearnSection: true },
         { path: '/learn/paths', label: t.nav.paths, icon: Route, badge: '3 Paths' },
       ],

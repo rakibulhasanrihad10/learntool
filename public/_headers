@@ -1,0 +1,20 @@
+# Cache: hashed assets immutable for a year; HTML/SW/manifest always fresh
+# so deploys and prompt-driven updates can never get stuck behind a CDN.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+/sw.js
+  Cache-Control: no-cache
+/manifest.webmanifest
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+
+# Security headers (all hosts that support _headers). CSP was audited
+# against the real dependency set: same-origin scripts, Google Fonts
+# stylesheets + font files only, no inline scripts, no embeds.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'deny'

@@ -35,6 +35,7 @@ import {
   Terminal,
 } from 'lucide-react';
 import { scenarioForLesson } from '@/features/simulation/scenarios';
+import { setPageMeta } from '@/utils/pageMeta';
 import { getPathsForContent } from '@/content/paths';
 import { useLearningSignals } from '@/features/paths/signals';
 import { summarizePath } from '@/features/paths/progress';
@@ -76,13 +77,16 @@ export const LessonViewPage: React.FC = () => {
 
   const isBn = language === 'bn';
 
-  // Dynamic document title update
+  // Dynamic document metadata from the lesson itself
   useEffect(() => {
     if (currentLessonMetadata) {
       const pageTitle = isBn && currentLessonMetadata.titleBn
         ? currentLessonMetadata.titleBn
         : currentLessonMetadata.title;
-      document.title = `${pageTitle} — GitVerse`;
+      const pageDescription = isBn && currentLessonMetadata.summaryBn
+        ? currentLessonMetadata.summaryBn
+        : currentLessonMetadata.summary;
+      setPageMeta({ title: pageTitle, description: pageDescription });
     }
   }, [currentLessonMetadata, isBn]);
 

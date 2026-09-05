@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { setPageMeta } from '@/utils/pageMeta';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { StatCard } from '@/components/data-display/StatCard/StatCard';
 import { ProgressCard } from '@/components/data-display/ProgressCard/ProgressCard';
@@ -28,12 +29,17 @@ import { useTranslation } from '@/i18n/context';
 import { useGamification } from '@/features/gamification/useGamification';
 import { useLearningSignals } from '@/features/paths/signals';
 import { getContinueTarget, stepRoute } from '@/features/paths/progress';
+import { useProgressDashboard } from '@/features/progress/dashboard';
 import { LEARNING_PATHS } from '@/content/paths';
 import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
 
 export const HomePage: React.FC = () => {
   const { t, language } = useTranslation();
+
+  useEffect(() => {
+    setPageMeta({ title: 'GitVerse', description: t.dashboard.welcomeSubtitle });
+  }, [t.dashboard.welcomeSubtitle]);
   const isBn = language === 'bn';
   const { userLevel, progress, achievements, dailyChallenge, completeDailyChallenge } = useGamification();
   const navigate = useNavigate();
@@ -50,6 +56,8 @@ export const HomePage: React.FC = () => {
     }
     return `/learn/paths/${continuePath.id}`;
   })();
+  // Concise snapshot only — full analytics live on /progress.
+  const snapshot = useProgressDashboard();
 
   return (
     <PageContainer maxWidth="lg" className="home-page animate-fade-in">
@@ -161,6 +169,17 @@ export const HomePage: React.FC = () => {
           ctaText={t.dashboard.continueLearning.resumeButton}
           onAction={() => navigate(continueRoute)}
         />
+
+        <Card variant="outlined" padding="md" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
+          <span className="body-md" style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>
+            {t.pages.progress.curriculumTitle}: <strong>{snapshot.curriculum.percent}%</strong>
+            {' · '}{t.pages.progress.skillTitle}: <strong>{snapshot.practice.completed}/{snapshot.practice.total}</strong>
+            {' · '}{t.pages.progress.readyTitle}: <strong>{snapshot.interview.reviewed}/{snapshot.interview.total}</strong>
+          </span>
+          <Button variant="text" size="sm" iconRight={<ArrowRight size={14} />} onClick={() => navigate('/progress')}>
+            {t.pages.progress.title}
+          </Button>
+        </Card>
       </section>
 
       {/* 5. Daily Challenge & Achievements Showcase Dual Column */}

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { setPageMeta } from '@/utils/pageMeta';
 import { Link } from 'react-router-dom';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Card } from '@/components/common/Card/Card';
@@ -33,8 +34,8 @@ export const TroubleshootingPage: React.FC = () => {
   const [beginnerSafeOnly, setBeginnerSafeOnly] = useState(false);
 
   useEffect(() => {
-    document.title = `${ts.title} | GitVerse`;
-  }, [ts.title]);
+    setPageMeta({ title: ts.title, description: ts.subtitle });
+  }, [ts.title, ts.subtitle]);
 
   const hasActiveFilters =
     category !== 'All' || difficulty !== 'All' || beginnerSafeOnly || query.trim() !== '';

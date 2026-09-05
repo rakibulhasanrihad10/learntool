@@ -1,0 +1,3 @@
+# SPA fallback (Cloudflare Pages + Netlify): every non-file route serves
+# the app entry point so client-side routing works on direct navigation.
+/*    /index.html   200

@@ -590,4 +590,43 @@ export const COMMAND_QUESTIONS: InterviewQuestion[] = [
     tags: ['revert', 'shared-history', 'safe-undo'],
     order: 30,
   },
+  {
+    id: 'git.interview.cmd-stash-pop-vs-apply',
+    category: 'commands',
+    difficulty: 'intermediate',
+    type: 'choice',
+    question: {
+      en: 'You stashed mid-edit work, switched branches, and finished the hotfix. How do you bring the work back — and what is the safer variant?',
+      bn: 'এডিটের মাঝে কাজ স্ট্যাশ করে ব্রাঞ্চ বদলে হটফিক্স শেষ করলেন। কাজ কীভাবে ফেরাবেন — নিরাপদ রূপ কোনটি?',
+    },
+    shortAnswer: {
+      en: 'git stash pop restores and drops the stash; git stash apply restores but keeps the backup. Apply first when the merge could fight back.',
+      bn: 'git stash pop ফিরিয়ে স্ট্যাশ মুছে; git stash apply ফিরিয়ে ব্যাকআপ রাখে। মার্জ লড়তে পারে তো আগে apply।',
+    },
+    explanation: {
+      en: 'A stash is a real commit object on a stack, so restoring is a merge that can conflict. pop deletes the stack entry as it restores — fine when clean, painful when conflicted. apply keeps the entry, so a bad restore costs nothing: resolve, verify, then drop deliberately.',
+      bn: 'স্ট্যাশ স্ট্যাকে আসল কমিট অবজেক্ট, তাই ফেরানো কনফ্লিক্ট করা মার্জ। pop ফেরানোর সাথে এন্ট্রি মুছে — পরিষ্কারে ঠিক, কনফ্লিক্টে কষ্ট। apply এন্ট্রি রাখে, তাই খারাপ ফেরানোয় খরচ শূন্য: সমাধান, যাচাই, তারপর ইচ্ছায় drop।',
+    },
+    interviewTip: {
+      en: '"Shelf, not storage" plus named stashes (-m) shows production discipline in one sentence.',
+      bn: '"তাক, গুদাম নয়" সাথে নামসহ স্ট্যাশ (-m) এক বাক্যে প্রোডাকশন শৃঙ্খলা দেখায়।',
+    },
+    commonMistake: {
+      en: 'Always popping blindly, then losing the only copy when the restore conflicts badly.',
+      bn: 'সবসময় অন্ধ pop করে খারাপ কনফ্লিক্টে একমাত্র কপি হারানো।',
+    },
+    options: [
+      { id: 'a', label: 'git stash pop (apply first if risky)', correct: true },
+      { id: 'b', label: 'git stash drop, then re-do the work', correct: false },
+      { id: 'c', label: 'git stash clear, then switch back', correct: false },
+      { id: 'd', label: 'Delete the branch and start over', correct: false },
+    ],
+    relatedCommands: ['git.stash', 'git.switch'],
+    relatedLessons: ['git.fundamentals.working-directory', 'git.fundamentals.staging-area'],
+    relatedTroubleshooting: [],
+    relatedPractice: ['git.practice.stash-changes'],
+    relatedInternals: [],
+    tags: ['stash', 'pop', 'apply', 'shelve'],
+    order: 85,
+  },
 ];

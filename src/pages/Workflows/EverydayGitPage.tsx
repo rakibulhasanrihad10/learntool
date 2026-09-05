@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
+import { setPageMeta } from '@/utils/pageMeta';
 import { useSearchParams } from 'react-router-dom';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Breadcrumb } from '@/components/navigation/Breadcrumb/Breadcrumb';
@@ -25,6 +26,10 @@ export const EverydayGitPage: React.FC = () => {
     () => getScenario(searchParams.get('scenario') ?? 'everyday'),
     [searchParams]
   );
+
+  useEffect(() => {
+    setPageMeta({ title: s.title, description: s.subtitle });
+  }, [s.title, s.subtitle]);
 
   const initialStep = useMemo(() => {
     const raw = Number.parseInt(searchParams.get('step') ?? '', 10);

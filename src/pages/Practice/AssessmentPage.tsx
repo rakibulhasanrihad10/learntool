@@ -8,6 +8,7 @@ import { Badge } from '@/components/common/Badge/Badge';
 import { Button } from '@/components/common/Button/Button';
 import { ProgressBar } from '@/components/gamification/ProgressBar/ProgressBar';
 import { useTranslation } from '@/i18n/context';
+import { setPageMeta } from '@/utils/pageMeta';
 import { useGamification } from '@/features/gamification/useGamification';
 import { ASSESSMENT_QUIZ_ID } from '@/features/paths/signals';
 import { ASSESSMENT_ITEMS, getExerciseById } from '@/content/practice';
@@ -52,8 +53,8 @@ export const AssessmentPage: React.FC = () => {
   }, [finished, passQuiz]);
 
   useEffect(() => {
-    document.title = `${p.assessmentTitle} | GitVerse`;
-  }, [p.assessmentTitle]);
+    setPageMeta({ title: p.assessmentTitle, description: p.assessmentSubtitle });
+  }, [p.assessmentTitle, p.assessmentSubtitle]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

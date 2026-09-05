@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { setPageMeta } from '@/utils/pageMeta';
 import { Link } from 'react-router-dom';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Breadcrumb } from '@/components/navigation/Breadcrumb/Breadcrumb';
@@ -132,8 +133,8 @@ export const InternalsExplorerPage: React.FC = () => {
   const [trail, setTrail] = useState<TraceNode[]>([{ kind: 'head', id: 'HEAD', via: 'start' }]);
 
   useEffect(() => {
-    document.title = `${s.title} | GitVerse`;
-  }, [s.title]);
+    setPageMeta({ title: s.title, description: s.subtitle });
+  }, [s.title, s.subtitle]);
 
   const simState = useMemo(() => internalsToSimState(INTERNALS_REPO), []);
   const concept = INTERNALS_CONCEPTS.find((c) => c.id === conceptId) ?? INTERNALS_CONCEPTS[0];

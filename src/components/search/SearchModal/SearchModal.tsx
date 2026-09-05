@@ -1,19 +1,16 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Modal } from '@/components/feedback/Modal/Modal';
-import { Search, BookOpen, FlaskConical, Terminal, Wrench, ArrowRight, MessagesSquare, Route } from 'lucide-react';
+import { Chip } from '@/components/common/Chip/Chip';
+import {
+  Search, BookOpen, Terminal, ArrowRight, History, Trash2, Sparkles, ListOrdered,
+} from 'lucide-react';
 import { useTranslation } from '@/i18n/context';
 import { useNavigate } from 'react-router-dom';
-import { GIT_COMMANDS, TROUBLESHOOTING_GUIDES } from '@/content/git';
-import { GIT_MODULES } from '@/content/structure/gitModules';
-import { GITHUB_MODULES, GITHUB_SEARCH_ENTRIES } from '@/content/github';
-import { INTERNALS_SEARCH_ENTRIES } from '@/content/git/internalsShared';
-import { PRACTICE_EXERCISES } from '@/content/practice';
-import { searchCommands, tokenizeQuery } from '@/utils/commandSearch';
-import { searchScenarios } from '@/utils/troubleshootingSearch';
-import { searchGithubConcepts } from '@/utils/githubSearch';
-import { searchPractice } from '@/utils/practiceSearch';
-import { searchInterviewQuestions } from '@/features/interview/search';
-import { searchLearningPaths } from '@/features/paths/search';
+import { POPULAR_TOPICS, SUGGESTED_QUERIES, unifiedSearch } from '@/features/search/searchEngine';
+import { useSearchHistory } from '@/features/search/searchHistory';
+import { useSearchMode } from '@/features/search/searchMode';
+import { SEARCH_RESULT_TYPES } from '@/features/search/searchTypes';
+import { TYPE_ICONS, typeLabel } from '@/components/search/SearchResultCard';
 import './SearchModal.css';
 
 export interface SearchModalProps {
@@ -21,40 +18,8 @@ export interface SearchModalProps {
   onClose: () => void;
 }
 
-interface LessonHit {
-  id: string;
-  title: string;
-  subjectId: string;
-  moduleSlug: string;
-  lessonSlug: string;
-  summary: string;
-}
-
-const ALL_LESSONS: LessonHit[] = [...GIT_MODULES, ...GITHUB_MODULES].flatMap((mod) =>
-  mod.lessons.map((l) => ({
-    id: l.id,
-    title: l.title,
-    subjectId: mod.subjectId,
-    moduleSlug: mod.slug,
-    lessonSlug: l.slug,
-    summary: l.summary,
-  }))
-);
-
-function searchLessons(query: string): LessonHit[] {
-  const tokens = tokenizeQuery(query);
-  if (tokens.length === 0) return [];
-  // Match against titles, ids, slugs, summaries, and module context.
-  return ALL_LESSONS.filter((lesson) => {
-    const haystack = `${lesson.title} ${lesson.id} ${lesson.lessonSlug} ${lesson.summary}`.toLowerCase();
-    return tokens.every((t) => haystack.includes(t));
-  }).slice(0, 3);
-}
-
-function searchGithub(query: string) {
-  if (!query.trim()) return [];
-  return searchGithubConcepts(query, [...GITHUB_SEARCH_ENTRIES, ...INTERNALS_SEARCH_ENTRIES]).slice(0, 2);
-}
+const GROUP_LIMIT = 3;
+const TOTAL_LIMIT = 12;
 
 export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
   const { t, language } = useTranslation();
@@ -62,42 +27,26 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { mode, setMode } = useSearchMode();
+  const { history, record, clear } = useSearchHistory();
 
-  const commandResults = useMemo(
-    () => (query.trim() ? searchCommands(query, GIT_COMMANDS).slice(0, 6) : []),
-    [query]
-  );
-  const lessonResults = useMemo(() => (query.trim() ? searchLessons(query) : []), [query]);
-  const githubResults = useMemo(() => searchGithub(query), [query]);
-  const troubleshootingResults = useMemo(
-    () => (query.trim() ? searchScenarios(query, TROUBLESHOOTING_GUIDES).slice(0, 4) : []),
-    [query]
-  );
-  const practiceResults = useMemo(
-    () => (query.trim() ? searchPractice(query, PRACTICE_EXERCISES).slice(0, 3) : []),
-    [query]
-  );
-  const interviewResults = useMemo(
-    () => (query.trim() ? searchInterviewQuestions(query, 3) : []),
-    [query]
-  );
-  const pathResults = useMemo(
-    () => (query.trim() ? searchLearningPaths(query, 3) : []),
-    [query]
+  const results = useMemo(
+    () => (query.trim() ? unifiedSearch(query, { mode, limit: TOTAL_LIMIT }) : []),
+    [query, mode]
   );
 
-  const flatResults = useMemo(
-    () => [
-      ...commandResults.map((c) => ({ kind: 'command' as const, path: `/commands/git/${c.slug}`, label: c.command, sub: language === 'bn' && c.titleBn ? c.titleBn : c.title })),
-      ...troubleshootingResults.map((g) => ({ kind: 'troubleshooting' as const, path: `/troubleshooting/git/${g.slug}`, label: language === 'bn' ? g.title.bn : g.title.en, sub: language === 'bn' ? g.shortDescription.bn : g.shortDescription.en })),
-      ...lessonResults.map((l) => ({ kind: 'lesson' as const, path: `/learn/${l.subjectId}/${l.moduleSlug}/${l.lessonSlug}`, label: l.title, sub: l.id })),
-      ...githubResults.map((g) => ({ kind: 'lesson' as const, path: g.route, label: language === 'bn' ? g.titleBn : g.title, sub: language === 'bn' ? g.subtitleBn : g.subtitle })),
-      ...practiceResults.map((e) => ({ kind: 'practice' as const, path: `/practice/${e.id.split('.').pop()}`, label: language === 'bn' ? e.title.bn : e.title.en, sub: language === 'bn' ? e.objective.bn : e.objective.en })),
-      ...interviewResults.map((r) => ({ kind: 'interview' as const, path: `/interview/git/${r.question.category}`, label: language === 'bn' ? r.question.question.bn : r.question.question.en, sub: r.question.id })),
-      ...pathResults.map((r) => ({ kind: 'path' as const, path: `/learn/paths/${r.path.id}`, label: language === 'bn' ? r.path.title.bn : r.path.title.en, sub: language === 'bn' ? r.path.description.bn : r.path.description.en })),
-    ],
-    [commandResults, troubleshootingResults, lessonResults, githubResults, practiceResults, interviewResults, pathResults, language]
-  );
+  // Grouped for display, order preserved from ranking.
+  const groups = useMemo(() => {
+    const map = new Map<string, typeof results>();
+    for (const r of results) {
+      const list = map.get(r.item.type) ?? [];
+      if (list.length < GROUP_LIMIT) list.push(r);
+      map.set(r.item.type, list);
+    }
+    return [...map.entries()];
+  }, [results]);
+
+  const flatResults = useMemo(() => groups.flatMap(([, list]) => list), [groups]);
 
   useEffect(() => {
     if (isOpen) {
@@ -110,9 +59,10 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
 
   useEffect(() => {
     setActiveIndex(0);
-  }, [query]);
+  }, [query, mode]);
 
   const handleSelect = (path: string) => {
+    if (query.trim()) record(query);
     onClose();
     navigate(path);
   };
@@ -126,11 +76,17 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
       setActiveIndex((prev) => Math.max(prev - 1, 0));
     } else if (e.key === 'Enter') {
       const target = flatResults[activeIndex];
-      if (target) handleSelect(target.path);
+      if (target) handleSelect(target.item.route);
+      else if (query.trim()) {
+        record(query);
+        onClose();
+        navigate(`/search?q=${encodeURIComponent(query.trim())}`);
+      }
     }
   };
 
   const hasQuery = query.trim().length > 0;
+  const s = t.common.search;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="md" className="search-modal">
@@ -151,26 +107,87 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
         />
       </div>
 
+      <div style={{ display: 'flex', gap: 'var(--space-2)', padding: '0 var(--space-4)' }} role="group" aria-label={t.common.mode.activeMode}>
+        <Chip role="radio" aria-checked={mode === 'learning'} selected={mode === 'learning'} onClick={() => setMode('learning')}>
+          {s.modeLearning}
+        </Chip>
+        <Chip role="radio" aria-checked={mode === 'reference'} selected={mode === 'reference'} onClick={() => setMode('reference')}>
+          {s.modeReference}
+        </Chip>
+      </div>
+
       {!hasQuery && (
         <div className="search-modal__section">
-          <span className="label-sm search-modal__section-title">{t.common.search.quickNavLabel}</span>
+          {history.length > 0 && (
+            <>
+              <span className="label-sm search-modal__section-title">
+                <History size={13} style={{ verticalAlign: '-2px' }} /> {s.historyTitle}
+              </span>
+              <div className="search-modal__list">
+                {history.map((q) => (
+                  <button key={q} type="button" className="search-modal__item" onClick={() => setQuery(q)}>
+                    <div className="search-modal__item-left">
+                      <div className="search-modal__item-icon"><History size={16} /></div>
+                      <div><div className="search-modal__item-label body-md">{q}</div></div>
+                    </div>
+                  </button>
+                ))}
+                <button type="button" className="search-modal__item" onClick={clear} aria-label={s.clearHistory}>
+                  <div className="search-modal__item-left">
+                    <div className="search-modal__item-icon"><Trash2 size={16} /></div>
+                    <div><div className="search-modal__item-label body-md">{s.clearHistory}</div></div>
+                  </div>
+                </button>
+              </div>
+            </>
+          )}
+
+          <span className="label-sm search-modal__section-title" style={{ marginTop: 'var(--space-2)' }}>
+            <Sparkles size={13} style={{ verticalAlign: '-2px' }} /> {s.suggestionsTitle}
+          </span>
+          <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', padding: '0 var(--space-4)' }}>
+            {SUGGESTED_QUERIES.map((item) => (
+              <Chip key={item.query} onClick={() => setQuery(item.query)}>
+                <code>{item.label}</code>
+              </Chip>
+            ))}
+          </div>
+
+          <span className="label-sm search-modal__section-title" style={{ marginTop: 'var(--space-3)' }}>
+            <ListOrdered size={13} style={{ verticalAlign: '-2px' }} /> {s.popularTitle}
+          </span>
+          <div className="search-modal__list">
+            {POPULAR_TOPICS.slice(0, 4).map((topic) => (
+              <button key={topic.route} type="button" className="search-modal__item" onClick={() => handleSelect(topic.route)}>
+                <div className="search-modal__item-left">
+                  <div className="search-modal__item-icon"><BookOpen size={16} /></div>
+                  <div>
+                    <div className="search-modal__item-label body-md">{language === 'bn' ? topic.labelBn : topic.label}</div>
+                  </div>
+                </div>
+                <ArrowRight size={14} className="search-modal__item-arrow" />
+              </button>
+            ))}
+          </div>
+
+          <span className="label-sm search-modal__section-title" style={{ marginTop: 'var(--space-3)' }}>{s.quickNavLabel}</span>
           <div className="search-modal__list">
             <button type="button" className="search-modal__item" onClick={() => handleSelect('/commands')}>
               <div className="search-modal__item-left">
                 <div className="search-modal__item-icon"><Terminal size={16} /></div>
                 <div>
-                  <div className="search-modal__item-label body-md">{t.common.search.viewAllCommands}</div>
-                  <span className="search-modal__item-cat label-sm">{t.common.search.commandsGroup}</span>
+                  <div className="search-modal__item-label body-md">{s.viewAllCommands}</div>
+                  <span className="search-modal__item-cat label-sm">{s.commandsGroup}</span>
                 </div>
               </div>
               <ArrowRight size={14} className="search-modal__item-arrow" />
             </button>
-            <button type="button" className="search-modal__item" onClick={() => handleSelect('/learn')}>
+            <button type="button" className="search-modal__item" onClick={() => handleSelect('/learn/paths')}>
               <div className="search-modal__item-left">
                 <div className="search-modal__item-icon"><BookOpen size={16} /></div>
                 <div>
-                  <div className="search-modal__item-label body-md">Git Architecture & Plumbing</div>
-                  <span className="search-modal__item-cat label-sm">{t.common.search.lessonsGroup}</span>
+                  <div className="search-modal__item-label body-md">{t.nav.paths}</div>
+                  <span className="search-modal__item-cat label-sm">{t.pages.paths.subtitle}</span>
                 </div>
               </div>
               <ArrowRight size={14} className="search-modal__item-arrow" />
@@ -182,234 +199,77 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
       {hasQuery && (
         <div className="search-modal__section" id="search-modal-results" role="listbox">
           <span className="label-sm search-modal__section-title">
-            {t.common.search.resultsLabel} ({flatResults.length})
+            {s.resultsLabel} ({results.length})
           </span>
 
           <div className="search-modal__list">
-            {commandResults.length > 0 && (
-              <span className="label-sm search-modal__section-title">{t.common.search.commandsGroup}</span>
-            )}
-            {commandResults.map((item) => {
-              const globalIdx = flatResults.findIndex(
-                (r) => r.kind === 'command' && r.path === `/commands/git/${item.slug}`
-              );
-              return (
-                <button
-                  key={item.id}
-                  id={`search-result-${globalIdx}`}
-                  type="button"
-                  role="option"
-                  aria-selected={globalIdx === activeIndex}
-                  className="search-modal__item"
-                  style={globalIdx === activeIndex ? { backgroundColor: 'var(--md-sys-color-surface-container-high)' } : undefined}
-                  onMouseEnter={() => setActiveIndex(globalIdx)}
-                  onClick={() => handleSelect(`/commands/git/${item.slug}`)}
-                >
-                  <div className="search-modal__item-left">
-                    <div className="search-modal__item-icon"><Terminal size={16} /></div>
-                    <div>
-                      <div className="search-modal__item-label body-md font-mono">{item.command}</div>
-                      <span className="search-modal__item-cat label-sm">
-                        {language === 'bn' && item.titleBn ? item.titleBn : item.title}
-                      </span>
-                    </div>
-                  </div>
-                  <ArrowRight size={14} className="search-modal__item-arrow" />
-                </button>
-              );
-            })}
-
-            {troubleshootingResults.length > 0 && (
-              <span className="label-sm search-modal__section-title" style={{ marginTop: 'var(--space-2)' }}>
-                {t.common.search.troubleshootingGroup}
-              </span>
-            )}
-            {troubleshootingResults.map((guide) => {
-              const path = `/troubleshooting/git/${guide.slug}`;
-              const globalIdx = flatResults.findIndex((r) => r.kind === 'troubleshooting' && r.path === path);
-              return (
-                <button
-                  key={guide.id}
-                  id={`search-result-${globalIdx}`}
-                  type="button"
-                  role="option"
-                  aria-selected={globalIdx === activeIndex}
-                  className="search-modal__item"
-                  style={globalIdx === activeIndex ? { backgroundColor: 'var(--md-sys-color-surface-container-high)' } : undefined}
-                  onMouseEnter={() => setActiveIndex(globalIdx)}
-                  onClick={() => handleSelect(path)}
-                >
-                  <div className="search-modal__item-left">
-                    <div className="search-modal__item-icon"><Wrench size={16} /></div>
-                    <div>
-                      <div className="search-modal__item-label body-md">{language === 'bn' ? guide.title.bn : guide.title.en}</div>
-                      <span className="search-modal__item-cat label-sm">{language === 'bn' ? guide.shortDescription.bn : guide.shortDescription.en}</span>
-                    </div>
-                  </div>
-                  <ArrowRight size={14} className="search-modal__item-arrow" />
-                </button>
-              );
-            })}
-
-            {(lessonResults.length > 0 || githubResults.length > 0) && (
-              <span className="label-sm search-modal__section-title" style={{ marginTop: 'var(--space-2)' }}>
-                {t.common.search.lessonsGroup}
-              </span>
-            )}
-            {lessonResults.map((lesson) => {
-              const path = `/learn/${lesson.subjectId}/${lesson.moduleSlug}/${lesson.lessonSlug}`;
-              const globalIdx = flatResults.findIndex((r) => r.kind === 'lesson' && r.path === path);
-              return (
-                <button
-                  key={lesson.id}
-                  id={`search-result-${globalIdx}`}
-                  type="button"
-                  role="option"
-                  aria-selected={globalIdx === activeIndex}
-                  className="search-modal__item"
-                  style={globalIdx === activeIndex ? { backgroundColor: 'var(--md-sys-color-surface-container-high)' } : undefined}
-                  onMouseEnter={() => setActiveIndex(globalIdx)}
-                  onClick={() => handleSelect(path)}
-                >
-                  <div className="search-modal__item-left">
-                    <div className="search-modal__item-icon"><BookOpen size={16} /></div>
-                    <div>
-                      <div className="search-modal__item-label body-md">{lesson.title}</div>
-                      <span className="search-modal__item-cat label-sm">{lesson.id}</span>
-                    </div>
-                  </div>
-                  <ArrowRight size={14} className="search-modal__item-arrow" />
-                </button>
-              );
-            })}
-            {githubResults.map((entry) => {
-              const globalIdx = flatResults.findIndex((r) => r.kind === 'lesson' && r.path === entry.route);
-              return (
-                <button
-                  key={entry.id}
-                  id={`search-result-${globalIdx}`}
-                  type="button"
-                  role="option"
-                  aria-selected={globalIdx === activeIndex}
-                  className="search-modal__item"
-                  style={globalIdx === activeIndex ? { backgroundColor: 'var(--md-sys-color-surface-container-high)' } : undefined}
-                  onMouseEnter={() => setActiveIndex(globalIdx)}
-                  onClick={() => handleSelect(entry.route)}
-                >
-                  <div className="search-modal__item-left">
-                    <div className="search-modal__item-icon"><BookOpen size={16} /></div>
-                    <div>
-                      <div className="search-modal__item-label body-md">{language === 'bn' ? entry.titleBn : entry.title}</div>
-                      <span className="search-modal__item-cat label-sm">{language === 'bn' ? entry.subtitleBn : entry.subtitle}</span>
-                    </div>
-                  </div>
-                  <ArrowRight size={14} className="search-modal__item-arrow" />
-                </button>
-              );
-            })}
-
-            {practiceResults.length > 0 && (
-              <span className="label-sm search-modal__section-title" style={{ marginTop: 'var(--space-2)' }}>
-                {t.common.search.practiceGroup}
-              </span>
-            )}
-            {practiceResults.map((exercise) => {
-              const path = `/practice/${exercise.id.split('.').pop()}`;
-              const globalIdx = flatResults.findIndex((r) => r.kind === 'practice' && r.path === path);
-              return (
-                <button
-                  key={exercise.id}
-                  id={`search-result-${globalIdx}`}
-                  type="button"
-                  role="option"
-                  aria-selected={globalIdx === activeIndex}
-                  className="search-modal__item"
-                  style={globalIdx === activeIndex ? { backgroundColor: 'var(--md-sys-color-surface-container-high)' } : undefined}
-                  onMouseEnter={() => setActiveIndex(globalIdx)}
-                  onClick={() => handleSelect(path)}
-                >
-                  <div className="search-modal__item-left">
-                    <div className="search-modal__item-icon"><FlaskConical size={16} /></div>
-                    <div>
-                      <div className="search-modal__item-label body-md">{language === 'bn' ? exercise.title.bn : exercise.title.en}</div>
-                      <span className="search-modal__item-cat label-sm">{language === 'bn' ? exercise.objective.bn : exercise.objective.en}</span>
-                    </div>
-                  </div>
-                  <ArrowRight size={14} className="search-modal__item-arrow" />
-                </button>
-              );
-            })}
-
-            {interviewResults.length > 0 && (
-              <span className="label-sm search-modal__section-title" style={{ marginTop: 'var(--space-2)' }}>
-                {t.common.search.interviewGroup}
-              </span>
-            )}
-            {interviewResults.map(({ question }) => {
-              const path = `/interview/git/${question.category}`;
-              const globalIdx = flatResults.findIndex((r) => r.kind === 'interview' && r.sub === question.id);
-              return (
-                <button
-                  key={question.id}
-                  id={`search-result-${globalIdx}`}
-                  type="button"
-                  role="option"
-                  aria-selected={globalIdx === activeIndex}
-                  className="search-modal__item"
-                  style={globalIdx === activeIndex ? { backgroundColor: 'var(--md-sys-color-surface-container-high)' } : undefined}
-                  onMouseEnter={() => setActiveIndex(globalIdx)}
-                  onClick={() => handleSelect(path)}
-                >
-                  <div className="search-modal__item-left">
-                    <div className="search-modal__item-icon"><MessagesSquare size={16} /></div>
-                    <div>
-                      <div className="search-modal__item-label body-md">{language === 'bn' ? question.question.bn : question.question.en}</div>
-                      <span className="search-modal__item-cat label-sm">{question.id}</span>
-                    </div>
-                  </div>
-                  <ArrowRight size={14} className="search-modal__item-arrow" />
-                </button>
-              );
-            })}
-
-            {pathResults.length > 0 && (
-              <span className="label-sm search-modal__section-title" style={{ marginTop: 'var(--space-2)' }}>
-                {t.nav.paths}
-              </span>
-            )}
-            {pathResults.map(({ path }) => {
-              const target = `/learn/paths/${path.id}`;
-              const globalIdx = flatResults.findIndex((r) => r.kind === 'path' && r.path === target);
-              return (
-                <button
-                  key={path.id}
-                  id={`search-result-${globalIdx}`}
-                  type="button"
-                  role="option"
-                  aria-selected={globalIdx === activeIndex}
-                  className="search-modal__item"
-                  style={globalIdx === activeIndex ? { backgroundColor: 'var(--md-sys-color-surface-container-high)' } : undefined}
-                  onMouseEnter={() => setActiveIndex(globalIdx)}
-                  onClick={() => handleSelect(target)}
-                >
-                  <div className="search-modal__item-left">
-                    <div className="search-modal__item-icon"><Route size={16} /></div>
-                    <div>
-                      <div className="search-modal__item-label body-md">{language === 'bn' ? path.title.bn : path.title.en}</div>
-                      <span className="search-modal__item-cat label-sm">{language === 'bn' ? path.description.bn : path.description.en}</span>
-                    </div>
-                  </div>
-                  <ArrowRight size={14} className="search-modal__item-arrow" />
-                </button>
-              );
-            })}
+            {groups.map(([type, list]) => (
+              <React.Fragment key={type}>
+                <span className="label-sm search-modal__section-title" style={{ marginTop: 'var(--space-2)' }}>
+                  {typeLabel(type as (typeof SEARCH_RESULT_TYPES)[number], t)}
+                </span>
+                {list.map((r) => {
+                  const globalIdx = flatResults.indexOf(r);
+                  const Icon = TYPE_ICONS[r.item.type];
+                  return (
+                    <button
+                      key={r.item.id}
+                      id={`search-result-${globalIdx}`}
+                      type="button"
+                      role="option"
+                      aria-selected={globalIdx === activeIndex}
+                      className="search-modal__item"
+                      style={globalIdx === activeIndex ? { backgroundColor: 'var(--md-sys-color-surface-container-high)' } : undefined}
+                      onMouseEnter={() => setActiveIndex(globalIdx)}
+                      onClick={() => handleSelect(r.item.route)}
+                    >
+                      <div className="search-modal__item-left">
+                        <div className="search-modal__item-icon"><Icon size={16} /></div>
+                        <div>
+                          <div className="search-modal__item-label body-md">
+                            {r.item.type === 'command' ? (
+                              <code>{language === 'bn' ? r.item.title.bn : r.item.title.en}</code>
+                            ) : (
+                              <>{language === 'bn' ? r.item.title.bn : r.item.title.en}</>
+                            )}
+                          </div>
+                          <span className="search-modal__item-cat label-sm">
+                            {language === 'bn' ? r.item.description.bn : r.item.description.en}
+                          </span>
+                        </div>
+                      </div>
+                      <ArrowRight size={14} className="search-modal__item-arrow" />
+                    </button>
+                  );
+                })}
+              </React.Fragment>
+            ))}
 
             {flatResults.length === 0 && (
               <div className="search-modal__empty body-sm">
-                {t.common.search.emptyState}
+                {s.emptyState}
               </div>
             )}
           </div>
+
+          {results.length > 0 && (
+            <button
+              type="button"
+              className="search-modal__item"
+              style={{ marginTop: 'var(--space-2)', fontWeight: 600 }}
+              onClick={() => {
+                record(query);
+                onClose();
+                navigate(`/search?q=${encodeURIComponent(query.trim())}&mode=${mode}`);
+              }}
+            >
+              <div className="search-modal__item-left">
+                <div className="search-modal__item-icon"><Search size={16} /></div>
+                <div><div className="search-modal__item-label body-md">{s.seeAllResults} ({results.length})</div></div>
+              </div>
+              <ArrowRight size={14} className="search-modal__item-arrow" />
+            </button>
+          )}
         </div>
       )}
     </Modal>

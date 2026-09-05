@@ -35,6 +35,25 @@ body {
   outline-offset: 2px;
 }
 
+/* Skip link: visually hidden until keyboard focus */
+.skip-link {
+  position: absolute;
+  left: var(--space-4);
+  top: -100px;
+  z-index: 1000;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  font-weight: 600;
+  transition: top var(--motion-duration-short) var(--motion-easing-standard);
+}
+
+.skip-link:focus-visible {
+  top: var(--space-2);
+  outline-color: var(--md-sys-color-on-primary);
+}
+
 /* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 8px;

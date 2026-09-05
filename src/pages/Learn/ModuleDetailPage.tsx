@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { setPageMeta } from '@/utils/pageMeta';
 import { useParams, useNavigate } from 'react-router-dom';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Breadcrumb } from '@/components/navigation/Breadcrumb/Breadcrumb';
@@ -23,6 +24,20 @@ export const ModuleDetailPage: React.FC = () => {
   const navigate = useNavigate();
 
   const moduleData = getModuleBySlug(subjectId ?? 'git', moduleId ?? '');
+  const metaTitle = moduleData
+    ? language === 'bn'
+      ? moduleData.titleBn ?? moduleData.title
+      : moduleData.title
+    : t.pages.notFound.title;
+  const metaDescription = moduleData
+    ? language === 'bn'
+      ? moduleData.descriptionBn ?? moduleData.description
+      : moduleData.description
+    : undefined;
+
+  useEffect(() => {
+    setPageMeta({ title: metaTitle, description: metaDescription });
+  }, [metaTitle, metaDescription]);
 
   if (!moduleData) {
     return (

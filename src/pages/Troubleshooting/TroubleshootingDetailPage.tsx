@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { setPageMeta } from '@/utils/pageMeta';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Breadcrumb } from '@/components/navigation/Breadcrumb/Breadcrumb';
@@ -62,9 +63,10 @@ export const TroubleshootingDetailPage: React.FC = () => {
   }, [scenarioSlug]);
 
   const pageTitle = guide ? (isBn ? guide.title.bn : guide.title.en) : ts.notFound;
+  const pageDescription = guide ? (isBn ? guide.shortDescription.bn : guide.shortDescription.en) : ts.notFoundHint;
   useEffect(() => {
-    document.title = `${pageTitle} | GitVerse`;
-  }, [pageTitle]);
+    setPageMeta({ title: pageTitle, description: pageDescription });
+  }, [pageTitle, pageDescription]);
 
   if (!guide) {
     return (

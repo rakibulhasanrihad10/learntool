@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { setPageMeta } from '@/utils/pageMeta';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, CheckCircle2, Code2, FlaskConical, Target } from 'lucide-react';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
@@ -24,6 +25,10 @@ function normalize(value: string): string {
 
 export const PracticePage: React.FC = () => {
   const { language, t } = useTranslation();
+
+  useEffect(() => {
+    setPageMeta({ title: t.pages.practice.title, description: t.pages.practice.subtitle });
+  }, [t.pages.practice.title, t.pages.practice.subtitle]);
   const isBn = language === 'bn';
   const p = t.pages.practice;
   const navigate = useNavigate();

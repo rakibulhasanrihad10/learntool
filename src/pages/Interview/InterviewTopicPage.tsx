@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { setPageMeta } from '@/utils/pageMeta';
 import { Link, useParams } from 'react-router-dom';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Breadcrumb } from '@/components/navigation/Breadcrumb/Breadcrumb';
@@ -10,7 +11,6 @@ import { useGamification } from '@/features/gamification/gamificationContext';
 import {
   INTERVIEW_CATEGORIES,
   filterInterviewQuestions,
-  getAdjacentQuestions,
   getQuestionsByCategory,
 } from '@/content/interview';
 import { InterviewCategory } from '@/types/interview';
@@ -57,10 +57,11 @@ export const InterviewTopicPage: React.FC = () => {
   );
 
   useEffect(() => {
-    document.title = category
-      ? `${isBn ? category.title.bn : category.title.en} | ${p.title} | GitVerse`
-      : `${p.notFound} | GitVerse`;
-  }, [category, isBn, p.title, p.notFound]);
+    setPageMeta({
+      title: category ? (isBn ? category.title.bn : category.title.en) : p.notFound,
+      description: category ? (isBn ? category.blurb.bn : category.blurb.en) : p.notFoundHint,
+    });
+  }, [category, isBn, p.notFound, p.notFoundHint]);
 
   if (!category) {
     return (
@@ -93,8 +94,6 @@ export const InterviewTopicPage: React.FC = () => {
   const idx = INTERVIEW_CATEGORIES.findIndex((c) => c.id === category.id);
   const prevCat = idx > 0 ? INTERVIEW_CATEGORIES[idx - 1] : undefined;
   const nextCat = idx < INTERVIEW_CATEGORIES.length - 1 ? INTERVIEW_CATEGORIES[idx + 1] : undefined;
-  const sample = filtered[0] ? getAdjacentQuestions(filtered[0].id) : undefined;
-  void sample;
 
   const reviewedCount = questions.filter((q) => progress[q.id]?.reviewed).length;
 

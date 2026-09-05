@@ -18,18 +18,27 @@ export function useClipboard({ timeout = 2000 }: UseClipboardOptions = {}) {
 
         if (navigator.clipboard && window.isSecureContext) {
           await navigator.clipboard.writeText(text);
-        } else {
-          // Fallback for non-secure contexts or legacy browsers
+        } else if (
+          typeof document.execCommand === 'function' &&
+          typeof document.createElement === 'function'
+        ) {
+          // Fallback for non-secure contexts or legacy browsers.
+          // execCommand reports success synchronously — honor a `false`
+          // return instead of claiming a copy that never happened.
           const textArea = document.createElement('textarea');
           textArea.value = text;
+          textArea.setAttribute('readonly', '');
           textArea.style.position = 'fixed';
           textArea.style.left = '-999999px';
           textArea.style.top = '-999999px';
           document.body.appendChild(textArea);
           textArea.focus();
           textArea.select();
-          document.execCommand('copy');
+          const succeeded = document.execCommand('copy');
           textArea.remove();
+          if (!succeeded) throw new Error('Fallback copy reported failure');
+        } else {
+          throw new Error('No clipboard API available');
         }
 
         setCopied(true);

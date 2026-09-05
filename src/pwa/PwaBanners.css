@@ -1,0 +1,60 @@
+/* PWA banners: fixed bottom stack, clear of the mobile nav, theme tokens only. */
+.pwa-banners {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(var(--mobile-nav-height, 64px) + 12px);
+  z-index: var(--z-toast, 90);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: min(480px, calc(100vw - var(--space-6)));
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@media (min-width: 1024px) {
+  .pwa-banners {
+    left: auto;
+    right: var(--space-4);
+    transform: none;
+    bottom: var(--space-4);
+  }
+}
+
+.pwa-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  box-shadow: var(--elevation-2, 0 4px 12px rgba(0, 0, 0, 0.15));
+}
+
+.pwa-banner__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--md-sys-color-primary);
+}
+
+.pwa-banner__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.pwa-banner__body {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.pwa-banner__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex-shrink: 0;
+}

@@ -9,6 +9,8 @@ dist-ssr/
 *.local
 .env
 .env.*
+# ...except the documented example, which must be committable.
+!.env.example
 
 # Logs & cache
 npm-debug.log*

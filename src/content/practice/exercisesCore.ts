@@ -894,4 +894,160 @@ export const CORE_EXERCISES: PracticeExercise[] = [
     relatedScenarios: [],
     relatedWorkflows: [],
   },
+  {
+    id: 'git.practice.stash-changes',
+    category: 'everyday',
+    difficulty: 'beginner',
+    order: 31,
+    estimatedMinutes: 8,
+    xpReward: 10,
+    tags: ['stash', 'shelve', 'wip', 'switch'],
+    keywords: ['stash changes', 'park work', 'temporarily save', 'stash pop apply'],
+    title: { en: 'Shelve Work with Stash', bn: 'স্ট্যাশে কাজ সরিয়ে রাখুন' },
+    description: {
+      en: 'Park mid-edit work on a named shelf, switch context safely, then bring it back.',
+      bn: 'এডিটের মাঝে কাজ নামসহ তাকে তুলুন, নিরাপদে প্রসঙ্গ বদলান, তারপর ফিরিয়ে আনুন।',
+    },
+    objective: {
+      en: 'Use stash to park work and restore it with pop.',
+      bn: 'কাজ পার্ক করতে stash ও ফেরাতে pop ব্যবহার করুন।',
+    },
+    tasks: [
+      {
+        id: 't1',
+        kind: 'select',
+        prompt: {
+          en: 'Production is broken, main needs a hotfix, but your feature edits are half-done and uncommitted. What is the safe move?',
+          bn: 'প্রোডাকশন ভাঙা, main-এ হটফিক্স দরকার, কিন্তু ফিচার এডিট অর্ধেক ও আনকমিটেড। নিরাপদ চাল কী?',
+        },
+        explanation: {
+          en: 'Stash shelves the half-done edits so the tree goes clean; you switch, fix, return, and pop. Committing half-baked work instead would pollute history.',
+          bn: 'স্ট্যাশ অর্ধেক এডিট তাকে তোলে যাতে ট্রি পরিষ্কার হয়; সুইচ করে ঠিক করে ফিরে pop করুন। বদলে আধা-সেদ্ধ কাজ কমিট করলে হিস্ট্রি দূষিত হতো।',
+        },
+        options: [
+          { id: 'stash', label: 'git stash push -m "wip"', correct: true },
+          { id: 'commit', label: 'git commit -m "wip"', correct: false },
+          { id: 'hard', label: 'git restore .', correct: false },
+          { id: 'switch', label: 'git switch main', correct: false },
+        ],
+      },
+      {
+        id: 't2',
+        kind: 'order',
+        prompt: {
+          en: 'Order the safe context-switch: shelve, move, fix, return, restore.',
+          bn: 'নিরাপদ প্রসঙ্গ-বদল ক্রমে সাজান: সরানো, যাওয়া, ঠিক, ফেরা, ফেরানো।',
+        },
+        explanation: {
+          en: 'Shelve before you move, and restore only after you are back on the original branch.',
+          bn: 'সরার আগে তাকে তুলুন, মূল ব্রাঞ্চে ফিরেই ফিরিয়ে আনুন।',
+        },
+        items: [
+          { id: 's1', label: 'Stash the edits', labelBn: 'এডিট স্ট্যাশ করুন' },
+          { id: 's2', label: 'Switch to main', labelBn: 'main-এ যান' },
+          { id: 's3', label: 'Fix and commit the hotfix', labelBn: 'হটফিক্স ঠিক করে কমিট করুন' },
+          { id: 's4', label: 'Switch back to feature', labelBn: 'ফিচারে ফিরুন' },
+          { id: 's5', label: 'Pop the stash', labelBn: 'স্ট্যাশ pop করুন' },
+        ],
+        correctOrder: ['s1', 's2', 's3', 's4', 's5'],
+      },
+      {
+        id: 't3',
+        kind: 'select',
+        prompt: {
+          en: 'The restored edits conflict with the hotfix. Which choice keeps a backup copy on the stack?',
+          bn: 'ফেরানো এডিট হটফিক্সের সাথে কনফ্লিক্ট করছে। কোন পছন্দ স্ট্যাকে ব্যাকআপ রাখে?',
+        },
+        explanation: {
+          en: 'pop restores AND deletes the stash; apply restores but keeps the backup. Before anything risky, apply first.',
+          bn: 'pop ফিরিয়ে স্ট্যাশ মুছে দেয়; apply ফিরিয়ে ব্যাকআপ রাখে। ঝুঁকিপূর্ণ কিছুর আগে apply করুন।',
+        },
+        options: [
+          { id: 'apply', label: 'git stash apply', labelBn: 'git stash apply', correct: true },
+          { id: 'pop', label: 'git stash pop', labelBn: 'git stash pop', correct: false },
+          { id: 'drop', label: 'git stash drop', labelBn: 'git stash drop', correct: false },
+          { id: 'clear', label: 'git stash clear', labelBn: 'git stash clear', correct: false },
+        ],
+      },
+    ],
+    hints: [
+      {
+        en: 'Stash is a shelf, not storage: park briefly, then pop or drop the same day.',
+        bn: 'স্ট্যাশ তাক, গুদাম নয়: অল্পক্ষণ পার্ক করে সেদিনই pop বা drop করুন।',
+      },
+    ],
+    prerequisites: ['git.practice.switch-branches'],
+    relatedCommands: ['git.stash', 'git.status', 'git.switch'],
+    relatedLessons: ['git.fundamentals.working-directory', 'git.fundamentals.staging-area'],
+    relatedScenarios: [],
+    relatedWorkflows: [],
+  },
+  {
+    id: 'git.practice.configure-identity',
+    category: 'fundamentals',
+    difficulty: 'beginner',
+    order: 32,
+    estimatedMinutes: 6,
+    xpReward: 10,
+    tags: ['config', 'identity', 'setup', 'global'],
+    keywords: ['git config', 'user name email', 'global local', 'first setup'],
+    title: { en: 'Configure Your Git Identity', bn: 'গিট পরিচয় কনফিগার করুন' },
+    description: {
+      en: 'Set the name and email Git stamps on your commits, and learn which level each setting lives at.',
+      bn: 'কমিটে ছাপা নাম ও ইমেইল সেট করুন, এবং প্রতিটি সেটিং কোন স্তরে থাকে শিখুন।',
+    },
+    objective: {
+      en: 'Set identity with --global and explain config precedence.',
+      bn: '--global-এ পরিচয় সেট করে কনফিগ অগ্রাধিকার ব্যাখ্যা করুন।',
+    },
+    tasks: [
+      {
+        id: 't1',
+        kind: 'select',
+        prompt: {
+          en: 'On a brand-new laptop, what must happen before your first commit?',
+          bn: 'একদম নতুন ল্যাপটপে প্রথম কমিটের আগে কী হতেই হবে?',
+        },
+        explanation: {
+          en: 'Every commit permanently stamps an author name and email. Set both with --global before committing anywhere.',
+          bn: 'প্রতিটি কমিটে স্থায়ীভাবে লেখকের নাম ও ইমেইল ছাপা হয়। কোথাও কমিটের আগে --global-এ দুটোই সেট করুন।',
+        },
+        options: [
+          { id: 'config', label: 'git config --global user.name + user.email', correct: true },
+          { id: 'init', label: 'git init', correct: false },
+          { id: 'clone', label: 'git clone <url>', correct: false },
+          { id: 'nothing', label: 'Nothing — Git invents an identity', labelBn: 'কিছু না — গিট পরিচয় বানিয়ে নেয়', correct: false },
+        ],
+      },
+      {
+        id: 't2',
+        kind: 'order',
+        prompt: {
+          en: 'Order config levels from weakest to strongest (which wins when all three set the same key?).',
+          bn: 'দুর্বল থেকে শক্তিশালী কনফিগ স্তর সাজান (তিনটিতে একই key থাকলে কে জেতে?)।',
+        },
+        explanation: {
+          en: 'System is the base default, --global personalizes your machine, and --local (the repository) wins every disagreement.',
+          bn: 'System ভিত্তি ডিফল্ট, --global মেশিন ব্যক্তিগত করে, এবং --local (রিপোজিটরি) প্রতিটি দ্বিমতে জেতে।',
+        },
+        items: [
+          { id: 'c1', label: 'system', labelBn: 'system' },
+          { id: 'c2', label: 'global (~/.gitconfig)', labelBn: 'global (~/.gitconfig)' },
+          { id: 'c3', label: 'local (.git/config)', labelBn: 'local (.git/config)' },
+        ],
+        correctOrder: ['c1', 'c2', 'c3'],
+      },
+    ],
+    hints: [
+      {
+        en: 'Local beats global beats system — the closest file to your work wins.',
+        bn: 'Local global-কে, global system-কে হারায় — কাজের নিকটতম ফাইল জেতে।',
+      },
+    ],
+    prerequisites: ['git.practice.initialize-repository'],
+    relatedCommands: ['git.config', 'git.init'],
+    relatedLessons: ['git.fundamentals.repository'],
+    relatedScenarios: [],
+    relatedWorkflows: [],
+  },
 ];

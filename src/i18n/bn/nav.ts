@@ -2,6 +2,7 @@ export const bnNav = {
   home: 'ড্যাশবোর্ড',
   learn: 'লার্নিং ট্র্যাকস',
   paths: 'লার্নিং পাথ',
+  progress: 'অগ্রগতি',
   commands: 'কমান্ড ইনডেক্স',
   workflows: 'বাস্তবমুখী ওয়ার্কফ্লো',
   troubleshooting: 'ট্রাবলশুটিং ও ফিক্স',

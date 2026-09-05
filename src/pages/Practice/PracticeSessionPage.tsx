@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { setPageMeta } from '@/utils/pageMeta';
 import { Link, useParams } from 'react-router-dom';
 import { BookOpen } from 'lucide-react';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
@@ -23,9 +24,10 @@ export const PracticeSessionPage: React.FC = () => {
   }, [exerciseId]);
 
   const pageTitle = exercise ? (isBn && exercise.title.bn ? exercise.title.bn : exercise.title.en) : p.exerciseNotFound;
+  const pageDescription = exercise ? (isBn ? exercise.description.bn : exercise.description.en) : p.exerciseNotFoundHint;
   useEffect(() => {
-    document.title = `${pageTitle} | GitVerse`;
-  }, [pageTitle]);
+    setPageMeta({ title: pageTitle, description: pageDescription });
+  }, [pageTitle, pageDescription]);
 
   if (!exercise) {
     return (

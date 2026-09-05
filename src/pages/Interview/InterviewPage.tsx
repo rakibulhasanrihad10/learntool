@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { setPageMeta } from '@/utils/pageMeta';
 import { Link } from 'react-router-dom';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Card } from '@/components/common/Card/Card';
@@ -17,8 +18,8 @@ export const InterviewPage: React.FC = () => {
   const readiness = computeReadiness(progress, mockHistory);
 
   useEffect(() => {
-    document.title = `${t.pages.interview.title} | GitVerse`;
-  }, [t.pages.interview.title]);
+    setPageMeta({ title: t.pages.interview.title, description: t.pages.interview.subtitle });
+  }, [t.pages.interview.title, t.pages.interview.subtitle]);
 
   return (
     <PageContainer maxWidth="lg" className="animate-fade-in">

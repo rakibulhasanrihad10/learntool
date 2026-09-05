@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
+import { setPageMeta } from '@/utils/pageMeta';
 import { Link, useParams } from 'react-router-dom';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Breadcrumb } from '@/components/navigation/Breadcrumb/Breadcrumb';
@@ -34,7 +35,7 @@ export const PathDetailPage: React.FC = () => {
   const isBn = language === 'bn';
   const p = t.pages.paths;
   const signals = useLearningSignals();
-  const { awardXp, grantAchievements } = useGamification();
+  const { awardXp, grantAchievements, progress: gameProgress } = useGamification();
   const celebratedRef = useRef<string | null>(null);
 
   const path = pathId ? getLearningPath(pathId) : undefined;
@@ -51,19 +52,27 @@ export const PathDetailPage: React.FC = () => {
   }, [pathId]);
 
   useEffect(() => {
-    document.title = path
-      ? `${isBn ? path.title.bn : path.title.en} | GitVerse`
-      : `${p.notFound} | GitVerse`;
-  }, [path, isBn, p.notFound]);
+    setPageMeta({
+      title: path ? (isBn ? path.title.bn : path.title.en) : p.notFound,
+      description: path ? (isBn ? path.description.bn : path.description.en) : p.notFoundHint,
+    });
+  }, [path, isBn, p.notFound, p.notFoundHint]);
 
-  // Path completion reward — existing-compatible XP + achievement, once.
+  // Path completion reward — existing-compatible XP + achievement, once
+  // ever (not once per mount). The achievement id doubles as the durable
+  // "already celebrated" marker: it persists in gamification progress while
+  // the ref only guards double-firing within one mount.
   useEffect(() => {
     if (!path || !summary?.complete || celebratedRef.current === path.id) return;
+    const achievementId = pathCompletionAchievementId(path.id);
+    if (achievementId && gameProgress.unlockedAchievementIds.includes(achievementId)) {
+      celebratedRef.current = path.id;
+      return;
+    }
     celebratedRef.current = path.id;
     awardXp(150, `path:${path.id}`);
-    const achievementId = pathCompletionAchievementId(path.id);
     if (achievementId) grantAchievements([achievementId]);
-  }, [path, summary, awardXp, grantAchievements]);
+  }, [path, summary, awardXp, grantAchievements, gameProgress.unlockedAchievementIds]);
 
   if (!path || !summary) {
     return (

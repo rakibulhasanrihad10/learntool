@@ -1,4 +1,8 @@
 import { describe, expect, it } from 'vitest';
+import { GIT_COMMANDS, TROUBLESHOOTING_GUIDES } from '@/content/git';
+import { ALL_MODULES } from '@/content/github';
+import { getExerciseById } from '@/content/practice';
+import { getCommandById } from '@/utils/commandSearch';
 import { INTERVIEW_CATEGORIES, INTERVIEW_QUESTIONS } from '@/content/interview';
 import { selectMockQuestions } from './mock';
 import { scoreMock, scoreObjective, scoreOpen } from './scoring';
@@ -7,13 +11,13 @@ import { getUnlockedAchievementsForInterview } from './achievements';
 import { InterviewProgress } from '@/types/interview';
 
 describe('interview question bank', () => {
-  it('has 80 questions with unique stable ids and orders 1–80', () => {
-    expect(INTERVIEW_QUESTIONS).toHaveLength(80);
+  it('has 86 questions with unique stable ids and orders 1–86', () => {
+    expect(INTERVIEW_QUESTIONS).toHaveLength(86);
     const ids = INTERVIEW_QUESTIONS.map((q) => q.id);
-    expect(new Set(ids).size).toBe(80);
+    expect(new Set(ids).size).toBe(86);
     for (const id of ids) expect(id.startsWith('git.interview.')).toBe(true);
     const orders = INTERVIEW_QUESTIONS.map((q) => q.order).sort((a, b) => a - b);
-    expect(orders).toEqual(Array.from({ length: 80 }, (_, i) => i + 1));
+    expect(orders).toEqual(Array.from({ length: 86 }, (_, i) => i + 1));
   });
 
   it('covers all 7 categories with bilingual copy', () => {
@@ -115,13 +119,34 @@ describe('readiness', () => {
   };
   it('progresses beginner → developing → ready → advanced', () => {
     expect(computeReadiness({}, []).level).toBe('beginner');
-    expect(computeReadiness(reviewed(16), []).level).toBe('developing');
-    expect(computeReadiness(reviewed(40), []).level).toBe('ready');
-    const advanced = computeReadiness(reviewed(56), [
+    expect(computeReadiness(reviewed(18), []).level).toBe('developing');
+    expect(computeReadiness(reviewed(43), []).level).toBe('ready');
+    const advanced = computeReadiness(reviewed(61), [
       { id: 'm1', finishedAt: new Date().toISOString(), config: { difficulty: 'mixed', focus: 'mixed', count: 10 }, score: 90, total: 10 },
     ]);
     expect(advanced.level).toBe('advanced');
     expect(advanced.weakCategories).toHaveLength(2);
+  });
+});
+
+describe('interview relationships resolve to real content', () => {
+  const lessonIds = new Set(ALL_MODULES.flatMap((m) => m.lessons.map((l) => l.id)));
+  const guideIds = new Set(TROUBLESHOOTING_GUIDES.map((g) => g.id));
+  it('links every question to existing commands, lessons, guides, and exercises', () => {
+    for (const q of INTERVIEW_QUESTIONS) {
+      for (const id of q.relatedCommands) {
+        expect(getCommandById(GIT_COMMANDS, id), `${q.id} → ${id}`).toBeDefined();
+      }
+      for (const id of [...q.relatedLessons, ...q.relatedInternals]) {
+        expect(lessonIds.has(id), `${q.id} → ${id}`).toBe(true);
+      }
+      for (const id of q.relatedTroubleshooting) {
+        expect(guideIds.has(id), `${q.id} → ${id}`).toBe(true);
+      }
+      for (const id of q.relatedPractice) {
+        expect(getExerciseById(id), `${q.id} → ${id}`).toBeDefined();
+      }
+    }
   });
 });
 

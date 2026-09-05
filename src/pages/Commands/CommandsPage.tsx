@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { setPageMeta } from '@/utils/pageMeta';
 import { Link } from 'react-router-dom';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { CommandCard } from '@/components/data-display/CommandCard/CommandCard';
@@ -21,6 +22,10 @@ export const CommandsPage: React.FC = () => {
   const [filterQuery, setFilterQuery] = useState<string>('');
 
   const isBn = language === 'bn';
+
+  useEffect(() => {
+    setPageMeta({ title: t.pages.commands.title, description: t.pages.commands.subtitle });
+  }, [t.pages.commands.title, t.pages.commands.subtitle]);
 
   const categories = ['All', 'setup', 'daily', 'inspection', 'branching', 'remote', 'recovery', 'advanced'];
   const difficulties: DifficultyFilter[] = ['All', 'beginner', 'intermediate', 'advanced'];

@@ -15,8 +15,8 @@ import { ASSESSMENT_ITEMS, PRACTICE_EXERCISES, getExerciseById } from './index';
 import { PracticeExercise } from '@/types/practice';
 
 describe('practice curriculum — structure', () => {
-  it('ships thirty exercises with stable unique ids and sequential order', () => {
-    expect(PRACTICE_EXERCISES).toHaveLength(30);
+  it('ships thirty-three exercises with stable unique ids and sequential order', () => {
+    expect(PRACTICE_EXERCISES).toHaveLength(33);
     const ids = PRACTICE_EXERCISES.map((e) => e.id);
     expect(new Set(ids).size).toBe(ids.length);
     expect(ids.every((id) => id.startsWith('git.practice.'))).toBe(true);

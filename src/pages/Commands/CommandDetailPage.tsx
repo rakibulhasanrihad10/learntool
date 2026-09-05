@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { setPageMeta } from '@/utils/pageMeta';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Breadcrumb } from '@/components/navigation/Breadcrumb/Breadcrumb';
@@ -50,8 +51,11 @@ export const CommandDetailPage: React.FC = () => {
   }, [commandSlug]);
 
   useEffect(() => {
-    document.title = command ? `${command.command} — GitVerse` : 'Command not found — GitVerse';
-  }, [command]);
+    setPageMeta({
+      title: command ? command.command : 'Command not found',
+      description: command ? (isBn && command.whatItDoesBn ? command.whatItDoesBn : command.whatItDoes) : undefined,
+    });
+  }, [command, isBn]);
 
   if (!command) {
     return (

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { setPageMeta } from '@/utils/pageMeta';
 import { Link } from 'react-router-dom';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Breadcrumb } from '@/components/navigation/Breadcrumb/Breadcrumb';
@@ -38,8 +39,8 @@ export const InterviewMockPage: React.FC = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = `${p.mockTitle} | GitVerse`;
-  }, [p.mockTitle]);
+    setPageMeta({ title: p.mockTitle, description: p.mockSubtitle });
+  }, [p.mockTitle, p.mockSubtitle]);
 
   const readiness = useMemo(() => computeReadiness(progress, mockHistory), [progress, mockHistory]);
   const current = questions[index];

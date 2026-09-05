@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { setPageMeta } from '@/utils/pageMeta';
 import { useNavigate } from 'react-router-dom';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Card } from '@/components/common/Card/Card';
@@ -11,6 +12,10 @@ import { GIT_WORKFLOWS } from '@/content/git';
 
 export const WorkflowsPage: React.FC = () => {
   const { language, t } = useTranslation();
+
+  useEffect(() => {
+    setPageMeta({ title: t.pages.workflows.title, description: t.pages.workflows.subtitle });
+  }, [t.pages.workflows.title, t.pages.workflows.subtitle]);
   const navigate = useNavigate();
   const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Button } from '@/components/common/Button/Button';
-import { GitFork, ArrowLeft, BookOpen } from 'lucide-react';
+import { GitFork, ArrowLeft, BookOpen, Terminal, Search } from 'lucide-react';
 import { useTranslation } from '@/i18n/context';
 import { useNavigate } from 'react-router-dom';
 
@@ -59,6 +59,22 @@ export const NotFoundPage: React.FC = () => {
             onClick={() => navigate('/learn')}
           >
             {t.pages.notFound.exploreLearn}
+          </Button>
+          <Button
+            variant="outlined"
+            size="md"
+            iconLeft={<Terminal size={16} />}
+            onClick={() => navigate('/commands')}
+          >
+            {t.pages.notFound.exploreCommands}
+          </Button>
+          <Button
+            variant="text"
+            size="md"
+            iconLeft={<Search size={16} />}
+            onClick={() => navigate('/search')}
+          >
+            {t.pages.notFound.openSearch}
           </Button>
         </div>
       </div>
