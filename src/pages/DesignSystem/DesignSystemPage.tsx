@@ -500,7 +500,7 @@ export const DesignSystemPage: React.FC = () => {
                 ]}
               />
 
-              <KeyConcept title="The Three Trees Mental Model" conceptKey="CORE_CONCEPT">
+              <KeyConcept title="The Three Trees Mental Model" conceptKey="CORE_CONCEPT" showBadge>
                 Git manages three distinct environments: your Working Directory (where you edit), the
                 Staging Area (where you prepare upcoming commits), and the Git Directory (.git) where
                 permanent snapshot records live.

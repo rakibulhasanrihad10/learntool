@@ -178,9 +178,11 @@ export const ModuleDetailPage: React.FC = () => {
                       <h3 className="title-sm" style={{ color: 'var(--md-sys-color-on-surface)' }}>
                         {lessonTitle}
                       </h3>
-                      <p className="body-xs" style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>
-                        {lessonSummary}
-                      </p>
+                      {lessonSummary && (
+                        <p className="body-xs" style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>
+                          {lessonSummary}
+                        </p>
+                      )}
                     </div>
                   </div>
 

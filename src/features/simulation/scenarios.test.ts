@@ -97,6 +97,9 @@ describe('scenarios — bilingual content resolution', () => {
     expect(scenarioForLesson('git.fundamentals.remote-repository')).toBe('fetch-pull');
     expect(scenarioForLesson('git.fundamentals.branch')).toBe('merge');
     expect(scenarioForLesson('git.fundamentals.staging-area')).toBe('everyday');
+    expect(scenarioForLesson('git.fundamentals.what-is-git')).toBeNull();
+    expect(scenarioForLesson('git.fundamentals.git-vs-github')).toBeNull();
+    expect(scenarioForLesson('git.fundamentals.repository')).toBeNull();
     expect(demoForCommand('rebase')?.scenario).toBe('rebase');
     expect(demoForCommand('fetch')?.scenario).toBe('fetch-pull');
     expect(demoForCommand('status')?.scenario).toBe('everyday');

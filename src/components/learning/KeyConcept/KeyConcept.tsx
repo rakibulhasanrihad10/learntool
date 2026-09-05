@@ -8,6 +8,7 @@ export interface KeyConceptProps {
   children: React.ReactNode;
   conceptKey?: string;
   className?: string;
+  showBadge?: boolean;
 }
 
 export const KeyConcept: React.FC<KeyConceptProps> = ({
@@ -15,14 +16,17 @@ export const KeyConcept: React.FC<KeyConceptProps> = ({
   children,
   conceptKey,
   className,
+  showBadge = false,
 }) => {
   return (
     <aside className={cn('gv-key-concept', className)}>
-      <div className="gv-key-concept__badge">
-        <Sparkles size={14} aria-hidden="true" />
-        <span className="label-sm">Key Concept</span>
-        {conceptKey && <span className="gv-key-concept__tag font-mono">{conceptKey}</span>}
-      </div>
+      {showBadge && (
+        <div className="gv-key-concept__badge">
+          <Sparkles size={14} aria-hidden="true" />
+          <span className="label-sm">Key Concept</span>
+          {conceptKey && <span className="gv-key-concept__tag font-mono">{conceptKey}</span>}
+        </div>
+      )}
       <h3 className="gv-key-concept__title title-md">{title}</h3>
       <div className="gv-key-concept__content body-md">{children}</div>
     </aside>

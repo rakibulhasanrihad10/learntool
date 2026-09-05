@@ -13,7 +13,6 @@ import { useGamification } from '@/features/gamification/useGamification';
 
 // UI & Learning Components
 import { LessonHeader } from '@/components/learning/LessonHeader/LessonHeader';
-import { LearningObjective } from '@/components/learning/LearningObjective/LearningObjective';
 import { KeyConcept } from '@/components/learning/KeyConcept/KeyConcept';
 import { TakeawayCard } from '@/components/learning/TakeawayCard/TakeawayCard';
 import { PreviousNextNavigation } from '@/components/learning/PreviousNextNavigation/PreviousNextNavigation';
@@ -36,18 +35,12 @@ import {
 } from 'lucide-react';
 import { scenarioForLesson } from '@/features/simulation/scenarios';
 import { setPageMeta } from '@/utils/pageMeta';
-import { getPathsForContent } from '@/content/paths';
-import { useLearningSignals } from '@/features/paths/signals';
-import { summarizePath } from '@/features/paths/progress';
-import { getWhatNextForLesson } from '@/features/paths/recommend';
-import { WhatNextCard } from '@/components/paths/WhatNextCard';
 
 export const LessonViewPage: React.FC = () => {
   const { subjectId, moduleId, lessonId } = useParams<{ subjectId: string; moduleId: string; lessonId: string }>();
   const { language, t } = useTranslation();
   const { completeLesson, isLessonCompleted, passQuiz, isQuizPassed } = useGamification();
   const navigate = useNavigate();
-  const learningSignals = useLearningSignals();
 
   const currentModule = getModuleBySlug(subjectId ?? 'git', moduleId ?? '');
 
@@ -133,6 +126,8 @@ export const LessonViewPage: React.FC = () => {
   const nextTitle = nextLesson
     ? (isBn && nextLesson.titleBn ? nextLesson.titleBn : nextLesson.title)
     : '';
+
+  const scenarioId = scenarioForLesson(currentLessonMetadata.id);
 
   // Render individual content block
   const renderBlock = (block: ContentBlock, index: number) => {
@@ -251,8 +246,20 @@ export const LessonViewPage: React.FC = () => {
             <KeyConcept
               title={title}
               conceptKey={block.conceptKey}
+              showBadge={block.showBadge}
             >
-              {text}
+              <div style={{ whiteSpace: 'pre-line' }}>{text}</div>
+              {block.commands && block.commands.length > 0 && (
+                <div style={{ marginTop: 'var(--space-3)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+                  {block.commands.map((cmd, cIdx) => (
+                    <CommandBlock
+                      key={cIdx}
+                      command={cmd.command}
+                      description={isBn && cmd.descriptionBn ? cmd.descriptionBn : cmd.description}
+                    />
+                  ))}
+                </div>
+              )}
             </KeyConcept>
           </div>
         );
@@ -312,10 +319,6 @@ export const LessonViewPage: React.FC = () => {
     }
   };
 
-  const learningObjectives = isBn && curriculumLesson?.learningObjectivesBn
-    ? curriculumLesson.learningObjectivesBn
-    : (curriculumLesson?.learningObjectives || []);
-
   const hasQuiz = Boolean(curriculumLesson?.quiz);
   const quizPassed = curriculumLesson?.quiz ? isQuizPassed(curriculumLesson.quiz.id) : false;
 
@@ -332,45 +335,13 @@ export const LessonViewPage: React.FC = () => {
           durationMinutes={currentLessonMetadata.durationMinutes}
           difficulty={currentLessonMetadata.difficulty}
           summary={lessonSummary}
+          isCompleted={isCompleted}
         />
-
-        {/* Stable Content ID Metadata Pill */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', marginTop: '-8px' }}>
-          <span className="label-xs font-mono" style={{
-            color: 'var(--md-sys-color-primary)',
-            backgroundColor: 'var(--md-sys-color-surface-container-high)',
-            padding: '2px 8px',
-            borderRadius: 'var(--radius-full)',
-            border: '1px solid var(--md-sys-color-outline-variant)'
-          }}>
-            Content ID: {currentLessonMetadata.id}
-          </span>
-          {isCompleted && (
-            <span className="label-xs" style={{
-              color: 'var(--md-sys-color-success)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '4px',
-              fontWeight: 600,
-            }}>
-              <CheckCircle2 size={12} />
-              {isBn ? 'সম্পন্ন হয়েছে' : 'Completed'}
-            </span>
-          )}
-        </div>
 
         {/* Main Content Layout with Sidebar */}
         <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 280px', gap: 'var(--space-6)', alignItems: 'start' }}>
           {/* Main Column */}
           <article style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
-            {/* Learning Objectives */}
-            {learningObjectives.length > 0 && (
-              <LearningObjective
-                objectives={learningObjectives}
-                title={isBn ? 'এই পাঠ থেকে আপনি যা শিখবেন' : 'Learning Objectives'}
-              />
-            )}
-
             {/* Curriculum Sections & Blocks */}
             {curriculumLesson && curriculumLesson.sections && curriculumLesson.sections.length > 0 ? (
               curriculumLesson.sections.map((section) => {
@@ -387,9 +358,11 @@ export const LessonViewPage: React.FC = () => {
                       borderBottom: '1px solid var(--md-sys-color-outline-variant)',
                     }}
                   >
-                    <h2 className="title-lg" style={{ color: 'var(--md-sys-color-on-surface)' }}>
-                      {sectionTitle}
-                    </h2>
+                    {sectionTitle && (
+                      <h2 className="title-lg" style={{ color: 'var(--md-sys-color-on-surface)' }}>
+                        {sectionTitle}
+                      </h2>
+                    )}
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                       {section.blocks.map((block, bIdx) => renderBlock(block, bIdx))}
                     </div>
@@ -479,38 +452,40 @@ export const LessonViewPage: React.FC = () => {
               </Card>
             )}
 
-            {/* Try it interactively → simulator deep-link */}
-            <Card
-              variant="outlined"
-              padding="md"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                flexWrap: 'wrap',
-                gap: 'var(--space-3)',
-                border: '1px solid var(--md-sys-color-primary)',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
-                <FlaskConical size={24} color="var(--md-sys-color-primary)" style={{ flexShrink: 0 }} />
-                <div>
-                  <div className="title-sm" style={{ color: 'var(--md-sys-color-on-surface)' }}>
-                    {t.pages.simulator.tryItTitle} →
-                  </div>
-                  <div className="body-sm" style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>
-                    {t.pages.simulator.tryItSubtitle}
+            {/* Try it interactively → simulator deep-link (only if lesson has a practical simulation) */}
+            {scenarioId && (
+              <Card
+                variant="outlined"
+                padding="md"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                  gap: 'var(--space-3)',
+                  border: '1px solid var(--md-sys-color-primary)',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+                  <FlaskConical size={24} color="var(--md-sys-color-primary)" style={{ flexShrink: 0 }} />
+                  <div>
+                    <div className="title-sm" style={{ color: 'var(--md-sys-color-on-surface)' }}>
+                      {t.pages.simulator.tryItTitle} →
+                    </div>
+                    <div className="body-sm" style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>
+                      {t.pages.simulator.tryItSubtitle}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <Button
-                variant="tonal"
-                size="md"
-                onClick={() => navigate(`/workflows/everyday-git?scenario=${scenarioForLesson(currentLessonMetadata.id)}`)}
-              >
-                {t.pages.simulator.tryItAction}
-              </Button>
-            </Card>
+                <Button
+                  variant="tonal"
+                  size="md"
+                  onClick={() => navigate(`/workflows/everyday-git?scenario=${scenarioId}`)}
+                >
+                  {t.pages.simulator.tryItAction}
+                </Button>
+              </Card>
+            )}
 
             {/* Lesson Completion & Gamification Trigger */}
             <Card
@@ -560,16 +535,6 @@ export const LessonViewPage: React.FC = () => {
                 {isCompleted ? t.common.actions.completed : `${t.common.actions.markComplete} (+50 XP)`}
               </Button>
             </Card>
-
-            {/* What Next? — deterministic path-aware recommendation */}
-            {(() => {
-              const containing = getPathsForContent(currentLessonMetadata.id);
-              if (containing.length === 0) return null;
-              const summaries: Record<string, ReturnType<typeof summarizePath>> = {};
-              for (const path of containing) summaries[path.id] = summarizePath(path, learningSignals);
-              const whatNext = getWhatNextForLesson(currentLessonMetadata.id, containing, summaries);
-              return <WhatNextCard whatNext={whatNext} completedTitle={lessonTitle} />;
-            })()}
 
             {/* Previous & Next Lesson Navigation */}
             <PreviousNextNavigation

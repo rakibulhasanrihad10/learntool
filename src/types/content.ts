@@ -28,7 +28,7 @@ export interface Lesson {
   slug: string;
   order: number;
   durationMinutes: number;
-  summary: string;
+  summary?: string;
   summaryBn?: string;
   difficulty: DifficultyLevel;
   contentMarkdownRef?: string;
@@ -361,6 +361,12 @@ export interface KeyConceptBlockData {
   conceptKey?: string;
   text: string;
   textBn?: string;
+  showBadge?: boolean;
+  commands?: {
+    command: string;
+    description?: string;
+    descriptionBn?: string;
+  }[];
 }
 
 export interface VisualizerBlockData {
@@ -404,7 +410,7 @@ export type ContentBlock =
 
 export interface LessonSection {
   id: string;
-  title: string;
+  title?: string;
   titleBn?: string;
   blocks: ContentBlock[];
 }

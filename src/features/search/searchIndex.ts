@@ -55,7 +55,7 @@ function buildIndex(): SearchIndexItem[] {
         id: lesson.id,
         type: 'lesson',
         title: text(lesson.title, lesson.titleBn),
-        description: text(lesson.summary, lesson.summaryBn),
+        description: text(lesson.summary ?? '', lesson.summaryBn),
         route,
         category: mod.slug,
         topic: text(mod.title, mod.titleBn),

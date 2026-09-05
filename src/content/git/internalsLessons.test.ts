@@ -78,7 +78,7 @@ describe('internals curriculum — bilingual content resolution', () => {
     for (const lesson of ALL_INTERNALS) {
       expect(lesson.title.length, `${lesson.id} title`).toBeGreaterThan(0);
       expect(lesson.titleBn?.length, `${lesson.id} titleBn`).toBeGreaterThan(0);
-      expect(lesson.summary.length, `${lesson.id} summary`).toBeGreaterThan(0);
+      expect(lesson.summary?.length, `${lesson.id} summary`).toBeGreaterThan(0);
       expect(lesson.summaryBn?.length, `${lesson.id} summaryBn`).toBeGreaterThan(0);
       expect(lesson.learningObjectives.length).toBeGreaterThan(0);
       expect(lesson.learningObjectivesBn?.length).toBe(lesson.learningObjectives.length);

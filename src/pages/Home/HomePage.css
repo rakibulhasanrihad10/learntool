@@ -59,25 +59,6 @@
   margin-top: var(--space-2);
 }
 
-/* Gamification Progress Grid */
-.home-gamification-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: var(--space-4);
-}
-
-@media (max-width: 900px) {
-  .home-gamification-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Stats Grid */
-.home-stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--space-4);
-}
 
 /* Section Common */
 .home-section {
@@ -152,17 +133,4 @@
 
 .home-quick-card__content p {
   color: var(--md-sys-color-on-surface-variant);
-}
-
-/* Dual Column Grid (Daily Challenge + Achievements) */
-.home-dual-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-6);
-}
-
-@media (max-width: 960px) {
-  .home-dual-grid {
-    grid-template-columns: 1fr;
-  }
 }

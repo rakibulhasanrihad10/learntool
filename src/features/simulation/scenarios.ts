@@ -430,11 +430,34 @@ export function getScenario(id: string): SimScenario {
 /**
  * Map a lesson content id to the scenario that demonstrates it.
  * Used for "Try it interactively →" links in Learning Mode.
+ * Returns null if the lesson has no matching practical simulation.
  */
-export function scenarioForLesson(lessonId: string): string {
-  if (lessonId.includes('remote')) return 'fetch-pull';
+export function scenarioForLesson(lessonId: string): string | null {
+  // Remote / Sync workflows
+  if (
+    lessonId.includes('remote-repository') ||
+    lessonId.includes('fetch-vs-pull') ||
+    lessonId.includes('.remote.')
+  ) {
+    return 'fetch-pull';
+  }
+
+  // Rebasing workflow
   if (lessonId.includes('rebase')) return 'rebase';
-  if (lessonId.includes('branch') || lessonId.includes('head')) return 'merge';
+
+  // Branching / Merging / HEAD workflows
+  if (
+    lessonId.includes('merging') ||
+    lessonId.includes('branching') ||
+    lessonId.endsWith('.branch') ||
+    lessonId.endsWith('.head') ||
+    lessonId.includes('.branching.') ||
+    lessonId.includes('.merging.')
+  ) {
+    return 'merge';
+  }
+
+  // GitHub specific collaboration workflows
   if (lessonId.startsWith('github.')) {
     if (
       lessonId.includes('pull-request') ||
@@ -457,5 +480,19 @@ export function scenarioForLesson(lessonId: string): string {
       return 'fetch-pull';
     }
   }
-  return 'everyday';
+
+  // Everyday git workflow (working directory, staging, local repo, commit, diff inspection, log)
+  if (
+    lessonId.includes('working-directory') ||
+    lessonId.includes('staging-area') ||
+    lessonId.includes('local-repository') ||
+    lessonId.endsWith('.commit') ||
+    lessonId.includes('diff-inspection') ||
+    lessonId.includes('history-log')
+  ) {
+    return 'everyday';
+  }
+
+  // Conceptual lessons (e.g. what-is-git, git-vs-github, repository, three-areas, etc.) have no simulation
+  return null;
 }
