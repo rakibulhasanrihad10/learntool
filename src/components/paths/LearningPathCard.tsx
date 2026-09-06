@@ -7,7 +7,7 @@ import { DifficultyBadge } from '@/components/common/DifficultyBadge/DifficultyB
 import { ProgressBar } from '@/components/gamification/ProgressBar/ProgressBar';
 import { useTranslation } from '@/i18n/context';
 import { LearningPath, PathProgressSummary } from '@/types/learningPath';
-import { Clock, ListOrdered, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ListOrdered, ArrowRight, CheckCircle2 } from 'lucide-react';
 
 export interface LearningPathCardProps {
   path: LearningPath;
@@ -68,9 +68,6 @@ export const LearningPathCard: React.FC<LearningPathCardProps> = ({ path, summar
       </div>
 
       <div className="body-sm" style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap', color: 'var(--md-sys-color-on-surface-variant)' }}>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-          <Clock size={14} /> {formatDuration(pathDuration(path), isBn)}
-        </span>
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
           <ListOrdered size={14} /> {path.steps.length} {p.stepsLabel}
         </span>

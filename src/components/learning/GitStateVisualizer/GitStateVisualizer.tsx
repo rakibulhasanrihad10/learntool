@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/common/Button/Button';
 import { Badge } from '@/components/common/Badge/Badge';
 import { useTranslation } from '@/i18n/context';
@@ -86,6 +86,55 @@ export const GitStateVisualizer: React.FC<GitStateVisualizerProps> = ({
     return initialStep;
   };
   const [currentStepIndex, setCurrentStepIndex] = useState(getStartingStep);
+  const stagesContainerRef = useRef<HTMLDivElement>(null);
+  const stageRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      if (currentStepIndex === 3 && stagesContainerRef.current) {
+        stagesContainerRef.current.scrollLeft = stagesContainerRef.current.scrollWidth;
+      }
+      return;
+    }
+
+    const stagesContainer = stagesContainerRef.current;
+    if (!stagesContainer) return;
+
+    if (currentStepIndex === 3) {
+      // 4. git push (Sync): automatically scroll right horizontally to reveal Remote (GitHub)
+      stagesContainer.scrollTo({
+        left: stagesContainer.scrollWidth,
+        behavior: 'smooth',
+      });
+    } else if (currentStepIndex === 0) {
+      // 1. Reset or Working Directory: scroll back to start
+      stagesContainer.scrollTo({
+        left: 0,
+        behavior: 'smooth',
+      });
+    } else {
+      // Intermediate stages: scroll to ensure active stage is in view
+      const activeStage = stageRefs.current[currentStepIndex];
+      if (activeStage) {
+        const containerRect = stagesContainer.getBoundingClientRect();
+        const stageRect = activeStage.getBoundingClientRect();
+
+        if (stageRect.right > containerRect.right) {
+          stagesContainer.scrollBy({
+            left: stageRect.right - containerRect.right + 24,
+            behavior: 'smooth',
+          });
+        } else if (stageRect.left < containerRect.left) {
+          stagesContainer.scrollBy({
+            left: stageRect.left - containerRect.left - 24,
+            behavior: 'smooth',
+          });
+        }
+      }
+    }
+  }, [currentStepIndex]);
 
   const step = SIMULATION_STEPS[currentStepIndex];
 
@@ -104,9 +153,14 @@ export const GitStateVisualizer: React.FC<GitStateVisualizerProps> = ({
       </div>
 
       {/* 4 Environment Columns */}
-      <div className="gv-git-visualizer__stages">
+      <div className="gv-git-visualizer__stages" ref={stagesContainerRef}>
         {/* Stage 1: Working Directory */}
-        <div className={cn('gv-stage', currentStepIndex === 0 && 'gv-stage--active')}>
+        <div
+          ref={(el) => {
+            stageRefs.current[0] = el;
+          }}
+          className={cn('gv-stage', currentStepIndex === 0 && 'gv-stage--active')}
+        >
           <div className="gv-stage__header">
             <FileText size={16} />
             <span className="label-sm">Working Directory</span>
@@ -135,7 +189,12 @@ export const GitStateVisualizer: React.FC<GitStateVisualizerProps> = ({
         </div>
 
         {/* Stage 2: Staging Area */}
-        <div className={cn('gv-stage', currentStepIndex === 1 && 'gv-stage--active')}>
+        <div
+          ref={(el) => {
+            stageRefs.current[1] = el;
+          }}
+          className={cn('gv-stage', currentStepIndex === 1 && 'gv-stage--active')}
+        >
           <div className="gv-stage__header">
             <Layers size={16} />
             <span className="label-sm">Staging Area (Index)</span>
@@ -164,7 +223,12 @@ export const GitStateVisualizer: React.FC<GitStateVisualizerProps> = ({
         </div>
 
         {/* Stage 3: Local Repository */}
-        <div className={cn('gv-stage', currentStepIndex === 2 && 'gv-stage--active')}>
+        <div
+          ref={(el) => {
+            stageRefs.current[2] = el;
+          }}
+          className={cn('gv-stage', currentStepIndex === 2 && 'gv-stage--active')}
+        >
           <div className="gv-stage__header">
             <HardDrive size={16} />
             <span className="label-sm">Local Repo (.git)</span>
@@ -189,7 +253,12 @@ export const GitStateVisualizer: React.FC<GitStateVisualizerProps> = ({
         </div>
 
         {/* Stage 4: Remote Repository */}
-        <div className={cn('gv-stage', currentStepIndex === 3 && 'gv-stage--active')}>
+        <div
+          ref={(el) => {
+            stageRefs.current[3] = el;
+          }}
+          className={cn('gv-stage', currentStepIndex === 3 && 'gv-stage--active')}
+        >
           <div className="gv-stage__header">
             <Cloud size={16} />
             <span className="label-sm">Remote (GitHub)</span>

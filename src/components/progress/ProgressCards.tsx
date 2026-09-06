@@ -96,7 +96,6 @@ export const RecommendationCard: React.FC<{ rec: Recommendation }> = ({ rec }) =
           <Link to={rec.route} style={{ textDecoration: 'none' }}>
             <Button variant="tonal" size="sm" iconRight={<ArrowRight size={14} />}>
               {p.startAction}
-              {rec.minutes !== undefined && ` · ${rec.minutes}${isBn ? ' মিনিট' : ' min'}`}
             </Button>
           </Link>
         </div>
@@ -208,9 +207,6 @@ export const ActivityItemRow: React.FC<{ item: ActivityItem }> = ({ item }) => {
         <span className="body-sm" style={{ color: 'var(--md-sys-color-on-surface-variant)', display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', alignItems: 'center' }}>
           <Badge variant="outline" size="sm">{kindLabel}</Badge>
           <time dateTime={item.at}>{formatActivityDate(item.at, isBn)}</time>
-          {item.xp !== undefined && (
-            <span className="label-sm font-mono" style={{ color: 'var(--md-sys-color-primary)' }}>+{item.xp} XP</span>
-          )}
         </span>
       </div>
     </li>

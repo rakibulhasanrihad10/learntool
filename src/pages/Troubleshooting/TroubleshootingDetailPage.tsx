@@ -134,7 +134,7 @@ export const TroubleshootingDetailPage: React.FC = () => {
               onClick={() => completeLesson(guide.id)}
               iconLeft={resolved ? <CheckCircle2 size={14} /> : undefined}
             >
-              {resolved ? `${ts.resolvedLabel} (+50 XP)` : `${ts.markResolved} (+50 XP)`}
+              {resolved ? ts.resolvedLabel : ts.markResolved}
             </Button>
           </div>
         </div>

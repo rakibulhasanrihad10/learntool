@@ -27,12 +27,6 @@
   display: flex;
 }
 
-@media (min-width: 1024px) {
-  .topbar__menu-btn {
-    display: none;
-  }
-}
-
 .topbar__brand {
   display: flex;
   align-items: center;
@@ -135,31 +129,36 @@
   }
 }
 
-/* Level Indicator Pill */
+/* Progress Indicator Pill */
+.topbar__progress-link,
 .topbar__level-link {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 3px 8px;
+  padding: 4px 10px;
   background-color: var(--md-sys-color-surface-container-low);
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: var(--radius-full);
   text-decoration: none;
   color: inherit;
-  transition: background-color var(--motion-duration-short) ease;
+  transition: background-color var(--motion-duration-short) ease, border-color var(--motion-duration-short) ease;
 }
 
+.topbar__progress-link:hover,
 .topbar__level-link:hover {
   background-color: var(--md-sys-color-surface-container-high);
+  border-color: var(--md-sys-color-primary);
 }
 
+.topbar__progress-percent,
 .topbar__xp-badge {
-  color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-surface);
   font-weight: 700;
   font-size: 0.75rem;
 }
 
 @media (max-width: 500px) {
+  .topbar__progress-link,
   .topbar__level-link {
     display: none;
   }

@@ -67,9 +67,6 @@ export const PracticeSessionPage: React.FC = () => {
             </Badge>
             <Badge variant="secondary" size="sm">{catLabel}</Badge>
             <Badge variant="outline" size="sm">{exercise.difficulty}</Badge>
-            <Badge variant="outline" size="sm">
-              {exercise.estimatedMinutes} {p.minutes} · +{exercise.xpReward} XP
-            </Badge>
           </div>
           <h1 className="headline-lg">{L(exercise.title)}</h1>
           <p className="body-lg" style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>

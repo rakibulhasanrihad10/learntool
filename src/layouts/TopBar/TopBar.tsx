@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/common/Button/Button';
 import { SearchButton } from '@/components/search/SearchButton/SearchButton';
-import { LevelBadge } from '@/components/gamification/LevelBadge/LevelBadge';
-import { Sun, Moon, Globe, Menu, GitBranch, BookOpen, Compass } from 'lucide-react';
+import { Sun, Moon, Globe, Menu, GitBranch, BookOpen, Compass, CheckCircle2 } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useGamification } from '@/features/gamification/useGamification';
@@ -10,6 +9,7 @@ import { Tooltip } from '@/components/common/Tooltip/Tooltip';
 import { Badge } from '@/components/common/Badge/Badge';
 import { Link } from 'react-router-dom';
 import { ModeType } from '@/types/metadata';
+import { ALL_MODULES } from '@/content/github';
 import './TopBar.css';
 
 export interface TopBarProps {
@@ -20,8 +20,14 @@ export interface TopBarProps {
 export const TopBar: React.FC<TopBarProps> = ({ onToggleSidebar, onOpenSearch }) => {
   const { resolvedTheme, toggleTheme } = useTheme();
   const { language, toggleLanguage, t } = useLanguage();
-  const { userLevel, progress } = useGamification();
+  const { progress } = useGamification();
   const [activeMode, setActiveMode] = useState<ModeType>('learning');
+
+  const totalCurriculumLessons = ALL_MODULES.reduce((acc, m) => acc + m.lessons.length, 0);
+  const completedCount = progress.completedLessonIds.length;
+  const overallPercent = totalCurriculumLessons > 0
+    ? Math.min(100, Math.round((completedCount / totalCurriculumLessons) * 100))
+    : 0;
 
   const toggleMode = () => {
     setActiveMode((prev) => (prev === 'learning' ? 'reference' : 'learning'));
@@ -89,11 +95,17 @@ export const TopBar: React.FC<TopBarProps> = ({ onToggleSidebar, onOpenSearch })
           </button>
         </Tooltip>
 
-        {/* User Level Indicator */}
-        <Tooltip content={`Level ${userLevel.level}: ${userLevel.title} (${progress.totalXp} Total XP)`}>
-          <Link to="/" className="topbar__level-link">
-            <LevelBadge level={userLevel.level} size="sm" />
-            <span className="label-xs font-mono topbar__xp-badge">{progress.totalXp} XP</span>
+        {/* Overall Curriculum Completion Percentage */}
+        <Tooltip
+          content={
+            language === 'bn'
+              ? `সামগ্রিক অগ্রগতি: ${completedCount}/${totalCurriculumLessons} পাঠ সম্পন্ন (${overallPercent}%)`
+              : `Overall Progress: ${completedCount}/${totalCurriculumLessons} lessons completed (${overallPercent}%)`
+          }
+        >
+          <Link to="/progress" className="topbar__progress-link" aria-label="Learning Progress">
+            <CheckCircle2 size={14} color="var(--md-sys-color-primary)" />
+            <span className="label-xs font-mono topbar__progress-percent">{overallPercent}%</span>
           </Link>
         </Tooltip>
 

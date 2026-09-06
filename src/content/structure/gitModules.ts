@@ -1,5 +1,6 @@
 import { LearningModule } from '@/types/content';
 import { FUNDAMENTALS_LESSONS } from '@/content/git/fundamentalsLessons';
+import { WORKFLOW_LESSONS } from '@/content/git/workflowLessons';
 import { INTERNALS_MENTAL_MODEL_LESSONS } from '@/content/git/internalsMentalModel';
 import { INTERNALS_OBJECTS_LESSONS } from '@/content/git/internalsObjects';
 import { INTERNALS_REFERENCES_LESSONS } from '@/content/git/internalsReferences';
@@ -37,47 +38,7 @@ export const GIT_MODULES: LearningModule[] = [
     icon: 'Terminal',
     difficulty: 'beginner',
     order: 2,
-    lessons: [
-      {
-        id: 'git.workflow.diff-inspection',
-        moduleId: 'git-workflow',
-        slug: 'diff-inspection',
-        title: 'Viewing Differences (git diff)',
-        titleBn: 'পরিবর্তন পর্যালোচনা (git diff)',
-        summary: 'Inspect unstaged changes vs staged index changes with surgical precision.',
-        summaryBn: 'আনস্টেজড ও স্টেজড পরিবর্তনের তফাত নিখুঁতভাবে দেখা।',
-        order: 1,
-        durationMinutes: 10,
-        difficulty: 'beginner',
-        keyTakeaways: ['git diff vs git diff --staged', 'Reading unified diff headers'],
-      },
-      {
-        id: 'git.workflow.gitignore',
-        moduleId: 'git-workflow',
-        slug: 'gitignore-best-practices',
-        title: '.gitignore Rules & Patterns',
-        titleBn: '.gitignore নিয়ম ও প্যাটার্ন',
-        summary: 'Prevent committing secrets, build artifacts, node_modules, and OS files.',
-        summaryBn: 'সিক্রেট ফাইল, বিল্ড আর্টফ্যাক্ট ও অপ্রয়োজনীয় ফাইল বাদ রাখা।',
-        order: 2,
-        durationMinutes: 10,
-        difficulty: 'beginner',
-        keyTakeaways: ['Glob patterns', 'Ignoring already-tracked files with git rm --cached'],
-      },
-      {
-        id: 'git.workflow.history-log',
-        moduleId: 'git-workflow',
-        slug: 'log-and-history',
-        title: 'Navigating Commit History (git log)',
-        titleBn: 'কমিট ইতিহাস দেখা (git log)',
-        summary: 'Format commit logs into compact one-line visual graphs.',
-        summaryBn: 'সহজে কমিট লগ দেখা ও অন-লাইন গ্রাফ তৈরি।',
-        order: 3,
-        durationMinutes: 12,
-        difficulty: 'beginner',
-        keyTakeaways: ['git log --oneline --graph', 'Filtering by author, date, and commit message'],
-      },
-    ],
+    lessons: WORKFLOW_LESSONS,
   },
   {
     id: 'git-branching',
@@ -341,7 +302,7 @@ export const GIT_MODULES: LearningModule[] = [
     description: 'Object database plus references: working tree, index, snapshots, branches, and HEAD.',
     descriptionBn: 'অবজেক্ট ডাটাবেস সাথে রেফারেন্স: ওয়ার্কিং ট্রি, ইনডেক্স, স্ন্যাপশট, ব্রাঞ্চ ও HEAD।',
     icon: 'Brain',
-    difficulty: 'intermediate',
+    difficulty: 'advanced',
     order: 9,
     lessons: INTERNALS_MENTAL_MODEL_LESSONS,
   },

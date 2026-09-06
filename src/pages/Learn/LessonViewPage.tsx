@@ -5,16 +5,16 @@ import { Breadcrumb } from '@/components/navigation/Breadcrumb/Breadcrumb';
 import { Card } from '@/components/common/Card/Card';
 import { Button } from '@/components/common/Button/Button';
 import { GIT_COMMANDS } from '@/content/git';
-import { getLessonById, getModuleBySlug } from '@/content/github';
+import { getLessonById, getModuleBySlug, GITHUB_MODULES } from '@/content/github';
+import { GIT_MODULES } from '@/content/structure/gitModules';
 import { getCommandById } from '@/utils/commandSearch';
-import { CurriculumLesson, ContentBlock } from '@/types/content';
+import { CurriculumLesson, ContentBlock, LearningModule } from '@/types/content';
 import { useTranslation } from '@/i18n/context';
 import { useGamification } from '@/features/gamification/useGamification';
 
 // UI & Learning Components
 import { LessonHeader } from '@/components/learning/LessonHeader/LessonHeader';
 import { KeyConcept } from '@/components/learning/KeyConcept/KeyConcept';
-import { TakeawayCard } from '@/components/learning/TakeawayCard/TakeawayCard';
 import { PreviousNextNavigation } from '@/components/learning/PreviousNextNavigation/PreviousNextNavigation';
 import { GitStateVisualizer } from '@/components/learning/GitStateVisualizer/GitStateVisualizer';
 import { QuizCard } from '@/components/evaluation/QuizCard/QuizCard';
@@ -32,6 +32,7 @@ import {
   Award,
   FlaskConical,
   Terminal,
+  ArrowRight,
 } from 'lucide-react';
 import { scenarioForLesson } from '@/features/simulation/scenarios';
 import { setPageMeta } from '@/utils/pageMeta';
@@ -39,7 +40,7 @@ import { setPageMeta } from '@/utils/pageMeta';
 export const LessonViewPage: React.FC = () => {
   const { subjectId, moduleId, lessonId } = useParams<{ subjectId: string; moduleId: string; lessonId: string }>();
   const { language, t } = useTranslation();
-  const { completeLesson, isLessonCompleted, passQuiz, isQuizPassed } = useGamification();
+  const { completeLesson, isLessonCompleted, passQuiz } = useGamification();
   const navigate = useNavigate();
 
   const currentModule = getModuleBySlug(subjectId ?? 'git', moduleId ?? '');
@@ -67,6 +68,20 @@ export const LessonViewPage: React.FC = () => {
   const nextLesson = currentModule && lessonIndex < currentModule.lessons.length - 1
     ? currentModule.lessons[lessonIndex + 1]
     : null;
+
+  // Next module lookup across the curriculum (when on the final lesson of a module)
+  const nextModule = React.useMemo(() => {
+    if (!currentModule) return null;
+    const modules: LearningModule[] = currentModule.subjectId === 'github' ? GITHUB_MODULES : GIT_MODULES;
+    const currentIndex = modules.findIndex((m) => m.id === currentModule.id);
+    if (currentIndex !== -1 && currentIndex < modules.length - 1) {
+      return modules[currentIndex + 1];
+    }
+    if (currentModule.subjectId === 'git' && GITHUB_MODULES.length > 0) {
+      return GITHUB_MODULES[0];
+    }
+    return null;
+  }, [currentModule]);
 
   const isBn = language === 'bn';
 
@@ -305,22 +320,16 @@ export const LessonViewPage: React.FC = () => {
           </div>
         );
 
-      case 'takeaway': {
-        const pts = isBn && block.takeawaysBn ? block.takeawaysBn : block.takeaways;
-        return (
-          <div key={index} style={{ margin: 'var(--space-4) 0' }}>
-            <TakeawayCard takeaways={pts} />
-          </div>
-        );
-      }
-
       default:
         return null;
     }
   };
 
-  const hasQuiz = Boolean(curriculumLesson?.quiz);
-  const quizPassed = curriculumLesson?.quiz ? isQuizPassed(curriculumLesson.quiz.id) : false;
+  const moduleQuizzes = currentModule
+    ? currentModule.lessons
+        .map((l) => getLessonById(l.id)?.quiz)
+        .filter((q): q is NonNullable<typeof q> => Boolean(q))
+    : [];
 
   return (
     <PageContainer maxWidth="lg" className="animate-fade-in">
@@ -332,7 +341,6 @@ export const LessonViewPage: React.FC = () => {
         <LessonHeader
           title={lessonTitle}
           moduleTitle={moduleTitle}
-          durationMinutes={currentLessonMetadata.durationMinutes}
           difficulty={currentLessonMetadata.difficulty}
           summary={lessonSummary}
           isCompleted={isCompleted}
@@ -392,42 +400,6 @@ export const LessonViewPage: React.FC = () => {
               </div>
             )}
 
-            {/* Knowledge Check Quiz (if present) */}
-            {hasQuiz && curriculumLesson?.quiz && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
-                    <Award size={18} color="#f59e0b" />
-                    <h3 className="title-md" style={{ color: 'var(--md-sys-color-on-surface)' }}>
-                      {isBn ? 'নলেজ চেক কুইজ' : 'Knowledge Check Quiz'}
-                    </h3>
-                  </div>
-                  {quizPassed && (
-                    <span className="label-sm" style={{ color: 'var(--md-sys-color-success)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <CheckCircle2 size={14} />
-                      {isBn ? 'পাস করেছেন (+75 XP)' : 'Passed (+75 XP)'}
-                    </span>
-                  )}
-                </div>
-                <QuizCard
-                  question={curriculumLesson.quiz}
-                  onAnswer={(_optId, isCorrect) => {
-                    if (isCorrect) {
-                      passQuiz(curriculumLesson.quiz!.id);
-                    }
-                  }}
-                />
-              </div>
-            )}
-
-            {/* Key Takeaways */}
-            {currentLessonMetadata.keyTakeaways && currentLessonMetadata.keyTakeaways.length > 0 && (
-              <TakeawayCard
-                takeaways={currentLessonMetadata.keyTakeaways}
-                title={isBn ? 'মূল শিক্ষণীয় বিষয়সমূহ' : 'Key Takeaways'}
-              />
-            )}
-
             {/* Related Reference Mode commands (declared per lesson) */}
             {relatedCommandLinks.length > 0 && (
               <Card variant="outlined" padding="md" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
@@ -480,7 +452,14 @@ export const LessonViewPage: React.FC = () => {
                 <Button
                   variant="tonal"
                   size="md"
-                  onClick={() => navigate(`/workflows/everyday-git?scenario=${scenarioId}`)}
+                  onClick={() => {
+                    const stepParam = currentLessonMetadata?.id?.includes('diff-inspection')
+                      ? '&step=3'
+                      : currentLessonMetadata?.id?.includes('history-log')
+                        ? '&step=6'
+                        : '';
+                    navigate(`/workflows/everyday-git?scenario=${scenarioId}${stepParam}`);
+                  }}
                 >
                   {t.pages.simulator.tryItAction}
                 </Button>
@@ -519,8 +498,8 @@ export const LessonViewPage: React.FC = () => {
                   </div>
                   <div className="body-xs" style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>
                     {isCompleted
-                      ? (isBn ? 'আপনার প্রোফাইলে +৫০ XP যোগ হয়েছে' : '+50 XP credited to your profile')
-                      : (isBn ? 'লার্নিং স্ট্রিক বৃদ্ধি করুন ও +৫০ XP অর্জন করুন' : 'Earn +50 XP and increment your learning streak')}
+                      ? (isBn ? 'পাঠটি সফলভাবে সম্পন্ন হয়েছে ও সংরক্ষিত হয়েছে' : 'Lesson completed and saved to your progress')
+                      : (isBn ? 'আপনার অগ্রগতি সংরক্ষণ করতে সমাপ্ত চিহ্নিত করুন' : 'Mark as complete to record your learning progress')}
                   </div>
                 </div>
               </div>
@@ -530,9 +509,9 @@ export const LessonViewPage: React.FC = () => {
                 size="md"
                 onClick={handleToggleComplete}
                 disabled={isCompleted}
-                iconLeft={isCompleted ? <Check size={16} /> : <Sparkles size={16} />}
+                iconLeft={isCompleted ? <Check size={16} /> : <CheckCircle2 size={16} />}
               >
-                {isCompleted ? t.common.actions.completed : `${t.common.actions.markComplete} (+50 XP)`}
+                {isCompleted ? t.common.actions.completed : t.common.actions.markComplete}
               </Button>
             </Card>
 
@@ -542,11 +521,86 @@ export const LessonViewPage: React.FC = () => {
                 title: prevTitle,
                 url: `${lessonBasePath}/${prevLesson.slug}`,
               } : undefined}
-              next={nextLesson ? {
-                title: nextTitle,
-                url: `${lessonBasePath}/${nextLesson.slug}`,
-              } : undefined}
+              next={
+                nextLesson
+                  ? {
+                      title: nextTitle,
+                      url: `${lessonBasePath}/${nextLesson.slug}`,
+                    }
+                  : moduleQuizzes.length > 0
+                  ? {
+                      title: isBn
+                        ? `মডিউল নলেজ চেক (${moduleQuizzes.length}টি প্রশ্ন)`
+                        : `Module Knowledge Check (${moduleQuizzes.length} Questions)`,
+                      sublabel: isBn ? 'পরবর্তী ধাপ' : 'Next Step',
+                      url: `${lessonBasePath}?quiz=true`,
+                    }
+                  : nextModule
+                  ? {
+                      title: nextModule.order ? `Module ${nextModule.order}: ` + (isBn ? (nextModule.titleBn ?? nextModule.title) : nextModule.title) : (isBn ? (nextModule.titleBn ?? nextModule.title) : nextModule.title),
+                      sublabel: isBn ? 'পরবর্তী মডিউল' : 'Next Module',
+                      url: `/learn/${nextModule.subjectId}/${nextModule.slug}`,
+                    }
+                  : undefined
+              }
             />
+
+            {/* Advance to Next Module Bridge when on the final lesson of a module */}
+            {!nextLesson && nextModule && (
+              <Card
+                variant="filled"
+                padding="md"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                  gap: 'var(--space-3)',
+                  background: 'linear-gradient(135deg, var(--md-sys-color-surface-container), var(--md-sys-color-surface-container-high))',
+                  border: '1px solid var(--md-sys-color-primary)',
+                  marginTop: 'var(--space-4)',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+                  <div
+                    style={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: 'var(--radius-md)',
+                      backgroundColor: 'var(--md-sys-color-primary-container)',
+                      color: 'var(--md-sys-color-on-primary-container)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <ArrowRight size={20} />
+                  </div>
+                  <div>
+                    <div className="title-sm" style={{ color: 'var(--md-sys-color-on-surface)' }}>
+                      {isBn
+                        ? `পরবর্তী মডিউল: ${nextModule.order ? `Module ${nextModule.order} — ` : ''}${nextModule.titleBn ?? nextModule.title}`
+                        : `Next Module: ${nextModule.order ? `Module ${nextModule.order} — ` : ''}${nextModule.title}`}
+                    </div>
+                    <div className="body-xs" style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>
+                      {isBn
+                        ? `মডিউল ${nextModule.order} এর ${nextModule.lessons.length}টি পাঠে সরাসরি এগিয়ে যান`
+                        : `Skip ahead directly to ${nextModule.lessons.length} lessons in Module ${nextModule.order}`}
+                    </div>
+                  </div>
+                </div>
+
+                <Button
+                  variant="filled"
+                  size="md"
+                  iconRight={<ArrowRight size={16} />}
+                  onClick={() => navigate(`/learn/${nextModule.subjectId}/${nextModule.slug}`)}
+                >
+                  {isBn ? 'পরবর্তী মডিউলে যান' : 'Advance to Next Module'}
+                </Button>
+              </Card>
+            )}
           </article>
 
           {/* Module Lessons Table of Contents Sidebar */}
@@ -618,6 +672,31 @@ export const LessonViewPage: React.FC = () => {
                     </Link>
                   );
                 })}
+
+                {moduleQuizzes.length > 0 && (
+                  <Link
+                    to={`${lessonBasePath}?quiz=true`}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 'var(--space-2)',
+                      padding: '8px 10px',
+                      marginTop: 'var(--space-2)',
+                      borderRadius: 'var(--radius-sm)',
+                      fontSize: '0.8125rem',
+                      textDecoration: 'none',
+                      color: 'var(--md-sys-color-primary)',
+                      borderTop: '1px dashed var(--md-sys-color-outline-variant)',
+                      fontWeight: 600,
+                      transition: 'background-color 150ms ease',
+                    }}
+                  >
+                    <Award size={14} color="#f59e0b" style={{ flexShrink: 0 }} />
+                    <span style={{ flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {isBn ? `নলেজ চেক (${moduleQuizzes.length})` : `Knowledge Check (${moduleQuizzes.length})`}
+                    </span>
+                  </Link>
+                )}
               </div>
             </Card>
           </aside>

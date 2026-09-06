@@ -16,24 +16,52 @@ import {
   GitBranch,
   Route,
   Gauge,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from 'lucide-react';
 import { useTranslation } from '@/i18n/context';
 import { Badge } from '@/components/common/Badge/Badge';
 import { Button } from '@/components/common/Button/Button';
+import { Tooltip } from '@/components/common/Tooltip/Tooltip';
 import { GIT_MODULES } from '@/content/structure/gitModules';
+import { LEARNING_PATHS } from '@/content/paths';
 import { cn } from '@/utils/classnames';
 import './Sidebar.css';
 
 export interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
+  isCollapsed?: boolean;
+  isHovered?: boolean;
+  onToggleCollapse?: () => void;
+  onHoverChange?: (hovered: boolean) => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
+export const Sidebar: React.FC<SidebarProps> = ({
+  isOpen,
+  onClose,
+  isCollapsed = false,
+  isHovered = false,
+  onToggleCollapse,
+  onHoverChange,
+}) => {
   const { t, language } = useTranslation();
   const location = useLocation();
   const isLearnActive = location.pathname.startsWith('/learn');
-  const [learnExpanded, setLearnExpanded] = useState(true);
+  const isBn = language === 'bn';
+
+  // Effective desktop expansion: expanded if not collapsed, or if hovered while in collapsed state
+  const isEffectivelyExpanded = !isCollapsed || isHovered;
+
+  // Smart context-aware expansion: collapsed on /, auto-expands on /learn, respects manual user toggle
+  const [userToggled, setUserToggled] = useState(false);
+  const [learnExpanded, setLearnExpanded] = useState(() => isLearnActive);
+
+  React.useEffect(() => {
+    if (!userToggled) {
+      setLearnExpanded(isLearnActive);
+    }
+  }, [isLearnActive, userToggled]);
 
   interface SidebarNavItem {
     path: string;
@@ -55,8 +83,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       items: [
         { path: '/', label: t.nav.home, icon: LayoutDashboard, exact: true },
         { path: '/progress', label: t.nav.progress, icon: Gauge },
-        { path: '/learn', label: t.nav.learn, icon: BookOpen, badge: '8 Modules', isLearnSection: true },
-        { path: '/learn/paths', label: t.nav.paths, icon: Route, badge: '3 Paths' },
+        {
+          path: '/learn',
+          label: t.nav.learn,
+          icon: BookOpen,
+          badge: `${GIT_MODULES.length} Modules`,
+          isLearnSection: true,
+        },
+        {
+          path: '/learn/paths',
+          label: t.nav.paths,
+          icon: Route,
+          badge: `${LEARNING_PATHS.length} Paths`,
+        },
       ],
     },
     {
@@ -88,61 +127,125 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         />
       )}
 
-      <aside className={cn('sidebar', isOpen && 'sidebar--open')}>
+      <aside
+        className={cn(
+          'sidebar',
+          isOpen && 'sidebar--open',
+          isCollapsed && 'sidebar--collapsed',
+          isCollapsed && isHovered && 'sidebar--hover-expanded'
+        )}
+        onMouseEnter={() => {
+          if (isCollapsed) {
+            onHoverChange?.(true);
+          }
+        }}
+        onMouseLeave={() => {
+          if (isCollapsed) {
+            onHoverChange?.(false);
+          }
+        }}
+      >
         <div className="sidebar__header">
-          <div className="sidebar__track-select">
-            <div className="sidebar__track-icon">
-              <Layers size={18} />
-            </div>
-            <div className="sidebar__track-info">
-              <span className="label-sm sidebar__track-label">Active Subject</span>
-              <span className="title-sm sidebar__track-name">Git & GitHub</span>
-            </div>
-          </div>
+          {isEffectivelyExpanded ? (
+            <>
+              <div className="sidebar__track-select">
+                <div className="sidebar__track-icon">
+                  <Layers size={18} />
+                </div>
+                <div className="sidebar__track-info">
+                  <span className="label-sm sidebar__track-label">Active Subject</span>
+                  <span className="title-sm sidebar__track-name">Git & GitHub</span>
+                </div>
+              </div>
 
-          <Button
-            variant="icon"
-            size="sm"
-            className="sidebar__close-btn"
-            onClick={onClose}
-            aria-label="Close sidebar"
-          >
-            <X size={18} />
-          </Button>
+              <div className="sidebar__header-actions">
+                {/* Desktop collapse toggle */}
+                <Tooltip
+                  content={isBn ? 'সাইডবার ছোট করুন' : 'Collapse sidebar'}
+                  position="bottom"
+                  className="sidebar__desktop-toggle-tooltip"
+                >
+                  <Button
+                    variant="icon"
+                    size="sm"
+                    className="sidebar__collapse-btn"
+                    onClick={onToggleCollapse}
+                    aria-label="Collapse sidebar"
+                  >
+                    <PanelLeftClose size={18} />
+                  </Button>
+                </Tooltip>
+
+                {/* Mobile close button */}
+                <Button
+                  variant="icon"
+                  size="sm"
+                  className="sidebar__close-btn"
+                  onClick={onClose}
+                  aria-label="Close sidebar"
+                >
+                  <X size={18} />
+                </Button>
+              </div>
+            </>
+          ) : (
+            /* Collapsed Icon Strip Header */
+            <div className="sidebar__track-select sidebar__track-select--collapsed">
+              <Tooltip
+                content={isBn ? 'সাইডবার প্রসারিত করুন' : 'Expand sidebar'}
+                position="right"
+              >
+                <button
+                  type="button"
+                  className="sidebar__icon-strip-toggle"
+                  onClick={onToggleCollapse}
+                  aria-label="Expand sidebar"
+                >
+                  <Layers size={20} />
+                </button>
+              </Tooltip>
+            </div>
+          )}
         </div>
 
         <nav className="sidebar__nav" aria-label="Main navigation">
           {navigationSections.map((section, idx) => (
             <div key={idx} className="sidebar__section">
-              <span className="sidebar__section-title label-sm">
-                {section.title}
-              </span>
+              {isEffectivelyExpanded ? (
+                <span className="sidebar__section-title label-sm">
+                  {section.title}
+                </span>
+              ) : (
+                <div className="sidebar__section-divider" aria-hidden="true" />
+              )}
 
               <ul className="sidebar__list">
                 {section.items.map((item) => {
                   const Icon = item.icon;
                   const isItemLearn = item.isLearnSection;
 
-                  return (
-                    <li key={item.path} className="sidebar__list-item">
-                      <div className="sidebar__link-wrapper">
-                        <NavLink
-                          to={item.path}
-                          end={item.exact}
-                          className={({ isActive }) =>
-                            cn(
-                              'sidebar__link',
-                              (isActive || (isItemLearn && isLearnActive)) && 'sidebar__link--active'
-                            )
-                          }
-                          onClick={() => {
-                            if (window.innerWidth < 1024 && !isItemLearn) {
-                              onClose();
-                            }
-                          }}
-                        >
-                          <span className="sidebar__active-indicator" aria-hidden="true" />
-                          <Icon size={18} className="sidebar__link-icon" />
+                  const linkContent = (
+                    <NavLink
+                      to={item.path}
+                      end={item.exact}
+                      className={({ isActive }) =>
+                        cn(
+                          'sidebar__link',
+                          (isActive || (isItemLearn && isLearnActive)) && 'sidebar__link--active',
+                          !isEffectivelyExpanded && 'sidebar__link--icon-only'
+                        )
+                      }
+                      onClick={() => {
+                        if (window.innerWidth < 1024 && !isItemLearn) {
+                          onClose();
+                        }
+                      }}
+                    >
+                      <span className="sidebar__active-indicator" aria-hidden="true" />
+                      <Icon size={18} className="sidebar__link-icon" />
+
+                      {isEffectivelyExpanded && (
+                        <>
                           <span className="sidebar__link-label body-md">{item.label}</span>
                           {item.badge && (
                             <Badge
@@ -153,15 +256,33 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                               {item.badge}
                             </Badge>
                           )}
-                        </NavLink>
+                        </>
+                      )}
+                    </NavLink>
+                  );
 
-                        {/* Expand/Collapse Toggle for Learn section */}
-                        {isItemLearn && (
+                  return (
+                    <li key={item.path} className="sidebar__list-item">
+                      <div className="sidebar__link-wrapper">
+                        {!isEffectivelyExpanded ? (
+                          <Tooltip
+                            content={item.badge ? `${item.label} (${item.badge})` : item.label}
+                            position="right"
+                          >
+                            {linkContent}
+                          </Tooltip>
+                        ) : (
+                          linkContent
+                        )}
+
+                        {/* Expand/Collapse Toggle for Learn section (only when expanded) */}
+                        {isItemLearn && isEffectivelyExpanded && (
                           <button
                             type="button"
                             className="sidebar__sub-toggle"
                             onClick={(e) => {
                               e.preventDefault();
+                              setUserToggled(true);
                               setLearnExpanded((prev) => !prev);
                             }}
                             aria-label={learnExpanded ? 'Collapse modules' : 'Expand modules'}
@@ -171,8 +292,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                         )}
                       </div>
 
-                      {/* Nested Learn Modules Tree */}
-                      {isItemLearn && learnExpanded && (
+                      {/* Nested Learn Modules Tree (only when expanded) */}
+                      {isItemLearn && learnExpanded && isEffectivelyExpanded && (
                         <ul className="sidebar__sub-list animate-slide-down">
                           {GIT_MODULES.map((mod) => {
                             const modPath = `/learn/git/${mod.slug}`;
@@ -209,17 +330,32 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           ))}
         </nav>
 
-        {/* Scalable future subjects footer preview */}
+        {/* Dedicated Bottom Collapse / Expand Toggle Mechanism */}
         <div className="sidebar__footer">
-          <div className="sidebar__future-box">
-            <span className="label-sm sidebar__future-title">Upcoming CS Subjects</span>
-            <div className="sidebar__future-tags">
-              <span className="sidebar__future-tag">Linux</span>
-              <span className="sidebar__future-tag">Docker</span>
-              <span className="sidebar__future-tag">SQL</span>
-              <span className="sidebar__future-tag">System Design</span>
-            </div>
-          </div>
+          <button
+            type="button"
+            className={cn(
+              'sidebar__collapse-toggle-btn',
+              !isEffectivelyExpanded && 'sidebar__collapse-toggle-btn--collapsed'
+            )}
+            onClick={onToggleCollapse}
+            aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          >
+            {!isEffectivelyExpanded ? (
+              <Tooltip content={isBn ? 'সাইডবার প্রসারিত করুন' : 'Expand sidebar'} position="right">
+                <span className="sidebar__collapse-icon-wrap">
+                  <PanelLeftOpen size={18} />
+                </span>
+              </Tooltip>
+            ) : (
+              <>
+                <PanelLeftClose size={18} />
+                <span className="body-sm font-medium">
+                  {isBn ? 'সাইডবার ছোট করুন' : 'Collapse sidebar'}
+                </span>
+              </>
+            )}
+          </button>
         </div>
       </aside>
     </>

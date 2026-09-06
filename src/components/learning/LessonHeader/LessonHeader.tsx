@@ -1,7 +1,7 @@
 import React from 'react';
 import { DifficultyBadge } from '@/components/common/DifficultyBadge/DifficultyBadge';
 import { Badge } from '@/components/common/Badge/Badge';
-import { Clock, CheckCircle2, Circle } from 'lucide-react';
+import { CheckCircle2, Circle } from 'lucide-react';
 import { DifficultyLevel } from '@/types/content';
 import { useTranslation } from '@/i18n/context';
 import { cn } from '@/utils/classnames';
@@ -20,7 +20,6 @@ export interface LessonHeaderProps {
 export const LessonHeader: React.FC<LessonHeaderProps> = ({
   title,
   moduleTitle,
-  durationMinutes,
   difficulty,
   summary,
   className,
@@ -37,14 +36,6 @@ export const LessonHeader: React.FC<LessonHeaderProps> = ({
           </Badge>
         )}
         {difficulty && <DifficultyBadge difficulty={difficulty} size="sm" />}
-        {durationMinutes && (
-          <span className="gv-lesson-header__duration label-sm">
-            <Clock size={14} aria-hidden="true" />
-            <span>
-              {language === 'bn' ? `${durationMinutes} মিনিট` : `${durationMinutes} min read`}
-            </span>
-          </span>
-        )}
       </div>
 
       <div className="gv-lesson-header__title-row">

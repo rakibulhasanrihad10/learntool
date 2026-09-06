@@ -144,7 +144,7 @@ export const PracticePage: React.FC = () => {
         </p>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: 'var(--space-2)' }}>
           <span className="label-sm" style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>
-            {ex.tasks.length} {isBn ? 'টাস্ক' : ex.tasks.length === 1 ? 'task' : 'tasks'} · {ex.estimatedMinutes} {p.minutes} · +{ex.xpReward} XP
+            {ex.tasks.length} {isBn ? 'টাস্ক' : ex.tasks.length === 1 ? 'task' : 'tasks'}
           </span>
           <Button
             variant={st === 'not-started' ? 'filled' : 'tonal'}

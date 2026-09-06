@@ -1,5 +1,5 @@
 export const enNav = {
-  home: 'Dashboard',
+  home: 'Home',
   learn: 'Learning Tracks',
   paths: 'Learning Paths',
   progress: 'Progress',

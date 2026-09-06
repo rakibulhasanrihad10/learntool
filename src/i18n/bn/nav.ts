@@ -1,5 +1,5 @@
 export const bnNav = {
-  home: 'ড্যাশবোর্ড',
+  home: 'হোম',
   learn: 'লার্নিং ট্র্যাকস',
   paths: 'লার্নিং পাথ',
   progress: 'অগ্রগতি',

@@ -172,7 +172,6 @@ export const PracticeSession: React.FC<PracticeSessionProps> = ({ exercise, prev
               .replace('{total}', String(totalTasks))}
           </Badge>
           <Badge variant="outline" size="sm">{exercise.difficulty}</Badge>
-          <Badge variant="outline" size="sm">+{exercise.xpReward} XP</Badge>
           <span style={{ marginLeft: 'auto' }} className="label-sm font-mono">
             {completed ? totalTasks : attempts.length}/{totalTasks}
           </span>

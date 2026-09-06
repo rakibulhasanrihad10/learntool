@@ -11,6 +11,7 @@ import {
   History,
   Sparkles,
   ArrowRight,
+  CheckCircle2,
 } from 'lucide-react';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Breadcrumb } from '@/components/navigation/Breadcrumb/Breadcrumb';
@@ -20,7 +21,6 @@ import { Button } from '@/components/common/Button/Button';
 import { StatCard } from '@/components/data-display/StatCard/StatCard';
 import { ProgressCard } from '@/components/data-display/ProgressCard/ProgressCard';
 import { ProgressBar } from '@/components/gamification/ProgressBar/ProgressBar';
-import { XPProgress } from '@/components/gamification/XPProgress/XPProgress';
 import { StreakCard } from '@/components/gamification/StreakCard/StreakCard';
 import { DailyChallengeCard } from '@/components/gamification/DailyChallengeCard/DailyChallengeCard';
 import { AchievementCard } from '@/components/gamification/AchievementCard/AchievementCard';
@@ -56,7 +56,7 @@ export const ProgressPage: React.FC = () => {
   const isBn = language === 'bn';
   const p = t.pages.progress;
   const dashboard = useProgressDashboard();
-  const { userLevel, progress, achievements, dailyChallenge, completeDailyChallenge } = useGamification();
+  const { progress, achievements, dailyChallenge, completeDailyChallenge } = useGamification();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -147,7 +147,7 @@ export const ProgressPage: React.FC = () => {
               <StatCard label={p.statLessons} value={`${dashboard.curriculum.lessonsDone}/${dashboard.curriculum.lessonsTotal}`} icon={<BookOpen size={20} />} color="primary" />
               <StatCard label={p.statPaths} value={`${dashboard.pathsCompleted}/${dashboard.paths.length}`} icon={<ListChecks size={20} />} color="secondary" />
               <StatCard label={p.statStrong} value={`${dashboard.topicsStrong}/${dashboard.mastery.length}`} icon={<Sparkles size={20} />} color="tertiary" />
-              <StatCard label={p.statXp} value={`${dashboard.xp} XP`} icon={<Trophy size={20} />} color="success" />
+              <StatCard label={isBn ? 'কারিকুলাম সমাপ্তি' : 'Curriculum Progress'} value={`${dashboard.curriculum.percent}%`} icon={<CheckCircle2 size={20} />} color="success" />
             </div>
           </div>
         </section>
@@ -319,7 +319,22 @@ export const ProgressPage: React.FC = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
             <SectionTitle icon={<Trophy size={20} />} title={p.secAchievements} />
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 'var(--space-4)' }}>
-              <XPProgress userLevel={userLevel} totalXp={progress.totalXp} />
+              <Card variant="filled" padding="md" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+                    <CheckCircle2 size={18} color="var(--md-sys-color-primary)" />
+                    <span className="title-sm">{isBn ? 'সামগ্রিক কারিকুলাম অগ্রগতি' : 'Overall Curriculum Progress'}</span>
+                  </div>
+                  <span className="label-sm font-mono" style={{ fontWeight: 700, color: 'var(--md-sys-color-primary)' }}>
+                    {dashboard.curriculum.percent}%
+                  </span>
+                </div>
+                <ProgressBar value={dashboard.curriculum.percent} height={8} color="primary" />
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8125rem', color: 'var(--md-sys-color-on-surface-variant)' }}>
+                  <span>{dashboard.curriculum.lessonsDone} / {dashboard.curriculum.lessonsTotal} {isBn ? 'পাঠ সম্পন্ন' : 'lessons completed'}</span>
+                  <span>{dashboard.curriculum.lessonStepsDone} / {dashboard.curriculum.lessonStepsTotal} {t.pages.paths.stepsLabel}</span>
+                </div>
+              </Card>
               <StreakCard streak={progress.streak} />
             </div>
             <DailyChallengeCard challenge={dailyChallenge} onComplete={completeDailyChallenge} />

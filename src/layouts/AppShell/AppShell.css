@@ -24,6 +24,17 @@
 @media (min-width: 1024px) {
   .app-shell__main {
     margin-left: var(--sidebar-width);
+    transition: margin-left var(--motion-duration-medium) var(--motion-easing-standard);
+  }
+
+  /* When sidebar is collapsed: main content smoothly expands */
+  .app-shell--sidebar-collapsed .app-shell__main {
+    margin-left: var(--sidebar-collapsed-width);
+  }
+
+  /* When collapsed sidebar is hovered: main content smoothly shifts to fit beside it */
+  .app-shell--sidebar-collapsed.app-shell--sidebar-hover-expanded .app-shell__main {
+    margin-left: var(--sidebar-width);
   }
 }
 

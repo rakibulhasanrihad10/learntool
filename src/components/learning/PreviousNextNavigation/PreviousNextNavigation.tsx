@@ -8,6 +8,7 @@ import './PreviousNextNavigation.css';
 export interface NavItem {
   title: string;
   url: string;
+  sublabel?: string;
 }
 
 export interface PreviousNextNavigationProps {
@@ -29,7 +30,7 @@ export const PreviousNextNavigation: React.FC<PreviousNextNavigationProps> = ({
         <Link to={prev.url} className="gv-prev-next-nav__link gv-prev-next-nav__link--prev">
           <ArrowLeft size={16} className="gv-prev-next-nav__arrow" aria-hidden="true" />
           <div className="gv-prev-next-nav__text-group">
-            <span className="gv-prev-next-nav__sublabel label-sm">{t.common.actions.prevLesson}</span>
+            <span className="gv-prev-next-nav__sublabel label-sm">{prev.sublabel ?? t.common.actions.prevLesson}</span>
             <span className="gv-prev-next-nav__title title-sm">{prev.title}</span>
           </div>
         </Link>
@@ -40,7 +41,7 @@ export const PreviousNextNavigation: React.FC<PreviousNextNavigationProps> = ({
       {next ? (
         <Link to={next.url} className="gv-prev-next-nav__link gv-prev-next-nav__link--next">
           <div className="gv-prev-next-nav__text-group">
-            <span className="gv-prev-next-nav__sublabel label-sm">{t.common.actions.nextLesson}</span>
+            <span className="gv-prev-next-nav__sublabel label-sm">{next.sublabel ?? t.common.actions.nextLesson}</span>
             <span className="gv-prev-next-nav__title title-sm">{next.title}</span>
           </div>
           <ArrowRight size={16} className="gv-prev-next-nav__arrow" aria-hidden="true" />

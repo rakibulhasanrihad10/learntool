@@ -4,7 +4,6 @@ import { Link, useParams } from 'react-router-dom';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Breadcrumb } from '@/components/navigation/Breadcrumb/Breadcrumb';
 import { Card } from '@/components/common/Card/Card';
-import { Badge } from '@/components/common/Badge/Badge';
 import { Button } from '@/components/common/Button/Button';
 import { DifficultyBadge } from '@/components/common/DifficultyBadge/DifficultyBadge';
 import { ProgressBar } from '@/components/gamification/ProgressBar/ProgressBar';
@@ -16,8 +15,7 @@ import { getNextSteps, getWeakAreaReviews } from '@/features/paths/recommend';
 import { stepRoute, summarizePath } from '@/features/paths/progress';
 import { computeMastery } from '@/features/paths/mastery';
 import { PathCurriculum } from '@/components/paths/PathCurriculum';
-import { pathDuration } from '@/components/paths/LearningPathCard';
-import { ArrowRight, Award, Clock } from 'lucide-react';
+import { ArrowRight, Award } from 'lucide-react';
 
 /** Path id → completion achievement id (added to the existing catalog). */
 export function pathCompletionAchievementId(pathId: string): string | undefined {
@@ -107,12 +105,6 @@ export const PathDetailPage: React.FC = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
           <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', alignItems: 'center' }}>
             <DifficultyBadge difficulty={path.difficulty} size="sm" />
-            <Badge variant="outline" size="sm" >
-              <Clock size={12} />
-              <span>{p.estimatedLabel}: {pathDuration(path) >= 60
-                ? `${Math.round(pathDuration(path) / 60)}${isBn ? ' ঘণ্টা' : 'h'}`
-                : `${pathDuration(path)}${isBn ? ' মিনিট' : ' min'}`}</span>
-            </Badge>
           </div>
           <h1 className="headline-lg" style={{ margin: 0 }}>{isBn ? path.title.bn : path.title.en}</h1>
           <p className="body-lg" style={{ color: 'var(--md-sys-color-on-surface-variant)', margin: 0 }}>
@@ -151,7 +143,7 @@ export const PathDetailPage: React.FC = () => {
               <h2 className="title-lg" style={{ margin: 0 }}>{p.completeTitle}</h2>
             </div>
             <p className="body-md" style={{ margin: 0 }}>
-              {p.completeSubtitle} — {summary.requiredCompleted}/{summary.requiredTotal} {p.stepsLabel} (+150 XP)
+              {p.completeSubtitle} — {summary.requiredCompleted}/{summary.requiredTotal} {p.stepsLabel}
             </p>
             <div className="body-sm" style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
               {next && (

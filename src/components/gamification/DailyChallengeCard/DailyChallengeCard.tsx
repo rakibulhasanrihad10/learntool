@@ -60,7 +60,7 @@ export const DailyChallengeCard: React.FC<DailyChallengeCardProps> = ({
 
         <div className="m3-daily-challenge__reward">
           <Sparkles size={14} className="m3-daily-challenge__sparkle" />
-          <span className="label-sm font-mono">+{challenge.xpReward} XP</span>
+          <span className="label-sm">{language === 'bn' ? 'দৈনিক পর্যালোচনা' : 'Daily Review'}</span>
         </div>
       </div>
 
@@ -117,7 +117,7 @@ export const DailyChallengeCard: React.FC<DailyChallengeCardProps> = ({
           <div className="m3-daily-challenge__completed-badge" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
             <CheckCircle2 size={18} color="var(--md-sys-color-success)" />
             <span className="label-sm">
-              {language === 'bn' ? 'চ্যালেঞ্জ সম্পন্ন হয়েছে (+৬০ XP অর্জিত!)' : 'Challenge Completed (+60 XP earned!)'}
+              {language === 'bn' ? 'চ্যালেঞ্জ সম্পন্ন হয়েছে' : 'Challenge Completed'}
             </span>
             {challenge.practiceRef && (
               <Link

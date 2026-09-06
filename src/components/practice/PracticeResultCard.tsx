@@ -41,17 +41,11 @@ const BAND_VARIANT: Record<ScoreBand, 'success' | 'primary' | 'warning' | 'error
   review: 'error',
 };
 
-function formatDuration(ms: number, isBn: boolean): string {
-  const minutes = Math.floor(ms / 60000);
-  const seconds = Math.floor((ms % 60000) / 1000);
-  if (isBn) {
-    const digits = (n: number) => String(n).replace(/\d/g, (d) => '০১২৩৪৫৬৭৮৯'[Number(d)]);
-    if (minutes === 0) return `${digits(seconds)} সেকেন্ড`;
-    return `${digits(minutes)} মিনিট ${digits(seconds)} সেকেন্ড`;
-  }
-  if (minutes === 0) return `${seconds}s`;
-  return `${minutes}m ${seconds}s`;
-}
+const bandLabel = (band: ScoreBand, p: any) =>
+  band === 'mastered' ? p.bandMastered
+  : band === 'strong' ? p.bandStrong
+  : band === 'needs-practice' ? p.bandNeedsPractice
+  : p.bandReview;
 
 export const PracticeResultCard: React.FC<PracticeResultCardProps> = ({
   score,
@@ -60,8 +54,7 @@ export const PracticeResultCard: React.FC<PracticeResultCardProps> = ({
   tasksTotal,
   hintsUsed,
   retries,
-  xpEarned,
-  durationMs,
+  xpEarned: _xpEarned,
   prevExercise,
   nextExercise,
   onRetry,
@@ -73,20 +66,17 @@ export const PracticeResultCard: React.FC<PracticeResultCardProps> = ({
   const { language, t } = useTranslation();
   const isBn = language === 'bn';
   const p = t.pages.practice;
-
-  const bandLabel =
-    band === 'mastered' ? p.bandMastered
-    : band === 'strong' ? p.bandStrong
-    : band === 'needs-practice' ? p.bandNeedsPractice
-    : p.bandReview;
+  const variant = BAND_VARIANT[band];
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }} aria-live="polite">
-      <Card variant="elevated" padding="lg" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', alignItems: 'center', textAlign: 'center' }}>
+      <Card variant="elevated" padding="lg" className="gv-practice-result-card" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', alignItems: 'center', textAlign: 'center' }}>
         <Award size={40} color="var(--md-sys-color-primary)" aria-hidden="true" />
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', flexWrap: 'wrap', justifyContent: 'center' }}>
           <h2 className="headline-md" style={{ margin: 0 }}>{p.exerciseComplete}</h2>
-          <Badge variant={BAND_VARIANT[band]} size="md">{bandLabel}</Badge>
+          <Badge variant={variant} size="md">
+            {bandLabel(band, p)}
+          </Badge>
         </div>
         <div className="headline-lg font-mono" aria-label={`${p.score}: ${score}/100`}>
           {score}<span style={{ fontSize: '1.25rem', color: 'var(--md-sys-color-on-surface-variant)' }}>/100</span>
@@ -98,10 +88,6 @@ export const PracticeResultCard: React.FC<PracticeResultCardProps> = ({
           <span>{p.tasksPassed}: <strong>{tasksPassed}/{tasksTotal}</strong></span>
           <span>{p.hintsUsedLabel}: <strong>{hintsUsed}</strong></span>
           <span>{p.retriesLabel}: <strong>{retries}</strong></span>
-          <span>{p.timeTaken}: <strong>{formatDuration(durationMs, isBn)}</strong></span>
-          {xpEarned > 0 && (
-            <span style={{ color: 'var(--md-sys-color-primary)', fontWeight: 700 }}>+{xpEarned} XP</span>
-          )}
         </div>
         {band === 'review' || band === 'needs-practice' ? (
           <p className="body-md" style={{ margin: 0, color: 'var(--md-sys-color-on-surface-variant)', maxWidth: '480px' }}>

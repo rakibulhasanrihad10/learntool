@@ -1,4 +1,5 @@
 export * from './fundamentalsLessons';
+export * from './workflowLessons';
 export * from './commands';
 export * from './workflows';
 export * from './troubleshooting';

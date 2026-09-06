@@ -131,11 +131,31 @@ export interface TranslationSchema {
     xpEarned: string;
     nextLevelProgress: string;
   };
+  home: HomeTranslationSchema;
   dashboard: {
     welcomeTitle: string;
     welcomeSubtitle: string;
     heroCtaPrimary: string;
     heroCtaSecondary: string;
+    roadmap: {
+      title: string;
+      subtitle: string;
+      step1Badge: string;
+      step1Title: string;
+      step1Desc: string;
+      step1Meta: string;
+      step1Cta: string;
+      step2Badge: string;
+      step2Title: string;
+      step2Desc: string;
+      step2Meta: string;
+      step2Cta: string;
+      step3Badge: string;
+      step3Title: string;
+      step3Desc: string;
+      step3Meta: string;
+      step3Cta: string;
+    };
     stats: {
       modulesCompleted: string;
       commandsMastered: string;
@@ -190,6 +210,21 @@ export interface TranslationSchema {
       gitTrack: string;
       githubTrack: string;
       relatedCommands: string;
+      allModules: string;
+      beginnerCategory: string;
+      intermediateCategory: string;
+      advancedCategory: string;
+      beginnerTitle: string;
+      beginnerDesc: string;
+      intermediateTitle: string;
+      intermediateDesc: string;
+      advancedTitle: string;
+      advancedDesc: string;
+      viewModules: string;
+      guidedPathCta: string;
+      showingCategory: string;
+      modulesCount: string;
+      completedCount: string;
     };
     github: {
       title: string;
@@ -731,4 +766,69 @@ export interface LanguageContextValue {
   setLanguage: (lang: Language) => void;
   toggleLanguage: () => void;
   t: TranslationSchema;
+}
+
+export interface HomeTranslationSchema {
+  hero: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    ctaPrimary: string;
+    ctaSecondary: string;
+    trustBadge: string;
+    returningTitle: string;
+    returningSubtitle: string;
+    continueCta: string;
+    inProgressBadge: string;
+  };
+  whyGit: {
+    tagline: string;
+    headline: string;
+    storyBefore: string;
+    storyAfter: string;
+    trackTitle: string;
+    trackDesc: string;
+    experimentTitle: string;
+    experimentDesc: string;
+    collaborateTitle: string;
+    collaborateDesc: string;
+    recoverTitle: string;
+    recoverDesc: string;
+  };
+  nextStep: {
+    label: string;
+    title: string;
+    lessonName: string;
+    duration: string;
+    moduleLabel: string;
+    takeaway1: string;
+    takeaway2: string;
+    takeaway3: string;
+    startCta: string;
+  };
+  journey: {
+    label: string;
+    title: string;
+    subtitle: string;
+    step1: string;
+    step2: string;
+    step3: string;
+    step4: string;
+    step5: string;
+  };
+  whatYoullLearn: {
+    label: string;
+    title: string;
+    subtitle: string;
+    curriculumCta: string;
+    exploreLabel: string;
+    modulesBadge: string;
+  };
+  quickJump: {
+    title: string;
+    commands: string;
+    workflows: string;
+    troubleshooting: string;
+    practice: string;
+  };
 }
