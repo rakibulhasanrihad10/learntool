@@ -831,4 +831,74 @@ export interface HomeTranslationSchema {
     troubleshooting: string;
     practice: string;
   };
+  story: {
+    badge: string;
+    headline: string;
+    play: string;
+    pause: string;
+    replay: string;
+    sceneLabel: string;
+    reducedMotionNote: string;
+    scene1: {
+      badge: string;
+      title: string;
+      caption: string;
+      fileName: string;
+      statusModified: string;
+      chaosLabel: string;
+    };
+    scene2: {
+      badge: string;
+      title: string;
+      problem: string;
+      undoFailed: string;
+      solution: string;
+      restoreAction: string;
+      caption: string;
+    };
+    scene3: {
+      badge: string;
+      title: string;
+      devA: string;
+      devB: string;
+      featureA: string;
+      bugFix: string;
+      mergeLabel: string;
+      caption: string;
+    };
+    scene4: {
+      badge: string;
+      title: string;
+      localTitle: string;
+      localRole: string;
+      pushAction: string;
+      cloudTitle: string;
+      cloudRole: string;
+      caption: string;
+    };
+    scene5: {
+      badge: string;
+      title: string;
+      formulaCode: string;
+      formulaGit: string;
+      formulaGitHub: string;
+      formulaTogether: string;
+      punchline: string;
+      startCta: string;
+    };
+  };
+  mentalModel: {
+    tagline: string;
+    headline: string;
+    gitTitle: string;
+    gitRole: string;
+    gitMotto: string;
+    githubTitle: string;
+    githubRole: string;
+    githubMotto: string;
+    togetherTitle: string;
+    togetherRole: string;
+    togetherMotto: string;
+    distinctionCallout: string;
+  };
 }

@@ -16,39 +16,18 @@ import { XP_CONFIG } from './config';
 const STORAGE_KEY = 'gitverse_gamification_progress';
 
 const INITIAL_PROGRESS: UserProgress = {
-  totalXp: 210, // Starting at Level 2 for demo purposes
-  level: 2,
+  totalXp: 0,
+  level: 1,
   streak: {
-    currentStreak: 2,
-    longestStreak: 4,
-    lastActiveDate: getTodayDateString(),
-    history: [getTodayDateString()],
+    currentStreak: 0,
+    longestStreak: 0,
+    lastActiveDate: '',
+    history: [],
   },
-  completedLessonIds: ['git.fundamentals.what-is-git', 'git.fundamentals.installation-config'],
+  completedLessonIds: [],
   completedChallengeIds: [],
-  unlockedAchievementIds: ['first_commit'],
-  learningProgress: {
-    'git.fundamentals.what-is-git': {
-      contentId: 'git.fundamentals.what-is-git',
-      status: 'completed',
-      progressPercent: 100,
-      completedAt: getTodayDateString(),
-      lastAccessedAt: getTodayDateString(),
-    },
-    'git.fundamentals.installation-config': {
-      contentId: 'git.fundamentals.installation-config',
-      status: 'completed',
-      progressPercent: 100,
-      completedAt: getTodayDateString(),
-      lastAccessedAt: getTodayDateString(),
-    },
-    'git.fundamentals.init-and-staging': {
-      contentId: 'git.fundamentals.init-and-staging',
-      status: 'in_progress',
-      progressPercent: 45,
-      lastAccessedAt: getTodayDateString(),
-    },
-  },
+  unlockedAchievementIds: [],
+  learningProgress: {},
   lastUpdated: new Date().toISOString(),
 };
 

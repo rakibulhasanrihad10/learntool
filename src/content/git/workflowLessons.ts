@@ -13,7 +13,7 @@ export const WORKFLOW_LESSONS: CurriculumLesson[] = [
     order: 1,
     durationMinutes: 12,
     difficulty: 'beginner',
-    title: 'Viewing Differences (git diff)',
+    title: 'Inspecting Changes (git diff)',
     titleBn: 'পরিবর্তন পর্যালোচনা (git diff)',
     summary: 'Inspect unstaged changes vs staged index changes with surgical precision.',
     summaryBn: 'আনস্টেজড ও স্টেজড পরিবর্তনের তফাত নিখুঁতভাবে দেখা।',
@@ -24,20 +24,13 @@ export const WORKFLOW_LESSONS: CurriculumLesson[] = [
     sections: [
       {
         id: 'sec-diff-mental-model',
-        title: 'The Mental Model: What Does Git Diff Compare?',
-        titleBn: 'মূল ধারণা: git diff ঠিক কী তুলনা করে?',
         blocks: [
-          {
-            type: 'paragraph',
-            text: 'One of the most common points of confusion for beginners is that git diff does not just show "what changed" in general. Git is built around three distinct local areas (Working Directory, Staging Area, and Local Repository), so git diff needs to know which two states you want to compare.',
-            textBn: 'নতুনদের জন্য সবচেয়ে বড় বিভ্রান্তি হলো ভাবা যে git diff সাধারণভাবে শুধু "কী পরিবর্তন হলো" তা দেখায়। কিন্তু গিট তিনটি আলাদা লোকাল এরিয়া (Working Directory, Staging Area, এবং Local Repository) নিয়ে কাজ করে। তাই git diff চালানোর সময় বুঝতে হয় আপনি কোন দুটি এরিয়ার মধ্যে তুলনা করছেন।',
-          },
           {
             type: 'keyConcept',
             title: '1. git diff (Unstaged Changes)',
             titleBn: '১. git diff (আনস্টেজড পরিবর্তন)',
-            text: 'Compares your Working Directory directly against the Staging Area (Index).\n\nIt answers: "What modifications have I typed in my editor that I have NOT yet staged with git add?" If you stage all your changes, running plain git diff will return completely empty!',
-            textBn: 'আপনার ওয়ার্কিং ডিরেক্টরিকে সরাসরি স্টেজিং এরিয়ার (Index) সাথে তুলনা করে।\n\nএটি উত্তর দেয়: "আমি এডিটরে কী কী পরিবর্তন করেছি যা এখনো git add দিয়ে স্টেজ করিনি?" আপনি যদি সব পরিবর্তন স্টেজ করে ফেলেন, তবে সাধারণ git diff চালালে টার্মিনালে কিছুই দেখাবে না!',
+            text: 'git diff compares your working directory against the staging area (index) to show any unstaged modifications. It only tracks changes that have not yet been added with git add. if you stage all your changes with git add, running a plain git diff will produce no output.',
+            textBn: 'git diff আপনার ওয়ার্কিং ডিরেক্টরি এবং স্টেজিং এরিয়ার মধ্যে তুলনা করে আনস্টেজড (unstaged) পরিবর্তনগুলো দেখায়। এটি কেবল সেই পরিবর্তনগুলো ট্র্যাক করে যা এখনো git add করা হয়নি। ফলে সব পরিবর্তন স্টেজ করে ফেলার পর সাধারণ git diff কমান্ড দিলে কোনো আউটপুট আসবে না।',
             commands: [
               {
                 command: 'git diff',
@@ -50,8 +43,8 @@ export const WORKFLOW_LESSONS: CurriculumLesson[] = [
             type: 'keyConcept',
             title: '2. git diff --staged (Staged Changes)',
             titleBn: '২. git diff --staged (স্টেজড পরিবর্তন)',
-            text: 'Compares the Staging Area against your last commit (HEAD).\n\nIt answers: "What changes are prepared in the waiting room, ready to become the next commit?" (Note: git diff --cached is an identical older synonym).',
-            textBn: 'স্টেজিং এরিয়ার সাথে আপনার সর্বশেষ কমিটের (HEAD) তুলনা করে।\n\nএটি উত্তর দেয়: "অপেক্ষার ঘরে (Staging Area) কোন কোন পরিবর্তন প্রস্তুত আছে যা আমার পরবর্তী কমিটে যুক্ত হতে যাচ্ছে?" (উল্লেখ্য: git diff --cached একই কাজ করে)।',
+            text: 'Shows the staged changes that are ready to be committed. It compares your Staging Area against your last commit. Use this to do a quick final check before running git commit. (Note: git diff --cached does the exact same thing).',
+            textBn: 'এটি আপনার স্টেজ করা পরিবর্তনগুলো দেখায়, যেগুলো কমিট করার জন্য প্রস্তুত।এটি আপনার স্টেজিং এরিয়াক (Staging Area) সর্বশেষ কমিটের (Last Commit) সাথে তুলনা করে। তাই git commit দেওয়ার ঠিক আগে সবকিছু ঠিকঠাক আছে কি না তা রিভিউ করার জন্য এই কমান্ডটি ব্যবহার করা হয়(নোট: git diff --cached কমান্ডটিও হুবহু একই কাজ করে)।',
             commands: [
               {
                 command: 'git diff --staged',
@@ -75,44 +68,90 @@ export const WORKFLOW_LESSONS: CurriculumLesson[] = [
             ],
           },
           {
-            type: 'visualizer',
-            initialState: 'staging',
+            type: 'diffSimulator',
+            title: 'Interactive Lab: Compare the 3 Git Areas Live',
+            titleBn: 'হাতে-কলমে পরীক্ষা: ৩টি লোকাল এরিয়ার লাইভ তুলনা',
           },
         ],
       },
       {
         id: 'sec-anatomy-of-a-diff',
-        title: 'Deconstructing Unified Diff Output',
-        titleBn: 'ইউনিফাইড ডিফের আউটপুট বিশ্লেষণ',
+        title: 'How to Read a git diff',
+        titleBn: 'git diff পড়ার সহজ নিয়ম',
         blocks: [
           {
             type: 'paragraph',
-            text: 'When you run git diff, the terminal prints a unified diff. At first glance it can look cryptic, but it follows an exact, logical format:',
-            textBn: 'যখন আপনি git diff চালান, টার্মিনাল একটি "Unified Diff" প্রদর্শন করে। প্রথম দেখায় এটি জটিল মনে হলেও এটি একটি অত্যন্ত সুশৃঙ্খল নিয়ম মেনে চলে:',
+            text: "When you run git diff, your terminal prints a unified diff. Don't let the technical headers intimidate you! In everyday software development, you only need to focus on two colors: Red (-) for removed code and Green (+) for added code. Everything else is internal Git line coordinates that you can safely ignore.",
+            textBn: 'যখন আপনি git diff চালান, টার্মিনাল একটি "Unified Diff" প্রদর্শন করে। টেকনিক্যাল হেডার দেখে ভয় পাওয়ার কিছু নেই! বাস্তব কাজে আপনাকে কেবল দুটি জিনিস খেয়াল করতে হয়: লাল (-) মানে বাদ দেওয়া লাইন এবং সবুজ (+) মানে নতুন যোগ করা কোড। বাকি লাইনগুলো গিটের নিজস্ব তথ্য, যা দৈনন্দিন কাজে কোনো প্রভাব ফেলে না।',
           },
           {
-            type: 'code',
-            language: 'diff',
+            type: 'interactiveDiff',
             filename: 'terminal output: git diff',
-            code: `diff --git a/src/auth.js b/src/auth.js
-index 83a21b4..f4091c2 100644
---- a/src/auth.js
-+++ b/src/auth.js
-@@ -14,6 +14,7 @@ function login(user, pass) {
-     validate(user);
--    logDebug("Insecure raw password: " + pass);
-+    // Hash securely before authentication
-+    const hashed = hashPassword(pass);
-     return db.findUser(user, hashed);
- }`,
-          },
-          {
-            type: 'callout',
-            variant: 'note',
-            title: 'How to Read Each Line',
-            titleBn: 'প্রতিটি লাইন কীভাবে পড়তে হয়',
-            text: '• diff --git a/file b/file: Git compares version "a" (baseline) with version "b" (new edits).\n• --- a/src/auth.js: The source file before edits (associated with "-" minus signs).\n• +++ b/src/auth.js: The updated file after edits (associated with "+" plus signs).\n• @@ -14,6 +14,7 @@: The hunk header. In version "a", line 14 began a 6-line section. In version "b", line 14 begins a 7-line section.\n• Red line with -: Line removed or replaced.\n• Green line with +: Line added or new.',
-            textBn: '• diff --git a/file b/file: গিট ভার্সন "a" (আগের অবস্থা) এর সাথে ভার্সন "b" (নতুন অবস্থা) তুলনা করছে।\n• --- a/src/auth.js: পরিবর্তনের পূর্ববর্তী মূল ফাইল (যা "-" চিহ্ন দ্বারা দেখানো হয়)।\n• +++ b/src/auth.js: পরিবর্তনের পরবর্তী হালনাগাদ ফাইল (যা "+" চিহ্ন দ্বারা দেখানো হয়)।\n• @@ -14,6 +14,7 @@: হাঙ্ক হেডার (Hunk Header)। পূর্ববর্তী ফাইলে ১৪ নম্বর লাইনে ৬টি লাইন ছিল, নতুন ফাইলে ১৪ নম্বর লাইন থেকে ৭টি লাইন শুরু হয়েছে।\n• লাল রঙের - লাইন: মুছে ফেলা বা পরিবর্তিত পূর্ববর্তী লাইন।\n• সবুজ রঙের + লাইন: নতুন যোগ করা কোড।',
+            lines: [
+              {
+                text: 'diff --git a/demo.txt b/demo.txt',
+                type: 'header',
+                explanation: 'Compares the original file "a" with your edited file "b". You can safely ignore this line.',
+                explanationBn: 'আগের ফাইল "a" এর সাথে এডিট করা নতুন ফাইল "b" তুলনা করা হচ্ছে। এটি পড়ার প্রয়োজন নেই।',
+                importance: 'ignore',
+              },
+              {
+                text: 'index e69de29..4b825dc 100644',
+                type: 'header',
+                explanation: 'Git internal IDs for file versions and standard permissions. Safe to ignore!',
+                explanationBn: 'ফাইলের অভ্যন্তরীণ আইডি ও পারমিশন। সম্পূর্ণ উপেক্ষা করতে পারেন।',
+                importance: 'ignore',
+              },
+              {
+                text: '--- a/demo.txt',
+                type: 'header',
+                explanation: 'The original file before your edits. Lines with "-" were removed from here.',
+                explanationBn: 'পরিবর্তনের আগের ফাইল। যেসব লাইনে "-" আছে সেগুলো এখান থেকে বাদ পড়েছে।',
+                importance: 'ignore',
+              },
+              {
+                text: '+++ b/demo.txt',
+                type: 'header',
+                explanation: 'The updated file after your edits. Lines with "+" were added here.',
+                explanationBn: 'পরিবর্তনের পরের ফাইল। যেসব লাইনে "+" আছে সেগুলো নতুন যোগ হয়েছে।',
+                importance: 'ignore',
+              },
+              {
+                text: '@@ -1,2 +1,3 @@',
+                type: 'header',
+                explanation: 'Line coordinates: Tells Git the original had 2 lines, and the new version now has 3 lines.',
+                explanationBn: 'লাইনের হিসাব: ফাইলে আগে ২টি লাইন ছিল, নতুন সংস্করণে ৩টি লাইন হয়েছে।',
+                importance: 'ignore',
+              },
+              {
+                text: '  Project: My Demo',
+                type: 'context',
+                explanation: 'Unchanged line: shown for context so you know where you are in the file.',
+                explanationBn: 'অপরিবর্তিত লাইন: পরিবর্তনের অবস্থান বা রেফারেন্স বোঝানোর জন্য দেখানো হয়।',
+                importance: 'context',
+              },
+              {
+                text: '- Hello World',
+                type: 'deleted',
+                explanation: 'RED MINUS (-) LINE: The old text "Hello World" was removed or replaced.',
+                explanationBn: 'লাল মাইনাস (-) লাইন: পুরোনো "Hello World" লেখাটি মুছে বা বদলে দেওয়া হয়েছে।',
+                importance: 'vital',
+              },
+              {
+                text: '+ Welcome to the World!',
+                type: 'added',
+                explanation: 'GREEN PLUS (+) LINE: The new text typed to replace "Hello World".',
+                explanationBn: 'সবুজ প্লাস (+) লাইন: "Hello World"-এর জায়গায় নতুন এই লাইনটি লেখা হয়েছে।',
+                importance: 'vital',
+              },
+              {
+                text: '+ Welcome to GitVerse!',
+                type: 'added',
+                explanation: 'GREEN PLUS (+) LINE: A brand new line added to the file.',
+                explanationBn: 'সবুজ প্লাস (+) লাইন: ফাইলে অতিরিক্ত নতুন এই লাইনটি যোগ করা হয়েছে।',
+                importance: 'vital',
+              },
+            ],
           },
         ],
       },

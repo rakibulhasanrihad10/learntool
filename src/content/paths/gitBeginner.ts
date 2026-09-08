@@ -81,7 +81,7 @@ const STEPS = buildSteps(PATH_ID, [
     minutes: 10, prerequisites: ['commit', 'stage-first-change'], tags: ['fundamentals', 'hands-on'] },
   // ---------- Module 2 — Everyday Git Workflow ----------
   { slug: 'diff-inspection', type: 'lesson', contentId: 'git.workflow.diff-inspection',
-    titleEn: 'Viewing Differences (git diff)', titleBn: 'পার্থক্য দেখা (git diff)',
+    titleEn: 'Inspecting Changes (git diff)', titleBn: 'পরিবর্তন পর্যালোচনা (git diff)',
     descEn: 'Inspect exactly what changed before you stage anything.', descBn: 'স্টেজের আগে ঠিক কী বদলেছে দেখুন।',
     whyEn: 'Inspect-first is the habit behind every safe commit.', whyBn: 'আগে-দেখা প্রতিটি নিরাপদ কমিটের অভ্যাস।',
     minutes: 10, prerequisites: ['first-commit'], tags: ['everyday'] },

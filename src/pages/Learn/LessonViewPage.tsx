@@ -4,10 +4,8 @@ import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Breadcrumb } from '@/components/navigation/Breadcrumb/Breadcrumb';
 import { Card } from '@/components/common/Card/Card';
 import { Button } from '@/components/common/Button/Button';
-import { GIT_COMMANDS } from '@/content/git';
 import { getLessonById, getModuleBySlug, GITHUB_MODULES } from '@/content/github';
 import { GIT_MODULES } from '@/content/structure/gitModules';
-import { getCommandById } from '@/utils/commandSearch';
 import { CurriculumLesson, ContentBlock, LearningModule } from '@/types/content';
 import { useTranslation } from '@/i18n/context';
 import { useGamification } from '@/features/gamification/useGamification';
@@ -17,6 +15,10 @@ import { LessonHeader } from '@/components/learning/LessonHeader/LessonHeader';
 import { KeyConcept } from '@/components/learning/KeyConcept/KeyConcept';
 import { PreviousNextNavigation } from '@/components/learning/PreviousNextNavigation/PreviousNextNavigation';
 import { GitStateVisualizer } from '@/components/learning/GitStateVisualizer/GitStateVisualizer';
+import { InteractiveDiff } from '@/components/learning/InteractiveDiff/InteractiveDiff';
+import { DiffSimulator } from '@/components/learning/DiffSimulator/DiffSimulator';
+import { BranchSwitchSimulator } from '@/components/learning/BranchSwitchSimulator/BranchSwitchSimulator';
+import { PointerResetSimulator } from '@/components/learning/PointerResetSimulator/PointerResetSimulator';
 import { QuizCard } from '@/components/evaluation/QuizCard/QuizCard';
 import { InterviewQuestionCard } from '@/components/evaluation/InterviewQuestionCard/InterviewQuestionCard';
 import { CodeBlock } from '@/components/data-display/CodeBlock/CodeBlock';
@@ -31,7 +33,6 @@ import {
   HelpCircle,
   Award,
   FlaskConical,
-  Terminal,
   ArrowRight,
 } from 'lucide-react';
 import { scenarioForLesson } from '@/features/simulation/scenarios';
@@ -56,10 +57,6 @@ export const LessonViewPage: React.FC = () => {
   // Search full curriculum lesson content across subjects (Git + GitHub)
   const curriculumLesson: CurriculumLesson | undefined = getLessonById(lessonId ?? '');
 
-  // Related Reference Mode commands (only rendered when the lesson declares them)
-  const relatedCommandLinks = (curriculumLesson?.relatedCommands ?? [])
-    .map((cmdId) => getCommandById(GIT_COMMANDS, cmdId))
-    .filter((c): c is NonNullable<typeof c> => Boolean(c));
 
   const prevLesson = lessonIndex > 0 && currentModule
     ? currentModule.lessons[lessonIndex - 1]
@@ -287,6 +284,48 @@ export const LessonViewPage: React.FC = () => {
           </div>
         );
 
+      case 'interactiveDiff':
+        return (
+          <div key={index} style={{ margin: 'var(--space-4) 0' }}>
+            <InteractiveDiff
+              filename={block.filename}
+              lines={block.lines}
+              summaryNote={block.summaryNote}
+              summaryNoteBn={block.summaryNoteBn}
+            />
+          </div>
+        );
+
+      case 'diffSimulator':
+        return (
+          <div key={index} style={{ margin: 'var(--space-4) 0' }}>
+            <DiffSimulator
+              title={block.title}
+              titleBn={block.titleBn}
+            />
+          </div>
+        );
+
+      case 'branchSwitchSimulator':
+        return (
+          <div key={index} style={{ margin: 'var(--space-4) 0' }}>
+            <BranchSwitchSimulator
+              title={block.title}
+              titleBn={block.titleBn}
+            />
+          </div>
+        );
+
+      case 'pointerResetSimulator':
+        return (
+          <div key={index} style={{ margin: 'var(--space-4) 0' }}>
+            <PointerResetSimulator
+              title={block.title}
+              titleBn={block.titleBn}
+            />
+          </div>
+        );
+
       case 'interviewInsight': {
         const qText = isBn && block.questionBn ? block.questionBn : block.question;
         const aText = isBn && block.answerBn ? block.answerBn : block.answer;
@@ -398,30 +437,6 @@ export const LessonViewPage: React.FC = () => {
                 </div>
                 <InterviewQuestionCard item={curriculumLesson.interviewQuestion} />
               </div>
-            )}
-
-            {/* Related Reference Mode commands (declared per lesson) */}
-            {relatedCommandLinks.length > 0 && (
-              <Card variant="outlined" padding="md" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
-                  <Terminal size={18} color="var(--md-sys-color-primary)" />
-                  <h3 className="title-md" style={{ color: 'var(--md-sys-color-on-surface)' }}>
-                    {t.pages.learn.relatedCommands}
-                  </h3>
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
-                  {relatedCommandLinks.map((cmd) => (
-                    <Link
-                      key={cmd.id}
-                      to={`/commands/git/${cmd.slug}`}
-                      className="code-inline font-mono"
-                      style={{ textDecoration: 'none' }}
-                    >
-                      {cmd.command}
-                    </Link>
-                  ))}
-                </div>
-              </Card>
             )}
 
             {/* Try it interactively → simulator deep-link (only if lesson has a practical simulation) */}

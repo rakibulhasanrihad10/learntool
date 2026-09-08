@@ -18,7 +18,6 @@ import {
   CheckCircle2,
   ChevronRight,
   FlaskConical,
-  Link2,
   ListChecks,
   SearchCheck,
   ShieldCheck,
@@ -27,7 +26,6 @@ import {
 import { useTranslation } from '@/i18n/context';
 import { useGamification } from '@/features/gamification/useGamification';
 import {
-  GIT_COMMANDS,
   TROUBLESHOOTING_CATEGORIES,
   TROUBLESHOOTING_GUIDES,
 } from '@/content/git';
@@ -35,7 +33,6 @@ import { ALL_CURRICULUM_LESSONS, getLessonRoute } from '@/content/github';
 import {
   classifyCommand,
   getAdjacentScenarios,
-  getCommandsForScenario,
   getLessonsForScenario,
   getRelatedScenarios,
   getScenarioBySlug,
@@ -86,7 +83,6 @@ export const TroubleshootingDetailPage: React.FC = () => {
   const category = TROUBLESHOOTING_CATEGORIES.find((c) => c.id === guide.category);
   const { prev, next } = getAdjacentScenarios(guide, TROUBLESHOOTING_GUIDES);
   const related = getRelatedScenarios(guide, TROUBLESHOOTING_GUIDES);
-  const { found: relatedCommands, missing: plainCommands } = getCommandsForScenario(guide, GIT_COMMANDS);
   const lessonLinks = getLessonsForScenario(guide, ALL_CURRICULUM_LESSONS)
     .map((lesson) => ({ lesson, route: getLessonRoute(lesson.id) }))
     .filter((entry): entry is { lesson: (typeof ALL_CURRICULUM_LESSONS)[number]; route: NonNullable<ReturnType<typeof getLessonRoute>> } => entry.route !== null);
@@ -295,32 +291,6 @@ export const TroubleshootingDetailPage: React.FC = () => {
             ))}
           </ul>
         </Card>
-
-        {/* Related Commands */}
-        {(relatedCommands.length > 0 || plainCommands.length > 0) && (
-          <div>
-            <h2 className="title-md" style={{ ...sectionTitleStyle, marginBottom: 'var(--space-2)' }}>
-              <Link2 size={18} />
-              {ts.relatedCommands}
-            </h2>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
-              {relatedCommands.map((cmd) => (
-                <Link
-                  key={cmd.id}
-                  to={`/commands/git/${cmd.slug}`}
-                  className="code-inline font-mono"
-                  style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
-                >
-                  {cmd.command}
-                  <ChevronRight size={13} />
-                </Link>
-              ))}
-              {plainCommands.map((cmd) => (
-                <code key={cmd} className="code-inline font-mono">{cmd}</code>
-              ))}
-            </div>
-          </div>
-        )}
 
         {/* Learn the Concept */}
         {lessonLinks.length > 0 && (

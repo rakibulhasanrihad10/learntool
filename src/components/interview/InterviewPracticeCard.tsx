@@ -10,7 +10,7 @@ import { QuestionAttempt } from '@/features/interview/progress';
 import { scoreObjective } from '@/features/interview/scoring';
 import { RepositoryState } from '@/components/simulation/RepositoryState/RepositoryState';
 import { CommitGraph } from '@/components/simulation/CommitGraph/CommitGraph';
-import { GIT_COMMANDS, TROUBLESHOOTING_GUIDES } from '@/content/git';
+import { TROUBLESHOOTING_GUIDES } from '@/content/git';
 import { GIT_MODULES } from '@/content/structure/gitModules';
 import { GITHUB_MODULES } from '@/content/github';
 import { PRACTICE_EXERCISES } from '@/content/practice';
@@ -76,12 +76,6 @@ export const InterviewPracticeCard: React.FC<InterviewPracticeCardProps> = ({
     setRated(null);
   };
 
-  const commandLinks = question.relatedCommands
-    .map((id) => {
-      const cmd = GIT_COMMANDS.find((c) => c.id === id);
-      return cmd ? { id, label: cmd.command, path: `/commands/git/${cmd.slug}` } : undefined;
-    })
-    .filter((x): x is { id: string; label: string; path: string } => Boolean(x));
   const troubleshootingLinks = question.relatedTroubleshooting
     .map((id) => {
       const g = TROUBLESHOOTING_GUIDES.find((t) => t.id === id);
@@ -243,11 +237,8 @@ export const InterviewPracticeCard: React.FC<InterviewPracticeCardProps> = ({
         </div>
       )}
 
-      {(commandLinks.length > 0 || troubleshootingLinks.length > 0 || lessonLinks.length > 0 || practiceLinks.length > 0) && (
+      {(troubleshootingLinks.length > 0 || lessonLinks.length > 0 || practiceLinks.length > 0) && (
         <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }} className="body-sm">
-          {commandLinks.map((l) => (
-            <Link key={l.id} to={l.path} style={{ color: 'var(--md-sys-color-primary)' }}><code>{l.label}</code></Link>
-          ))}
           {troubleshootingLinks.map((l) => (
             <Link key={l.id} to={l.path} style={{ color: 'var(--md-sys-color-primary)' }}>{l.label}</Link>
           ))}

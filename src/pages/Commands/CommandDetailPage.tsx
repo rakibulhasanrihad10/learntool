@@ -21,13 +21,12 @@ import {
   Cpu,
   FlaskConical,
   HelpCircle,
-  Link2,
   Wrench,
 } from 'lucide-react';
 import { useTranslation } from '@/i18n/context';
 import { GIT_COMMANDS, TROUBLESHOOTING_GUIDES } from '@/content/git';
 import { resolveLessonLinks } from '@/content/github';
-import { getCommandBySlug, getRelatedCommands, getAdjacentCommands } from '@/utils/commandSearch';
+import { getCommandBySlug, getAdjacentCommands } from '@/utils/commandSearch';
 import { getScenariosForCommand } from '@/utils/troubleshootingSearch';
 import { demoForCommand } from '@/features/simulation/engine';
 
@@ -71,7 +70,6 @@ export const CommandDetailPage: React.FC = () => {
     );
   }
 
-  const related = getRelatedCommands(command, GIT_COMMANDS);
   const { prev, next } = getAdjacentCommands(command, GIT_COMMANDS);
   const demo = demoForCommand(command.slug);
   const troubleshooting = getScenariosForCommand(command.slug, TROUBLESHOOTING_GUIDES).slice(0, 4);
@@ -302,29 +300,6 @@ export const CommandDetailPage: React.FC = () => {
               <p className="title-sm" style={{ marginTop: 0, fontWeight: 700 }}>{interviewAsProps.question}</p>
               <p className="body-md" style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>{interviewAsProps.answer}</p>
             </Card>
-          </div>
-        )}
-
-        {/* 10. Related Commands */}
-        {related.length > 0 && (
-          <div>
-            <h2 className="title-md" style={{ ...sectionTitleStyle, marginBottom: 'var(--space-2)' }}>
-              <Link2 size={18} />
-              {t.pages.commandDetail.relatedCommands}
-            </h2>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
-              {related.map((rel) => (
-                <Link
-                  key={rel.id}
-                  to={`/commands/git/${rel.slug}`}
-                  className="code-inline font-mono"
-                  style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
-                >
-                  {rel.command}
-                  <ChevronRight size={13} />
-                </Link>
-              ))}
-            </div>
           </div>
         )}
 

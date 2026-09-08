@@ -1,0 +1,127 @@
+/* Mental Model Cards Styles */
+
+.mental-model-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  width: 100%;
+  margin: var(--space-4) 0;
+}
+
+.mental-model-section__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.mental-model-section__tagline {
+  color: var(--md-sys-color-primary);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mental-model-section__headline {
+  color: var(--md-sys-color-on-surface);
+  margin: 0;
+}
+
+.mental-model-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+
+.mental-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  background: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--radius-lg);
+  transition: transform var(--motion-duration-short) ease,
+              border-color var(--motion-duration-short) ease,
+              box-shadow var(--motion-duration-short) ease;
+}
+
+.mental-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--md-sys-color-outline);
+  box-shadow: var(--elevation-2);
+}
+
+.mental-card--git {
+  border-top: 3px solid var(--md-sys-color-primary);
+}
+
+.mental-card--github {
+  border-top: 3px solid var(--md-sys-color-secondary);
+}
+
+.mental-card--together {
+  border-top: 3px solid var(--md-sys-color-tertiary);
+}
+
+.mental-card__icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mental-card__icon-box--git {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.mental-card__icon-box--github {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.mental-card__icon-box--together {
+  background: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+.mental-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.mental-card__header-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.mental-card__header-row h3 {
+  margin: 0;
+  color: var(--md-sys-color-on-surface);
+}
+
+.mental-card__motto {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-primary);
+  font-weight: 600;
+}
+
+.mental-model-callout {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.mental-model-callout p {
+  margin: 0;
+  line-height: 1.5;
+}

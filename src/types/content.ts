@@ -395,6 +395,40 @@ export interface TakeawayBlockData {
   takeawaysBn?: string[];
 }
 
+export interface InteractiveDiffLine {
+  text: string;
+  type?: 'header' | 'deleted' | 'added' | 'context';
+  explanation: string;
+  explanationBn: string;
+  importance?: 'vital' | 'ignore' | 'context';
+}
+
+export interface InteractiveDiffBlockData {
+  type: 'interactiveDiff';
+  filename?: string;
+  lines: InteractiveDiffLine[];
+  summaryNote?: string;
+  summaryNoteBn?: string;
+}
+
+export interface DiffSimulatorBlockData {
+  type: 'diffSimulator';
+  title?: string;
+  titleBn?: string;
+}
+
+export interface BranchSwitchSimulatorBlockData {
+  type: 'branchSwitchSimulator';
+  title?: string;
+  titleBn?: string;
+}
+
+export interface PointerResetSimulatorBlockData {
+  type: 'pointerResetSimulator';
+  title?: string;
+  titleBn?: string;
+}
+
 export type ContentBlock =
   | ParagraphBlock
   | HeadingBlock
@@ -406,7 +440,11 @@ export type ContentBlock =
   | VisualizerBlockData
   | InterviewInsightBlockData
   | QuizBlockData
-  | TakeawayBlockData;
+  | TakeawayBlockData
+  | InteractiveDiffBlockData
+  | DiffSimulatorBlockData
+  | BranchSwitchSimulatorBlockData
+  | PointerResetSimulatorBlockData;
 
 export interface LessonSection {
   id: string;

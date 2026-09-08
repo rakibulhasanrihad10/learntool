@@ -22,6 +22,8 @@ import { useTranslation } from '@/i18n/context';
 import { useNavigate } from 'react-router-dom';
 import { useGamification } from '@/features/gamification/useGamification';
 import { GIT_MODULES } from '@/content/structure/gitModules';
+import { AnimatedGitStory } from '@/components/home/AnimatedGitStory/AnimatedGitStory';
+import { MentalModelCards } from '@/components/home/MentalModelCards/MentalModelCards';
 import './HomePage.css';
 
 export const HomePage: React.FC = () => {
@@ -211,8 +213,20 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          TIER 2: Why Git Matters (The Relatable Developer Story)
-          Lightweight, high-empathy narrative
+          PROGRESSIVE DISCLOSURE LEVEL 1:
+          15-Second Animated Visual Story (Your code changes → Git remembers → GitHub connects)
+          ───────────────────────────────────────────────────────────── */}
+      <AnimatedGitStory />
+
+      {/* ─────────────────────────────────────────────────────────────
+          PROGRESSIVE DISCLOSURE LEVEL 2:
+          The Mental Model (Git vs GitHub vs Together)
+          ───────────────────────────────────────────────────────────── */}
+      <MentalModelCards />
+
+      {/* ─────────────────────────────────────────────────────────────
+          PROGRESSIVE DISCLOSURE LEVEL 3:
+          Why Git Matters (The Relatable Developer Story & Superpowers)
           ───────────────────────────────────────────────────────────── */}
       <section className="home-section" aria-labelledby="why-git-title">
         <div className="home-section__header-compact">
@@ -266,60 +280,6 @@ export const HomePage: React.FC = () => {
             <p className="body-sm home-superpower-card__desc">{t.home.whyGit.recoverDesc}</p>
           </Card>
         </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          TIER 3: Your Next Step (The Focal Action)
-          Clear, single prominent lesson to start
-          ───────────────────────────────────────────────────────────── */}
-      <section className="home-section" aria-labelledby="next-step-title">
-        <div className="home-section__header-compact">
-          <span className="label-sm home-section__eyebrow">{t.home.nextStep.label}</span>
-          <h2 id="next-step-title" className="title-lg home-section__title">
-            {t.home.nextStep.title}
-          </h2>
-        </div>
-
-        <Card variant="filled" padding="lg" className="home-next-step-card">
-          <div className="home-next-step-card__meta">
-            <Badge variant="primary" size="sm">
-              {t.home.nextStep.moduleLabel}
-            </Badge>
-          </div>
-
-          <div className="home-next-step-card__body">
-            <h3 className="title-lg home-next-step-card__title">
-              {t.home.nextStep.lessonName}
-            </h3>
-
-            <ul className="home-next-step-card__takeaways">
-              <li>
-                <CheckCircle2 size={16} className="home-next-step-card__check" />
-                <span>{t.home.nextStep.takeaway1}</span>
-              </li>
-              <li>
-                <CheckCircle2 size={16} className="home-next-step-card__check" />
-                <span>{t.home.nextStep.takeaway2}</span>
-              </li>
-              <li>
-                <CheckCircle2 size={16} className="home-next-step-card__check" />
-                <span>{t.home.nextStep.takeaway3}</span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="home-next-step-card__footer">
-            <Button
-              variant="filled"
-              size="lg"
-              className="home-next-step-card__btn"
-              iconRight={<ArrowRight size={18} />}
-              onClick={() => navigate('/learn/git/fundamentals/what-is-git')}
-            >
-              {t.home.nextStep.startCta}
-            </Button>
-          </div>
-        </Card>
       </section>
 
       {/* ─────────────────────────────────────────────────────────────

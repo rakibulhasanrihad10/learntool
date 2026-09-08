@@ -12,6 +12,7 @@ import {
   Sparkles,
   ArrowRight,
   CheckCircle2,
+  RotateCcw,
 } from 'lucide-react';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Breadcrumb } from '@/components/navigation/Breadcrumb/Breadcrumb';
@@ -56,7 +57,7 @@ export const ProgressPage: React.FC = () => {
   const isBn = language === 'bn';
   const p = t.pages.progress;
   const dashboard = useProgressDashboard();
-  const { progress, achievements, dailyChallenge, completeDailyChallenge } = useGamification();
+  const { progress, achievements, dailyChallenge, completeDailyChallenge, resetProgress } = useGamification();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -80,15 +81,31 @@ export const ProgressPage: React.FC = () => {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
         <Breadcrumb items={[{ label: t.nav.home, path: '/' }, { label: p.title, isCurrent: true }]} />
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
-            <Badge variant="primary" size="md">
-              <Gauge size={14} />
-              <span>{p.badge}</span>
-            </Badge>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 'var(--space-4)', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+              <Badge variant="primary" size="md">
+                <Gauge size={14} />
+                <span>{p.badge}</span>
+              </Badge>
+            </div>
+            <h1 className="headline-lg" style={{ margin: 0 }}>{p.title}</h1>
+            <p className="body-lg" style={{ color: 'var(--md-sys-color-on-surface-variant)', margin: 0 }}>{p.subtitle}</p>
           </div>
-          <h1 className="headline-lg" style={{ margin: 0 }}>{p.title}</h1>
-          <p className="body-lg" style={{ color: 'var(--md-sys-color-on-surface-variant)', margin: 0 }}>{p.subtitle}</p>
+
+          <Button
+            variant="outlined"
+            size="sm"
+            iconLeft={<RotateCcw size={14} />}
+            onClick={() => {
+              if (window.confirm(isBn ? 'আপনি কি সমস্ত প্রগ্রেস রিসেট করে নতুন ব্যবহারকারীর অবস্থা দেখতে চান?' : 'Reset all progress to zero to experience the site as a new user?')) {
+                resetProgress();
+                navigate('/');
+              }
+            }}
+          >
+            {isBn ? 'প্রগ্রেস রিসেট করুন' : 'Reset Progress'}
+          </Button>
         </div>
 
         {/* 1. Continue Learning */}

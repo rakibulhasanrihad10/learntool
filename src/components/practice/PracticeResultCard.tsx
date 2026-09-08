@@ -58,7 +58,7 @@ export const PracticeResultCard: React.FC<PracticeResultCardProps> = ({
   prevExercise,
   nextExercise,
   onRetry,
-  relatedCommands,
+  relatedCommands: _relatedCommands,
   lessonLinks,
   scenarioLinks,
   workflowLinks,
@@ -116,15 +116,10 @@ export const PracticeResultCard: React.FC<PracticeResultCardProps> = ({
         )}
       </div>
 
-      {(relatedCommands.length > 0 || lessonLinks.length > 0 || scenarioLinks.length > 0 || workflowLinks.length > 0) && (
+      {(lessonLinks.length > 0 || scenarioLinks.length > 0 || workflowLinks.length > 0) && (
         <Card variant="outlined" padding="md" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
           <span className="label-md">{p.keepExploring}</span>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
-            {relatedCommands.map((cmd) => (
-              <Link key={cmd.id} to={`/commands/git/${cmd.slug}`} className="code-inline font-mono" style={{ textDecoration: 'none' }}>
-                {cmd.command}
-              </Link>
-            ))}
             {lessonLinks.map(({ route, lesson }) => (
               <Link key={lesson.id} to={route.path} style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--md-sys-color-primary)', textDecoration: 'none' }}>
                 {isBn && lesson.titleBn ? lesson.titleBn : lesson.title}

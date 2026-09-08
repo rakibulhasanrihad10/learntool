@@ -4,3 +4,7 @@ export * from './KeyConcept/KeyConcept';
 export * from './TakeawayCard/TakeawayCard';
 export * from './PreviousNextNavigation/PreviousNextNavigation';
 export * from './GitStateVisualizer/GitStateVisualizer';
+export * from './InteractiveDiff/InteractiveDiff';
+export * from './DiffSimulator/DiffSimulator';
+export * from './BranchSwitchSimulator/BranchSwitchSimulator';
+export * from './PointerResetSimulator/PointerResetSimulator';
