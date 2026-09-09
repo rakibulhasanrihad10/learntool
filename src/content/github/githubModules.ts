@@ -3,6 +3,7 @@ import { GIT_MODULES } from '@/content/structure/gitModules';
 import { FUNDAMENTALS_LESSONS } from '@/content/git/fundamentalsLessons';
 import { WORKFLOW_LESSONS } from '@/content/git/workflowLessons';
 import { BRANCHING_LESSONS } from '@/content/git/branchingLessons';
+import { MERGING_LESSONS } from '@/content/git/mergingLessons';
 import { GITHUB_FUNDAMENTALS_LESSONS } from './fundamentals';
 import { GITHUB_REPOSITORIES_LESSONS } from './repositories';
 import { GITHUB_BRANCHING_LESSONS } from './branching';
@@ -121,6 +122,7 @@ export const ALL_CURRICULUM_LESSONS: CurriculumLesson[] = [
   ...FUNDAMENTALS_LESSONS,
   ...WORKFLOW_LESSONS,
   ...BRANCHING_LESSONS,
+  ...MERGING_LESSONS,
   ...ALL_GITHUB_LESSONS,
   ...INTERNALS_MENTAL_MODEL_LESSONS,
   ...INTERNALS_OBJECTS_LESSONS,

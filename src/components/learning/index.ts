@@ -8,3 +8,4 @@ export * from './InteractiveDiff/InteractiveDiff';
 export * from './DiffSimulator/DiffSimulator';
 export * from './BranchSwitchSimulator/BranchSwitchSimulator';
 export * from './PointerResetSimulator/PointerResetSimulator';
+export * from './MergeConflictSimulator/MergeConflictSimulator';

@@ -19,6 +19,7 @@ import { InteractiveDiff } from '@/components/learning/InteractiveDiff/Interacti
 import { DiffSimulator } from '@/components/learning/DiffSimulator/DiffSimulator';
 import { BranchSwitchSimulator } from '@/components/learning/BranchSwitchSimulator/BranchSwitchSimulator';
 import { PointerResetSimulator } from '@/components/learning/PointerResetSimulator/PointerResetSimulator';
+import { MergeConflictSimulator } from '@/components/learning/MergeConflictSimulator/MergeConflictSimulator';
 import { QuizCard } from '@/components/evaluation/QuizCard/QuizCard';
 import { InterviewQuestionCard } from '@/components/evaluation/InterviewQuestionCard/InterviewQuestionCard';
 import { CodeBlock } from '@/components/data-display/CodeBlock/CodeBlock';
@@ -320,6 +321,16 @@ export const LessonViewPage: React.FC = () => {
         return (
           <div key={index} style={{ margin: 'var(--space-4) 0' }}>
             <PointerResetSimulator
+              title={block.title}
+              titleBn={block.titleBn}
+            />
+          </div>
+        );
+
+      case 'mergeConflictSimulator':
+        return (
+          <div key={index} style={{ margin: 'var(--space-4) 0' }}>
+            <MergeConflictSimulator
               title={block.title}
               titleBn={block.titleBn}
             />
