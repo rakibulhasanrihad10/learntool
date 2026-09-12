@@ -435,6 +435,12 @@ export interface MergeConflictSimulatorBlockData {
   titleBn?: string;
 }
 
+export interface InteractiveRebaseSimulatorBlockData {
+  type: 'interactiveRebaseSimulator';
+  title?: string;
+  titleBn?: string;
+}
+
 export type ContentBlock =
   | ParagraphBlock
   | HeadingBlock
@@ -451,7 +457,8 @@ export type ContentBlock =
   | DiffSimulatorBlockData
   | BranchSwitchSimulatorBlockData
   | PointerResetSimulatorBlockData
-  | MergeConflictSimulatorBlockData;
+  | MergeConflictSimulatorBlockData
+  | InteractiveRebaseSimulatorBlockData;
 
 export interface LessonSection {
   id: string;

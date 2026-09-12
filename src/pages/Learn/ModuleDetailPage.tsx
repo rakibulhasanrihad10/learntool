@@ -258,8 +258,8 @@ export const ModuleDetailPage: React.FC = () => {
                       <Award size={18} color="#f59e0b" />
                       <span className="title-sm">
                         {isBn
-                          ? `মডিউল নলেজ চেক — প্রশ্ন ${currentQuizIndex + 1} / ${moduleQuizzes.length}`
-                          : `Module Knowledge Check — Question ${currentQuizIndex + 1} of ${moduleQuizzes.length}`}
+                          ? `${title} নলেজ চেক — প্রশ্ন ${currentQuizIndex + 1} / ${moduleQuizzes.length}`
+                          : `${title} Knowledge Check — Question ${currentQuizIndex + 1} of ${moduleQuizzes.length}`}
                       </span>
                     </div>
 
@@ -408,7 +408,7 @@ export const ModuleDetailPage: React.FC = () => {
                   </div>
 
                   <h2 className="headline-sm" style={{ color: 'var(--md-sys-color-on-surface)' }}>
-                    {isBn ? 'মডিউল নলেজ চেক সমাপ্ত!' : 'Knowledge Check Completed!'}
+                    {isBn ? `${title} নলেজ চেক সমাপ্ত!` : `${title} Knowledge Check Completed!`}
                   </h2>
 
                   <p className="body-md" style={{ color: 'var(--md-sys-color-on-surface-variant)', maxWidth: '500px' }}>
@@ -657,7 +657,7 @@ export const ModuleDetailPage: React.FC = () => {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
                         <h3 className="title-md" style={{ color: 'var(--md-sys-color-on-surface)' }}>
-                          {isBn ? 'মডিউল নলেজ চেক' : 'Module Knowledge Check'}
+                          {isBn ? `${title} নলেজ চেক` : `${title} Knowledge Check`}
                         </h3>
                         <Badge variant="primary" size="sm">
                           {moduleQuizzes.length} {isBn ? 'টি প্রশ্ন' : 'Questions'}

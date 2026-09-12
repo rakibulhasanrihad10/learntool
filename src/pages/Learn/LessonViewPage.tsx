@@ -20,6 +20,7 @@ import { DiffSimulator } from '@/components/learning/DiffSimulator/DiffSimulator
 import { BranchSwitchSimulator } from '@/components/learning/BranchSwitchSimulator/BranchSwitchSimulator';
 import { PointerResetSimulator } from '@/components/learning/PointerResetSimulator/PointerResetSimulator';
 import { MergeConflictSimulator } from '@/components/learning/MergeConflictSimulator/MergeConflictSimulator';
+import { InteractiveRebaseSimulator } from '@/components/learning/InteractiveRebaseSimulator/InteractiveRebaseSimulator';
 import { QuizCard } from '@/components/evaluation/QuizCard/QuizCard';
 import { InterviewQuestionCard } from '@/components/evaluation/InterviewQuestionCard/InterviewQuestionCard';
 import { CodeBlock } from '@/components/data-display/CodeBlock/CodeBlock';
@@ -333,6 +334,16 @@ export const LessonViewPage: React.FC = () => {
           </div>
         );
 
+      case 'interactiveRebaseSimulator':
+        return (
+          <div key={index} style={{ margin: 'var(--space-4) 0' }}>
+            <InteractiveRebaseSimulator
+              title={block.title}
+              titleBn={block.titleBn}
+            />
+          </div>
+        );
+
       case 'interviewInsight': {
         const qText = isBn && block.questionBn ? block.questionBn : block.question;
         const aText = isBn && block.answerBn ? block.answerBn : block.answer;
@@ -510,8 +521,8 @@ export const LessonViewPage: React.FC = () => {
                   : moduleQuizzes.length > 0
                   ? {
                       title: isBn
-                        ? `মডিউল নলেজ চেক (${moduleQuizzes.length}টি প্রশ্ন)`
-                        : `Module Knowledge Check (${moduleQuizzes.length} Questions)`,
+                        ? `${moduleTitle} নলেজ চেক (${moduleQuizzes.length}টি প্রশ্ন)`
+                        : `${moduleTitle} Knowledge Check (${moduleQuizzes.length} Questions)`,
                       sublabel: isBn ? 'পরবর্তী ধাপ' : 'Next Step',
                       url: `${lessonBasePath}?quiz=true`,
                     }

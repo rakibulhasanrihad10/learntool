@@ -1,0 +1,387 @@
+/* InteractiveRebaseSimulator Component Styles */
+
+.rebase-sim {
+  background: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  margin: var(--space-5) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  box-shadow: var(--elevation-1);
+}
+
+.rebase-sim__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.rebase-sim__title-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.rebase-sim__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(14, 165, 233, 0.12);
+  color: #0284c7;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+.rebase-sim__title {
+  margin: 0;
+  color: var(--md-sys-color-on-surface);
+}
+
+.rebase-sim__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.rebase-sim__btn-icon {
+  background: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  border-radius: var(--radius-sm);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--motion-duration-short) ease;
+}
+
+.rebase-sim__btn-icon:hover {
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+}
+
+.rebase-sim__context {
+  background: var(--md-sys-color-surface);
+  border-left: 3px solid var(--md-sys-color-primary);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  color: var(--md-sys-color-on-surface);
+}
+
+/* Editor Simulator */
+.rebase-sim__editor {
+  display: flex;
+  flex-direction: column;
+  background: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.rebase-sim__editor-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px var(--space-3);
+  background: var(--md-sys-color-surface-container-highest);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.rebase-sim__editor-file {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.rebase-sim__file-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f59e0b;
+}
+
+.rebase-sim__editor-hint {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.rebase-sim__commit-list {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-2);
+  gap: var(--space-2);
+}
+
+.rebase-sim__commit-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--motion-duration-short) ease;
+}
+
+.rebase-sim__commit-row--pick {
+  border-left: 3px solid #0284c7;
+}
+
+.rebase-sim__commit-row--fixup {
+  border-left: 3px solid #16a34a;
+}
+
+.rebase-sim__commit-row--squash {
+  border-left: 3px solid #f59e0b;
+}
+
+.rebase-sim__commit-row--drop {
+  border-left: 3px solid #ef4444;
+  opacity: 0.55;
+  text-decoration: line-through;
+}
+
+.rebase-sim__verb-selector {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.verb-pill {
+  font-family: monospace;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: all var(--motion-duration-short) ease;
+}
+
+.verb-pill:hover {
+  background: var(--md-sys-color-surface-container-high);
+}
+
+.verb-pill--active.verb-pill--pick {
+  background: rgba(2, 132, 199, 0.2);
+  border-color: #0284c7;
+  color: #0284c7;
+}
+
+.verb-pill--active.verb-pill--fixup {
+  background: rgba(22, 163, 74, 0.2);
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
+.verb-pill--active.verb-pill--squash {
+  background: rgba(245, 158, 11, 0.2);
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+
+.verb-pill--active.verb-pill--drop {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.rebase-sim__commit-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1;
+  min-width: 0;
+  font-family: monospace;
+  font-size: 0.8125rem;
+}
+
+.rebase-sim__commit-hash {
+  color: var(--md-sys-color-primary);
+  font-weight: 600;
+}
+
+.rebase-sim__commit-msg {
+  color: var(--md-sys-color-on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rebase-sim__commit-badge {
+  flex-shrink: 0;
+}
+
+/* Footer of editor */
+.rebase-sim__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--md-sys-color-surface-container-highest);
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.rebase-sim__summary-hint {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1;
+  min-width: 240px;
+  color: var(--md-sys-color-on-surface);
+}
+
+.rebase-sim__execute-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--motion-duration-short) ease;
+}
+
+.rebase-sim__execute-btn:hover {
+  opacity: 0.9;
+}
+
+/* Result State */
+.rebase-sim__result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.rebase-sim__success-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: rgba(22, 163, 74, 0.1);
+  border: 1px solid rgba(22, 163, 74, 0.3);
+  border-radius: var(--radius-md);
+}
+
+.rebase-sim__terminal {
+  background: #090d16;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  font-family: monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: #e2e8f0;
+}
+
+.rebase-sim__term-line {
+  margin-bottom: 2px;
+}
+
+/* Compare Grid */
+.rebase-sim__compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.rebase-sim__compare-card {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.rebase-sim__compare-card--before {
+  border-top: 3px solid #ef4444;
+}
+
+.rebase-sim__compare-card--after {
+  border-top: 3px solid #16a34a;
+}
+
+.rebase-sim__compare-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  padding-bottom: 6px;
+}
+
+.rebase-sim__timeline-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.rebase-sim__timeline-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.8125rem;
+}
+
+.rebase-sim__timeline-item code {
+  background: var(--md-sys-color-surface-container);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.rebase-sim__btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: transparent;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--motion-duration-short) ease;
+}
+
+.rebase-sim__btn-secondary:hover {
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+}
+
+@media (max-width: 640px) {
+  .rebase-sim__commit-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .rebase-sim__compare-grid {
+    grid-template-columns: 1fr;
+  }
+}
