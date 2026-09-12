@@ -33,10 +33,8 @@ import {
   ListOrdered,
   HelpCircle,
   Award,
-  FlaskConical,
   ArrowRight,
 } from 'lucide-react';
-import { scenarioForLesson } from '@/features/simulation/scenarios';
 import { setPageMeta } from '@/utils/pageMeta';
 
 export const LessonViewPage: React.FC = () => {
@@ -139,8 +137,6 @@ export const LessonViewPage: React.FC = () => {
   const nextTitle = nextLesson
     ? (isBn && nextLesson.titleBn ? nextLesson.titleBn : nextLesson.title)
     : '';
-
-  const scenarioId = scenarioForLesson(currentLessonMetadata.id);
 
   // Render individual content block
   const renderBlock = (block: ContentBlock, index: number) => {
@@ -448,48 +444,6 @@ export const LessonViewPage: React.FC = () => {
                 </div>
                 <InterviewQuestionCard item={curriculumLesson.interviewQuestion} />
               </div>
-            )}
-
-            {/* Try it interactively → simulator deep-link (only if lesson has a practical simulation) */}
-            {scenarioId && (
-              <Card
-                variant="outlined"
-                padding="md"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  flexWrap: 'wrap',
-                  gap: 'var(--space-3)',
-                  border: '1px solid var(--md-sys-color-primary)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
-                  <FlaskConical size={24} color="var(--md-sys-color-primary)" style={{ flexShrink: 0 }} />
-                  <div>
-                    <div className="title-sm" style={{ color: 'var(--md-sys-color-on-surface)' }}>
-                      {t.pages.simulator.tryItTitle} →
-                    </div>
-                    <div className="body-sm" style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>
-                      {t.pages.simulator.tryItSubtitle}
-                    </div>
-                  </div>
-                </div>
-                <Button
-                  variant="tonal"
-                  size="md"
-                  onClick={() => {
-                    const stepParam = currentLessonMetadata?.id?.includes('diff-inspection')
-                      ? '&step=3'
-                      : currentLessonMetadata?.id?.includes('history-log')
-                        ? '&step=6'
-                        : '';
-                    navigate(`/workflows/everyday-git?scenario=${scenarioId}${stepParam}`);
-                  }}
-                >
-                  {t.pages.simulator.tryItAction}
-                </Button>
-              </Card>
             )}
 
             {/* Lesson Completion & Gamification Trigger */}

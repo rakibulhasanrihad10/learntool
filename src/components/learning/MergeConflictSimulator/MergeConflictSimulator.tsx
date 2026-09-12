@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GitMerge, FileText, Check, AlertTriangle, Sparkles, Copy, RotateCcw, ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { GitMerge, FileText, Check, AlertTriangle, Copy, RotateCcw, ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { useTranslation } from '@/i18n/context';
 import './MergeConflictSimulator.css';
 
@@ -323,27 +323,6 @@ export const MergeConflictSimulator: React.FC<MergeConflictSimulatorProps> = ({ 
             </div>
           )}
         </div>
-      </div>
-
-      {/* Beginner Explanation Box */}
-      <div className="conflict-sim__insight">
-        <div className="conflict-sim__insight-head">
-          <Sparkles size={16} className="text-warning flex-shrink-0" />
-          <span className="font-bold text-sm">
-            {isBn ? 'শিক্ষার্থীদের জন্য সহজ সত্য (The Golden Rule):' : 'The Golden Rule for Students:'}
-          </span>
-        </div>
-        <p className="body-sm text-on-surface" style={{ margin: 0 }}>
-          {isBn ? (
-            <>
-              <strong>মার্জ কনফ্লিক্ট কোনো ভুল বা ত্রুটি নয়—এটি গিটের একটি নিরাপত্তা ব্যবস্থা!</strong> যখন দুজন মানুষ একই ফাইলের একই লাইনে দুটো আলাদা কথা লেখে, গিট কারো লেখাকেই আন্দাজে মুছে ফেলে না। গিট ভদ্রভাবে থেমে যায় এবং বলে: <em>"আমি দুটো লেখাই ধরে রেখেছি, আপনি দেখে বলুন কোনটা রাখবেন।"</em>
-            </>
-          ) : (
-            <>
-              <strong>A merge conflict is NOT an error—it is Git’s safety feature!</strong> When two people write different things on the exact same line, Git refuses to guess or overwrite anyone’s work. It pauses safely and says: <em>"I preserved both versions for you. Take your time and choose which one to keep."</em>
-            </>
-          )}
-        </p>
       </div>
     </div>
   );

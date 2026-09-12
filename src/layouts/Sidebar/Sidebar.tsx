@@ -102,7 +102,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       title: t.nav.sections.reference,
       items: [
         { path: '/commands', label: t.nav.commands, icon: Terminal, badge: 'Index' },
-        { path: '/workflows', label: t.nav.workflows, icon: GitPullRequest },
+        {
+          path: '/workflows',
+          label: t.nav.workflows,
+          icon: GitPullRequest,
+          badge: isBn ? 'ইন্টারেক্টিভ' : 'Interactive',
+        },
         { path: '/troubleshooting', label: t.nav.troubleshooting, icon: Wrench, badge: 'Fixes' },
       ],
     },

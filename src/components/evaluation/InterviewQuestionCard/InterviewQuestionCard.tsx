@@ -12,11 +12,13 @@ import './InterviewQuestionCard.css';
 export interface InterviewQuestionCardProps {
   item: InterviewQuestion;
   className?: string;
+  showBadges?: boolean;
 }
 
 export const InterviewQuestionCard: React.FC<InterviewQuestionCardProps> = ({
   item,
   className,
+  showBadges = false,
 }) => {
   const { language } = useTranslation();
   const [isRevealed, setIsRevealed] = useState(false);
@@ -26,30 +28,34 @@ export const InterviewQuestionCard: React.FC<InterviewQuestionCardProps> = ({
   const keyPoints = (language === 'bn' && item.keyPointsBn) ? item.keyPointsBn : item.keyPoints;
 
   return (
-    <Card className={cn('gv-interview-card', className)} padding="md" variant="filled">
-      <div className="gv-interview-card__header">
+    <Card className={cn('gv-interview-card', !showBadges && 'gv-interview-card--compact', className)} padding="md" variant="filled">
+      {showBadges && (
         <div className="gv-interview-card__badges">
           <DifficultyBadge difficulty={item.difficulty} size="sm" />
           <Badge variant="secondary" size="sm">{item.category}</Badge>
         </div>
+      )}
+
+      <div className="gv-interview-card__main-row">
+        <div className="gv-interview-card__question">
+          <div className="gv-interview-card__icon" aria-hidden="true">
+            <HelpCircle size={18} />
+          </div>
+          <h3 className="gv-interview-card__prompt title-md">{question}</h3>
+        </div>
+
         <Button
           variant="tonal"
           size="sm"
           onClick={() => setIsRevealed((prev) => !prev)}
           iconRight={isRevealed ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
           aria-expanded={isRevealed}
+          className="gv-interview-card__toggle-btn"
         >
           {isRevealed
             ? (language === 'bn' ? 'উত্তর লুকান' : 'Hide Answer')
             : (language === 'bn' ? 'উত্তর দেখুন' : 'Reveal Answer')}
         </Button>
-      </div>
-
-      <div className="gv-interview-card__question">
-        <div className="gv-interview-card__icon" aria-hidden="true">
-          <HelpCircle size={18} />
-        </div>
-        <h3 className="gv-interview-card__prompt title-md">{question}</h3>
       </div>
 
       {isRevealed && (

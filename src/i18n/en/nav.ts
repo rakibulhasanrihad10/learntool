@@ -4,7 +4,7 @@ export const enNav = {
   paths: 'Learning Paths',
   progress: 'Progress',
   commands: 'Command Index',
-  workflows: 'Real-world Workflows',
+  workflows: 'GitHub Workflows',
   troubleshooting: 'Troubleshooting & Fixes',
   interview: 'Interview Prep',
   practice: 'Interactive Practice',

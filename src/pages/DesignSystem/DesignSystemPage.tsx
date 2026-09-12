@@ -536,7 +536,7 @@ export const DesignSystemPage: React.FC = () => {
               totalQuestions={5}
             />
 
-            <InterviewQuestionCard item={mockInterviewQuestion} />
+            <InterviewQuestionCard item={mockInterviewQuestion} showBadges={true} />
           </Grid>
         </Section>
 
