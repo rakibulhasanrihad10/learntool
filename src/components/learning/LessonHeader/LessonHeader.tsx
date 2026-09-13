@@ -15,6 +15,7 @@ export interface LessonHeaderProps {
   summary?: string;
   className?: string;
   isCompleted?: boolean;
+  onToggleComplete?: () => void;
 }
 
 export const LessonHeader: React.FC<LessonHeaderProps> = ({
@@ -24,6 +25,7 @@ export const LessonHeader: React.FC<LessonHeaderProps> = ({
   summary,
   className,
   isCompleted,
+  onToggleComplete,
 }) => {
   const { language } = useTranslation();
 
@@ -41,25 +43,56 @@ export const LessonHeader: React.FC<LessonHeaderProps> = ({
       <div className="gv-lesson-header__title-row">
         <h1 className="gv-lesson-header__title headline-lg">{title}</h1>
         {isCompleted !== undefined && (
-          <span
-            className={cn(
-              'gv-lesson-header__status-badge',
-              isCompleted
-                ? 'gv-lesson-header__status-badge--completed'
-                : 'gv-lesson-header__status-badge--incomplete'
-            )}
-          >
-            {isCompleted ? (
-              <CheckCircle2 size={14} aria-hidden="true" />
-            ) : (
-              <Circle size={14} aria-hidden="true" />
-            )}
-            <span>
-              {isCompleted
-                ? (language === 'bn' ? 'সম্পন্ন' : 'Completed')
-                : (language === 'bn' ? 'অসম্পূর্ণ' : 'Not Completed')}
+          onToggleComplete ? (
+            <button
+              type="button"
+              onClick={onToggleComplete}
+              disabled={isCompleted}
+              className={cn(
+                'gv-lesson-header__status-badge',
+                'gv-lesson-header__status-badge--interactive',
+                isCompleted
+                  ? 'gv-lesson-header__status-badge--completed'
+                  : 'gv-lesson-header__status-badge--incomplete'
+              )}
+              title={
+                isCompleted
+                  ? (language === 'bn' ? 'পাঠ সম্পন্ন হয়েছে' : 'Lesson completed')
+                  : (language === 'bn' ? 'সম্পন্ন হিসেবে চিহ্নিত করতে ক্লিক করুন' : 'Click to mark as complete')
+              }
+            >
+              {isCompleted ? (
+                <CheckCircle2 size={14} aria-hidden="true" />
+              ) : (
+                <Circle size={14} aria-hidden="true" />
+              )}
+              <span>
+                {isCompleted
+                  ? (language === 'bn' ? 'সম্পন্ন' : 'Completed')
+                  : (language === 'bn' ? 'অসম্পূর্ণ (চিহ্নিত করুন)' : 'Mark as Complete')}
+              </span>
+            </button>
+          ) : (
+            <span
+              className={cn(
+                'gv-lesson-header__status-badge',
+                isCompleted
+                  ? 'gv-lesson-header__status-badge--completed'
+                  : 'gv-lesson-header__status-badge--incomplete'
+              )}
+            >
+              {isCompleted ? (
+                <CheckCircle2 size={14} aria-hidden="true" />
+              ) : (
+                <Circle size={14} aria-hidden="true" />
+              )}
+              <span>
+                {isCompleted
+                  ? (language === 'bn' ? 'সম্পন্ন' : 'Completed')
+                  : (language === 'bn' ? 'অসম্পূর্ণ' : 'Not Completed')}
+              </span>
             </span>
-          </span>
+          )
         )}
       </div>
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, Check } from 'lucide-react';
 import { useTranslation } from '@/i18n/context';
 import { cn } from '@/utils/classnames';
 import './PreviousNextNavigation.css';
@@ -15,14 +15,19 @@ export interface PreviousNextNavigationProps {
   prev?: NavItem;
   next?: NavItem;
   className?: string;
+  completion?: {
+    isCompleted: boolean;
+    onToggle: () => void;
+  };
 }
 
 export const PreviousNextNavigation: React.FC<PreviousNextNavigationProps> = ({
   prev,
   next,
   className,
+  completion,
 }) => {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
 
   return (
     <nav aria-label="Lesson navigation" className={cn('gv-prev-next-nav', className)}>
@@ -36,6 +41,37 @@ export const PreviousNextNavigation: React.FC<PreviousNextNavigationProps> = ({
         </Link>
       ) : (
         <div className="gv-prev-next-nav__spacer" />
+      )}
+
+      {completion && (
+        <div className="gv-prev-next-nav__completion">
+          <button
+            type="button"
+            onClick={completion.onToggle}
+            disabled={completion.isCompleted}
+            className={cn(
+              'gv-prev-next-nav__complete-btn',
+              completion.isCompleted && 'gv-prev-next-nav__complete-btn--completed'
+            )}
+            aria-label={
+              completion.isCompleted
+                ? (language === 'bn' ? 'পাঠ সম্পন্ন হয়েছে' : 'Lesson completed')
+                : (language === 'bn' ? 'পাঠ সমাপ্ত চিহ্নিত করুন' : 'Mark as complete')
+            }
+          >
+            {completion.isCompleted ? (
+              <>
+                <CheckCircle2 size={18} className="gv-prev-next-nav__complete-icon" aria-hidden="true" />
+                <span>{language === 'bn' ? 'সম্পন্ন হয়েছে' : 'Completed'}</span>
+              </>
+            ) : (
+              <>
+                <Check size={18} className="gv-prev-next-nav__complete-icon" aria-hidden="true" />
+                <span>{language === 'bn' ? 'সমাপ্ত চিহ্নিত করুন' : 'Mark as Complete'}</span>
+              </>
+            )}
+          </button>
+        </div>
       )}
 
       {next ? (

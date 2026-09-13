@@ -441,6 +441,18 @@ export interface InteractiveRebaseSimulatorBlockData {
   titleBn?: string;
 }
 
+export interface RebaseAnimationBlockData {
+  type: 'rebaseAnimation';
+  title?: string;
+  titleBn?: string;
+}
+
+export interface FetchPullSimulatorBlockData {
+  type: 'fetchPullSimulator';
+  title?: string;
+  titleBn?: string;
+}
+
 export type ContentBlock =
   | ParagraphBlock
   | HeadingBlock
@@ -458,7 +470,9 @@ export type ContentBlock =
   | BranchSwitchSimulatorBlockData
   | PointerResetSimulatorBlockData
   | MergeConflictSimulatorBlockData
-  | InteractiveRebaseSimulatorBlockData;
+  | InteractiveRebaseSimulatorBlockData
+  | RebaseAnimationBlockData
+  | FetchPullSimulatorBlockData;
 
 export interface LessonSection {
   id: string;

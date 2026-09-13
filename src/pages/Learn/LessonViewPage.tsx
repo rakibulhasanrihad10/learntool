@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { PageContainer } from '@/layouts/PageContainer/PageContainer';
 import { Breadcrumb } from '@/components/navigation/Breadcrumb/Breadcrumb';
 import { Card } from '@/components/common/Card/Card';
@@ -21,6 +21,8 @@ import { BranchSwitchSimulator } from '@/components/learning/BranchSwitchSimulat
 import { PointerResetSimulator } from '@/components/learning/PointerResetSimulator/PointerResetSimulator';
 import { MergeConflictSimulator } from '@/components/learning/MergeConflictSimulator/MergeConflictSimulator';
 import { InteractiveRebaseSimulator } from '@/components/learning/InteractiveRebaseSimulator/InteractiveRebaseSimulator';
+import { RebaseAnimation } from '@/components/learning/RebaseAnimation/RebaseAnimation';
+import { FetchPullSimulator } from '@/components/learning/FetchPullSimulator/FetchPullSimulator';
 import { QuizCard } from '@/components/evaluation/QuizCard/QuizCard';
 import { InterviewQuestionCard } from '@/components/evaluation/InterviewQuestionCard/InterviewQuestionCard';
 import { CodeBlock } from '@/components/data-display/CodeBlock/CodeBlock';
@@ -28,12 +30,7 @@ import { CommandBlock } from '@/components/data-display/CommandBlock/CommandBloc
 import { Callout } from '@/components/feedback/Callout/Callout';
 
 import {
-  CheckCircle2,
-  Check,
-  Sparkles,
-  ListOrdered,
   HelpCircle,
-  Award,
   ArrowRight,
 } from 'lucide-react';
 import { setPageMeta } from '@/utils/pageMeta';
@@ -344,6 +341,26 @@ export const LessonViewPage: React.FC = () => {
           </div>
         );
 
+      case 'rebaseAnimation':
+        return (
+          <div key={index} style={{ margin: 'var(--space-4) 0' }}>
+            <RebaseAnimation
+              title={block.title}
+              titleBn={block.titleBn}
+            />
+          </div>
+        );
+
+      case 'fetchPullSimulator':
+        return (
+          <div key={index} style={{ margin: 'var(--space-4) 0' }}>
+            <FetchPullSimulator
+              title={block.title}
+              titleBn={block.titleBn}
+            />
+          </div>
+        );
+
       case 'interviewInsight': {
         const qText = isBn && block.questionBn ? block.questionBn : block.question;
         const aText = isBn && block.answerBn ? block.answerBn : block.answer;
@@ -401,12 +418,11 @@ export const LessonViewPage: React.FC = () => {
           difficulty={currentLessonMetadata.difficulty}
           summary={lessonSummary}
           isCompleted={isCompleted}
+          onToggleComplete={handleToggleComplete}
         />
 
-        {/* Main Content Layout with Sidebar */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 280px', gap: 'var(--space-6)', alignItems: 'start' }}>
-          {/* Main Column */}
-          <article style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+        {/* Main Content Layout (Full Width) */}
+        <article style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)', width: '100%' }}>
             {/* Curriculum Sections & Blocks */}
             {curriculumLesson && curriculumLesson.sections && curriculumLesson.sections.length > 0 ? (
               curriculumLesson.sections.map((section) => {
@@ -457,56 +473,7 @@ export const LessonViewPage: React.FC = () => {
               </div>
             )}
 
-            {/* Lesson Completion & Gamification Trigger */}
-            <Card
-              variant="filled"
-              padding="md"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                flexWrap: 'wrap',
-                gap: 'var(--space-3)',
-                background: isCompleted
-                  ? 'var(--md-sys-color-surface-container)'
-                  : 'linear-gradient(135deg, var(--md-sys-color-surface-container), var(--md-sys-color-surface-container-high))',
-                border: isCompleted
-                  ? '1px solid var(--md-sys-color-outline-variant)'
-                  : '1px solid var(--md-sys-color-primary)',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
-                {isCompleted ? (
-                  <CheckCircle2 size={28} color="var(--md-sys-color-success)" />
-                ) : (
-                  <Sparkles size={28} color="#f59e0b" />
-                )}
-                <div>
-                  <div className="title-sm">
-                    {isCompleted
-                      ? (isBn ? 'পাঠ সম্পন্ন হয়েছে!' : 'Lesson Completed!')
-                      : (isBn ? 'পাঠ সমাপ্তি নিশ্চিত করুন' : 'Finish this lesson')}
-                  </div>
-                  <div className="body-xs" style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>
-                    {isCompleted
-                      ? (isBn ? 'পাঠটি সফলভাবে সম্পন্ন হয়েছে ও সংরক্ষিত হয়েছে' : 'Lesson completed and saved to your progress')
-                      : (isBn ? 'আপনার অগ্রগতি সংরক্ষণ করতে সমাপ্ত চিহ্নিত করুন' : 'Mark as complete to record your learning progress')}
-                  </div>
-                </div>
-              </div>
-
-              <Button
-                variant={isCompleted ? 'tonal' : 'filled'}
-                size="md"
-                onClick={handleToggleComplete}
-                disabled={isCompleted}
-                iconLeft={isCompleted ? <Check size={16} /> : <CheckCircle2 size={16} />}
-              >
-                {isCompleted ? t.common.actions.completed : t.common.actions.markComplete}
-              </Button>
-            </Card>
-
-            {/* Previous & Next Lesson Navigation */}
+            {/* Previous & Next Lesson Navigation with Integrated Completion Action */}
             <PreviousNextNavigation
               prev={prevLesson ? {
                 title: prevTitle,
@@ -534,6 +501,10 @@ export const LessonViewPage: React.FC = () => {
                     }
                   : undefined
               }
+              completion={{
+                isCompleted,
+                onToggle: handleToggleComplete,
+              }}
             />
 
             {/* Advance to Next Module Bridge when on the final lesson of a module */}
@@ -593,105 +564,6 @@ export const LessonViewPage: React.FC = () => {
               </Card>
             )}
           </article>
-
-          {/* Module Lessons Table of Contents Sidebar */}
-          <aside>
-            <Card
-              variant="filled"
-              padding="md"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 'var(--space-3)',
-                position: 'sticky',
-                top: 'calc(var(--topbar-height) + 16px)',
-                maxHeight: 'calc(100vh - var(--topbar-height) - 32px)',
-                overflowY: 'auto',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', borderBottom: '1px solid var(--md-sys-color-outline-variant)', paddingBottom: 'var(--space-2)' }}>
-                <ListOrdered size={16} color="var(--md-sys-color-primary)" />
-                <span className="title-sm">{isBn ? 'মডিউলের পাঠসমূহ' : 'Module Lessons'}</span>
-                <span className="label-xs font-mono" style={{ marginLeft: 'auto', opacity: 0.7 }}>
-                  {currentModule.lessons.length}
-                </span>
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                {currentModule.lessons.map((lesson, idx) => {
-                  const isCurrent = lesson.id === currentLessonMetadata.id;
-                  const isItemCompleted = isLessonCompleted(lesson.id);
-                  const titleText = isBn && lesson.titleBn ? lesson.titleBn : lesson.title;
-
-                  return (
-                    <Link
-                      key={lesson.id}
-                      to={`${lessonBasePath}/${lesson.slug}`}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 'var(--space-2)',
-                        padding: '8px 10px',
-                        borderRadius: 'var(--radius-sm)',
-                        fontSize: '0.8125rem',
-                        textDecoration: 'none',
-                        color: isCurrent
-                          ? 'var(--md-sys-color-primary)'
-                          : 'var(--md-sys-color-on-surface-variant)',
-                        backgroundColor: isCurrent
-                          ? 'var(--md-sys-color-primary-container)'
-                          : 'transparent',
-                        fontWeight: isCurrent ? 600 : 400,
-                        transition: 'background-color 150ms ease',
-                      }}
-                    >
-                      {isItemCompleted ? (
-                        <CheckCircle2 size={14} color="var(--md-sys-color-success)" style={{ flexShrink: 0 }} />
-                      ) : (
-                        <span style={{ fontSize: '0.6875rem', opacity: 0.6, width: '14px', flexShrink: 0, textAlign: 'center' }}>
-                          {idx + 1}
-                        </span>
-                      )}
-                      <span style={{
-                        flex: 1,
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                      }}>
-                        {titleText}
-                      </span>
-                    </Link>
-                  );
-                })}
-
-                {moduleQuizzes.length > 0 && (
-                  <Link
-                    to={`${lessonBasePath}?quiz=true`}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 'var(--space-2)',
-                      padding: '8px 10px',
-                      marginTop: 'var(--space-2)',
-                      borderRadius: 'var(--radius-sm)',
-                      fontSize: '0.8125rem',
-                      textDecoration: 'none',
-                      color: 'var(--md-sys-color-primary)',
-                      borderTop: '1px dashed var(--md-sys-color-outline-variant)',
-                      fontWeight: 600,
-                      transition: 'background-color 150ms ease',
-                    }}
-                  >
-                    <Award size={14} color="#f59e0b" style={{ flexShrink: 0 }} />
-                    <span style={{ flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {isBn ? `নলেজ চেক (${moduleQuizzes.length})` : `Knowledge Check (${moduleQuizzes.length})`}
-                    </span>
-                  </Link>
-                )}
-              </div>
-            </Card>
-          </aside>
-        </div>
       </div>
     </PageContainer>
   );

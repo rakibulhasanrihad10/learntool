@@ -10,3 +10,5 @@ export * from './BranchSwitchSimulator/BranchSwitchSimulator';
 export * from './PointerResetSimulator/PointerResetSimulator';
 export * from './MergeConflictSimulator/MergeConflictSimulator';
 export * from './InteractiveRebaseSimulator/InteractiveRebaseSimulator';
+export * from './RebaseAnimation/RebaseAnimation';
+export * from './FetchPullSimulator/FetchPullSimulator';

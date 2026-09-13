@@ -5,6 +5,7 @@ import { WORKFLOW_LESSONS } from '@/content/git/workflowLessons';
 import { BRANCHING_LESSONS } from '@/content/git/branchingLessons';
 import { MERGING_LESSONS } from '@/content/git/mergingLessons';
 import { REBASING_LESSONS } from '@/content/git/rebasingLessons';
+import { REMOTE_LESSONS } from '@/content/git/remoteLessons';
 import { GITHUB_FUNDAMENTALS_LESSONS } from './fundamentals';
 import { GITHUB_REPOSITORIES_LESSONS } from './repositories';
 import { GITHUB_BRANCHING_LESSONS } from './branching';
@@ -125,6 +126,7 @@ export const ALL_CURRICULUM_LESSONS: CurriculumLesson[] = [
   ...BRANCHING_LESSONS,
   ...MERGING_LESSONS,
   ...REBASING_LESSONS,
+  ...REMOTE_LESSONS,
   ...ALL_GITHUB_LESSONS,
   ...INTERNALS_MENTAL_MODEL_LESSONS,
   ...INTERNALS_OBJECTS_LESSONS,

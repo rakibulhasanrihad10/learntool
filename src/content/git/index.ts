@@ -3,6 +3,7 @@ export * from './workflowLessons';
 export * from './branchingLessons';
 export * from './mergingLessons';
 export * from './rebasingLessons';
+export * from './remoteLessons';
 export * from './commands';
 export * from './workflows';
 export * from './troubleshooting';

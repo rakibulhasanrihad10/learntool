@@ -58,6 +58,33 @@
   border: 1px solid var(--color-outline-variant);
 }
 
+button.gv-lesson-header__status-badge {
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  transition: all var(--motion-duration-short, 0.2s) ease;
+}
+
+button.gv-lesson-header__status-badge:hover:not(:disabled) {
+  border-color: var(--md-sys-color-primary, #3b82f6);
+  color: var(--md-sys-color-primary, #60a5fa);
+  background-color: rgba(59, 130, 246, 0.12);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+button.gv-lesson-header__status-badge:focus-visible {
+  box-shadow: 0 0 0 2px var(--md-sys-color-primary, #3b82f6);
+}
+
+button.gv-lesson-header__status-badge:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+button.gv-lesson-header__status-badge:disabled {
+  cursor: default;
+}
+
 .gv-lesson-header__summary {
   color: var(--color-text-secondary);
   line-height: 1.6;

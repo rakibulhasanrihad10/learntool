@@ -1,0 +1,604 @@
+/* ==========================================================================
+   RebaseAnimation.css
+   Interactive Educational Visualizer for Git Rebase Mental Model
+   ========================================================================== */
+
+.rebase-anim {
+  margin: var(--space-4) 0;
+  border-radius: var(--radius-lg, 16px);
+  background: var(--md-sys-color-surface-container, #0f172a);
+  border: 1px solid var(--md-sys-color-outline-variant, rgba(255, 255, 255, 0.1));
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.rebase-anim:focus-visible {
+  border-color: var(--md-sys-color-primary, #3b82f6);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* Header */
+.rebase-anim__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant, rgba(255, 255, 255, 0.08));
+  background: var(--md-sys-color-surface-container-high, #1e293b);
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.rebase-anim__title-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.rebase-anim__icon-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.18);
+  color: var(--md-sys-color-primary, #60a5fa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.rebase-anim__title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface, #f8fafc);
+  letter-spacing: -0.01em;
+}
+
+.rebase-anim__subtitle {
+  margin: 2px 0 0 0;
+  font-size: 0.82rem;
+  color: var(--md-sys-color-on-surface-variant, #94a3b8);
+}
+
+.rebase-anim__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(139, 92, 246, 0.15);
+  color: #c4b5fd;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+/* Canvas Card */
+.rebase-anim__canvas-card {
+  position: relative;
+  background: radial-gradient(circle at 50% 30%, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.95) 100%);
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* Top Banner */
+.rebase-anim__banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 28px;
+  flex-wrap: wrap;
+}
+
+.rebase-anim__cmd-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm, 6px);
+  background: #020617;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  color: #93c5fd;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.rebase-anim__scene-tag {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--md-sys-color-on-surface-variant, #94a3b8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.rebase-anim__headline-text {
+  font-size: 0.92rem;
+  color: var(--md-sys-color-on-surface, #f8fafc);
+}
+
+/* SVG Container */
+.rebase-anim__svg-wrap {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  max-height: 180px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.rebase-anim__svg {
+  width: 100%;
+  max-width: 620px;
+  height: auto;
+  user-select: none;
+}
+
+/* SVG Animations */
+.rebase-anim__edge-draw {
+  animation: strokeGrow 0.5s ease-out forwards;
+}
+
+@keyframes strokeGrow {
+  from {
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+  }
+  to {
+    stroke-dasharray: 200;
+    stroke-dashoffset: 0;
+  }
+}
+
+.rebase-anim__node-enter {
+  animation: nodeFadeIn 0.35s ease-out forwards;
+}
+
+@keyframes nodeFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.rebase-anim__node-recreated {
+  animation: nodeFadeIn 0.4s ease-out forwards;
+}
+
+.rebase-anim__node-recreated circle {
+  animation: pulseGlow 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGlow {
+  from {
+    stroke-width: 2.5px;
+  }
+  to {
+    stroke-width: 4.5px;
+  }
+}
+
+.rebase-anim__dash-flow {
+  animation: dashCycle 1.2s linear infinite;
+}
+
+@keyframes dashCycle {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+.rebase-anim__spin-icon {
+  animation: spinSlow 3s linear infinite;
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Inspection Cards */
+.rebase-anim__inspection {
+  min-height: 68px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.rebase-anim__info-box {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md, 8px);
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.rebase-anim__info-desc {
+  color: var(--md-sys-color-on-surface, #e2e8f0);
+  line-height: 1.5;
+}
+
+.rebase-anim__hash-row {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.rebase-anim__pill {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  background: rgba(15, 23, 42, 0.6);
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.rebase-anim__pill code {
+  color: #93c5fd;
+  font-weight: bold;
+}
+
+/* Comparison Card (Scene 4 & 5) */
+.rebase-anim__comparison-card {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md, 8px);
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.rebase-anim__comp-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #10b981;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.rebase-anim__comp-grid {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: var(--space-3);
+  padding: var(--space-1) 0;
+  flex-wrap: wrap;
+}
+
+.rebase-anim__comp-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: 6px;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  min-width: 140px;
+}
+
+.rebase-anim__comp-col.new {
+  background: rgba(6, 78, 59, 0.25);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.rebase-anim__comp-tag {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.rebase-anim__comp-tag.new-badge {
+  color: #34d399;
+}
+
+.rebase-anim__comp-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.rebase-anim__comp-detail {
+  font-size: 0.78rem;
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rebase-anim__comp-detail code {
+  color: #93c5fd;
+  font-weight: bold;
+}
+
+.rebase-anim__comp-detail.highlight code {
+  color: #34d399;
+}
+
+.rebase-anim__comp-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: #10b981;
+  font-weight: 600;
+}
+
+.rebase-anim__comp-footer {
+  color: #94a3b8;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: var(--space-1);
+}
+
+/* Takeaway Card (Scene 6) */
+.rebase-anim__takeaway-card {
+  padding: var(--space-3);
+  border-radius: var(--radius-md, 8px);
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  text-align: center;
+}
+
+.rebase-anim__takeaway-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #60a5fa;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.rebase-anim__takeaway-formula {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.rebase-anim__step-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.rebase-anim__step-pill.active {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.4);
+  color: #93c5fd;
+}
+
+.rebase-anim__step-pill.active-green {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #34d399;
+}
+
+.rebase-anim__step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 0.7rem;
+}
+
+.rebase-anim__takeaway-quote {
+  margin: 0;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: #f8fafc;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* Progress Track */
+.rebase-anim__progress-track {
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: var(--space-2);
+}
+
+.rebase-anim__progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #10b981);
+  transition: width 0.1s linear;
+}
+
+/* Controls Bar */
+.rebase-anim__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-4);
+  background: var(--md-sys-color-surface-container-high, #1e293b);
+  border-top: 1px solid var(--md-sys-color-outline-variant, rgba(255, 255, 255, 0.08));
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.rebase-anim__playback-btns {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.rebase-anim__btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--md-sys-color-on-surface, #f8fafc);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.rebase-anim__btn-icon:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: scale(1.05);
+}
+
+.rebase-anim__btn-icon:active {
+  transform: scale(0.96);
+}
+
+.rebase-anim__step-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rebase-anim__btn-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--md-sys-color-on-surface-variant, #cbd5e1);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.rebase-anim__btn-nav:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+/* Stepper Dots */
+.rebase-anim__stepper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.rebase-anim__dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--md-sys-color-on-surface-variant, #94a3b8);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.rebase-anim__dot-num {
+  font-weight: bold;
+}
+
+.rebase-anim__dot:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+}
+
+.rebase-anim__dot.is-active {
+  background: var(--md-sys-color-primary, #3b82f6);
+  border-color: var(--md-sys-color-primary, #3b82f6);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+}
+
+/* Accessibility: Prefers Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .rebase-anim__edge-draw,
+  .rebase-anim__node-enter,
+  .rebase-anim__node-recreated,
+  .rebase-anim__dash-flow,
+  .rebase-anim__spin-icon {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 680px) {
+  .rebase-anim__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .rebase-anim__stepper {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .rebase-anim__dot-label {
+    display: none;
+  }
+
+  .rebase-anim__controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+  }
+
+  .rebase-anim__playback-btns {
+    justify-content: center;
+  }
+
+  .rebase-anim__comp-grid {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .rebase-anim__comp-arrow {
+    transform: rotate(90deg);
+    margin: var(--space-1) 0;
+  }
+}
